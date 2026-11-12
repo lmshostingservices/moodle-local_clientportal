@@ -16,6 +16,11 @@
 
 namespace local_clientportal;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(manager::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(scope::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(observer::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(guard::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(help::class)]
 /**
  * Tests for client staff, scoping, enrolment ownership and groups.
  *
@@ -28,11 +33,6 @@ namespace local_clientportal;
  * @covers     \local_clientportal\guard
  * @covers     \local_clientportal\help
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(manager::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(scope::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(observer::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(guard::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(help::class)]
 final class portal_test extends \advanced_testcase {
     /**
      * Two clients, staff and learners.
