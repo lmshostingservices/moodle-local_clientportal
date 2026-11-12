@@ -1,0 +1,87 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+namespace local_clientportal;
+
+/**
+ * Help guides for client staff, in the same order as the tutorial video.
+ *
+ * Each guide has a screenshot in pix/help and pins as [left, top, width, height] in percent of the image.
+ * Titles, steps and pin labels are language strings (help_<id>, help_<id>_desc, help_<id>_pin<n>).
+ *
+ * @package    local_clientportal
+ * @copyright  2026 LMS Hosting Services
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class help {
+    /** @var string[] Chapter keys in order. */
+    const CHAPTERS = ['start', 'dashboard', 'learners', 'groups', 'reports', 'certificates', 'team', 'privacy'];
+
+    /** @var array Guides keyed by id, in order. */
+    const GUIDES = [
+        'portal' => ['chapter' => 'start', 'shot' => 'm_dash', 'managers' => false,
+            'pins' => [[2.3, 1.8, 24.2, 4.1], [2.2, 7.1, 42.8, 4.2]]],
+        'dashboard' => ['chapter' => 'dashboard', 'shot' => 'm_dash', 'managers' => false,
+            'pins' => [[2.3, 18.6, 15.0, 10.6], [34.5, 18.6, 15.0, 10.6], [66.6, 18.6, 15.0, 10.6]]],
+        'dashcourses' => ['chapter' => 'dashboard', 'shot' => 'm_dash', 'managers' => false,
+            'pins' => [[3.8, 32.7, 4.8, 1.8], [3.8, 63.1, 11.8, 1.8], [52.2, 63.1, 4.2, 1.8]]],
+        'dashgroup' => ['chapter' => 'dashboard', 'shot' => 'm_dash_group', 'managers' => false,
+            'pins' => [[85.4, 13.5, 12.3, 3.4]]],
+        'learners' => ['chapter' => 'learners', 'shot' => 'm_learners', 'managers' => false,
+            'pins' => [[24.7, 24.5, 9.2, 3.7], [81.1, 25.6, 7.9, 1.6]]],
+        'bulk' => ['chapter' => 'learners', 'shot' => 'm_bulk', 'managers' => false,
+            'pins' => [[59.0, 86.2, 8.8, 3.4]]],
+        'learner' => ['chapter' => 'learners', 'shot' => 'm_learner', 'managers' => false,
+            'pins' => [[19.0, 32.1, 8.8, 3.7], [27.8, 32.1, 12.2, 3.7], [63.2, 32.1, 5.6, 3.7]]],
+        'activities' => ['chapter' => 'learners', 'shot' => 'm_activities', 'managers' => false,
+            'pins' => [[3.8, 59.4, 5.5, 1.8], [57.4, 62.7, 29.9, 3.7]]],
+        'learnercert' => ['chapter' => 'learners', 'shot' => 'm_learner_cert', 'managers' => false,
+            'pins' => [[80.8, 53.1, 15.8, 4.7], [80.8, 45.5, 15.8, 4.7]]],
+        'groups' => ['chapter' => 'groups', 'shot' => 'm_groups', 'managers' => false,
+            'pins' => [[2.4, 25.5, 40.6, 6.0], [43.0, 21.7, 15.5, 3.7]]],
+        'groupnew' => ['chapter' => 'groups', 'shot' => 'm_group_new', 'managers' => false,
+            'pins' => [[3.8, 20.1, 6.5, 2.8], [3.8, 25.0, 6.2, 2.8]]],
+        'groupmembers' => ['chapter' => 'groups', 'shot' => 'm_group_members', 'managers' => false,
+            'pins' => [[3.8, 23.0, 9.2, 1.8], [52.2, 23.0, 12.2, 1.8]]],
+        'report' => ['chapter' => 'reports', 'shot' => 'm_report', 'managers' => false,
+            'pins' => [[2.4, 24.5, 7.3, 3.7]]],
+        'reportfilter' => ['chapter' => 'reports', 'shot' => 'm_report_course', 'managers' => false,
+            'pins' => [[3.8, 19.8, 12.3, 3.4], [89.1, 13.5, 8.6, 3.4], [80.5, 13.5, 8.0, 3.4]]],
+        'certs' => ['chapter' => 'certificates', 'shot' => 'm_certs', 'managers' => false,
+            'pins' => [[87.8, 29.3, 6.0, 2.8], [83.3, 13.5, 14.4, 3.4]]],
+        'team' => ['chapter' => 'team', 'shot' => 'm_team', 'managers' => true,
+            'pins' => [[3.8, 19.3, 7.1, 1.8], [3.8, 42.4, 6.7, 1.8]]],
+        'private' => ['chapter' => 'privacy', 'shot' => 'm_private', 'managers' => false,
+            'pins' => [[4.5, 29.6, 51.3, 2.1]]],
+    ];
+
+    /**
+     * Guides this person can see.
+     *
+     * @param scope $scope
+     * @return array
+     */
+    public static function guides(scope $scope): array {
+        $out = [];
+        foreach (self::GUIDES as $id => $guide) {
+            if ($guide['managers'] && !$scope->is_manager()) {
+                continue;
+            }
+            $out[$id] = $guide;
+        }
+        return $out;
+    }
+}

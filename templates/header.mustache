@@ -1,0 +1,81 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_clientportal/header
+
+    Client portal top bar and navigation. Opens .cport-shell and .cport-main (closed by ui::footer()).
+
+    Example context (json):
+    {
+        "clientname": "BHP",
+        "logo": "https://example.com/logo.png",
+        "homeurl": "#",
+        "nav": [{"url": "#", "label": "Dashboard", "active": true}, {"url": "#", "label": "Learners", "active": false}],
+        "clients": [],
+        "hasclients": false,
+        "username": "Pat Smith",
+        "rolename": "Client manager",
+        "logouturl": "#",
+        "support": false,
+        "adminurl": "#",
+        "title": "Dashboard",
+        "actions": ""
+    }
+}}
+<div class="cport-shell">
+    {{#support}}
+    <div class="cport-support alert alert-info d-flex justify-content-between align-items-center mb-0">
+        <span>{{#str}}supportview, local_clientportal, {{clientname}}{{/str}}</span>
+        <a class="btn btn-sm btn-outline-primary" href="{{adminurl}}">{{#str}}backtoclients, local_clientportal{{/str}}</a>
+    </div>
+    {{/support}}
+    <header class="cport-bar">
+        <a class="cport-brand" href="{{homeurl}}">
+            {{#logo}}<img class="cport-logo" src="{{logo}}" alt="">{{/logo}}
+            <span class="cport-brand-text">
+                <span class="cport-client">{{clientname}}</span>
+                <span class="cport-product">{{#str}}pluginname, local_clientportal{{/str}}</span>
+            </span>
+        </a>
+        <div class="cport-bar-right">
+            {{#hasclients}}
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{#str}}switchclient, local_clientportal{{/str}}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-end">
+                    {{#clients}}<a class="dropdown-item{{#current}} active{{/current}}" href="{{url}}"{{#current}} aria-current="true"{{/current}}>{{name}}</a>{{/clients}}
+                </div>
+            </div>
+            {{/hasclients}}
+            <span class="cport-user">
+                <span class="cport-user-name">{{username}}</span>
+                <span class="cport-user-role">{{rolename}}</span>
+            </span>
+            <a class="btn btn-sm btn-outline-secondary" href="{{logouturl}}">{{#str}}logout{{/str}}</a>
+        </div>
+    </header>
+    <nav class="cport-nav" aria-label="{{#str}}pluginname, local_clientportal{{/str}}">
+        {{#nav}}<a class="cport-nav-link{{#active}} active{{/active}}" href="{{url}}"{{#active}} aria-current="page"{{/active}}>{{label}}</a>{{/nav}}
+    </nav>
+    <div class="cport-main">
+        {{#title}}
+        <div class="cport-titlebar">
+            <h2 class="cport-title">{{title}}</h2>
+            <div class="cport-actions">{{{actions}}}</div>
+        </div>
+        {{/title}}
