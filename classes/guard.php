@@ -99,7 +99,9 @@ class guard {
      * @return bool
      */
     public static function allowed(string $script): bool {
-        if ($script === '/login/token.php') {
+        // Client staff never need tokens or the site-admin client pages (they would see an "Access denied" page
+        // in the full site layout there).
+        if ($script === '/login/token.php' || strpos($script, '/local/clientportal/admin/') === 0) {
             return false;
         }
         $extra = preg_split('/\R/', (string)get_config('local_clientportal', 'extraallowed'), -1, PREG_SPLIT_NO_EMPTY);
