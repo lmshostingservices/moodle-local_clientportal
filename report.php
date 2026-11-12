@@ -30,7 +30,7 @@ use local_clientportal\ui;
 require(__DIR__ . '/../../config.php');
 
 require_login(null, false);
-// pipeline-ignore: require_capability — access comes from client membership, checked by scope::require_portal().
+// Access comes from client membership, checked by scope::require_portal(), so no require_capability() here.
 
 $groupid = optional_param('group', 0, PARAM_INT);
 $courseid = optional_param('course', 0, PARAM_INT);

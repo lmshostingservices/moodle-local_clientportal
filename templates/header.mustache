@@ -17,7 +17,7 @@
 {{!
     @template local_clientportal/header
 
-    Client portal top bar and navigation. Opens .cport-shell and .cport-main (closed by ui::footer()).
+    Client portal top bar and navigation. ui::header() wraps it in .cport-shell and opens .cport-main after it; ui::footer() closes both.
 
     Example context (json):
     {
@@ -31,12 +31,9 @@
         "rolename": "Client manager",
         "logouturl": "#",
         "support": false,
-        "adminurl": "#",
-        "title": "Dashboard",
-        "actions": ""
+        "adminurl": "#"
     }
 }}
-<div class="cport-shell">
     {{#support}}
     <div class="cport-support alert alert-info d-flex justify-content-between align-items-center mb-0">
         <span>{{#str}}supportview, local_clientportal, {{clientname}}{{/str}}</span>
@@ -72,10 +69,3 @@
     <nav class="cport-nav" aria-label="{{#str}}pluginname, local_clientportal{{/str}}">
         {{#nav}}<a class="cport-nav-link{{#active}} active{{/active}}" href="{{url}}"{{#active}} aria-current="page"{{/active}}>{{label}}</a>{{/nav}}
     </nav>
-    <div class="cport-main">
-        {{#title}}
-        <div class="cport-titlebar">
-            <h2 class="cport-title">{{title}}</h2>
-            <div class="cport-actions">{{{actions}}}</div>
-        </div>
-        {{/title}}

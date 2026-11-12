@@ -22,6 +22,11 @@ namespace local_clientportal;
  * @package    local_clientportal
  * @copyright  2026 LMS Hosting Services
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers     \local_clientportal\manager
+ * @covers     \local_clientportal\scope
+ * @covers     \local_clientportal\observer
+ * @covers     \local_clientportal\guard
+ * @covers     \local_clientportal\help
  */
 #[\PHPUnit\Framework\Attributes\CoversClass(manager::class)]
 #[\PHPUnit\Framework\Attributes\CoversClass(scope::class)]

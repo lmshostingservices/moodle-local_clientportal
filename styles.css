@@ -9,7 +9,9 @@ body.local-clientportal {
     background: var(--cport-soft);
 }
 
-/* The portal draws its own header in place of the secure layout's. */
+/* The portal draws its own header in place of the secure layout's. Themes set these with high
+   specificity, so the portal has to win outright here. */
+/* stylelint-disable declaration-no-important */
 body.local-clientportal nav.navbar,
 body.local-clientportal #page-header,
 body.local-clientportal #page-footer .logininfo,
@@ -21,6 +23,7 @@ body.local-clientportal #page {
     padding: 0 !important;
     max-width: none;
 }
+/* stylelint-enable declaration-no-important */
 body.local-clientportal #page-content,
 body.local-clientportal #region-main-box,
 body.local-clientportal #region-main {
@@ -47,12 +50,13 @@ body.local-clientportal #region-main {
     padding: 18px 0 14px;
     flex-wrap: wrap;
 }
+body.local-clientportal .cport-brand,
 .cport-brand {
     display: flex;
     align-items: center;
     gap: 14px;
     color: inherit;
-    text-decoration: none !important;
+    text-decoration: none;
 }
 .cport-logo {
     max-height: 44px;
@@ -108,7 +112,12 @@ body.local-clientportal #region-main {
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     white-space: nowrap;
-    text-decoration: none !important;
+    text-decoration: none;
+}
+body.local-clientportal .cport-nav .cport-nav-link,
+body.local-clientportal .cport-nav .cport-nav-link:hover,
+body.local-clientportal .cport-nav .cport-nav-link:focus {
+    text-decoration: none;
 }
 .cport-nav-link:hover {
     color: var(--cport-ink);
@@ -129,7 +138,8 @@ body.local-clientportal #region-main {
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
-    color: var(--cport-ink) !important;
+    /* Cohort Branding colours page headings with !important; portal titles stay in the portal's ink. */
+    color: var(--cport-ink) !important; /* stylelint-disable-line declaration-no-important */
 }
 .cport-subtitle {
     color: var(--cport-muted);
@@ -189,6 +199,7 @@ body.local-clientportal #region-main {
     grid-template-columns: 1fr 1fr;
     gap: 18px;
 }
+
 @media (max-width: 900px) {
     .cport-grid {
         grid-template-columns: 1fr;
@@ -213,7 +224,8 @@ body.local-clientportal #region-main {
     font-size: 1rem;
     font-weight: 600;
     margin: 0;
-    color: var(--cport-ink) !important;
+    /* Cohort Branding colours page headings with !important; card titles stay in the portal's ink. */
+    color: var(--cport-ink) !important; /* stylelint-disable-line declaration-no-important */
 }
 .cport-card-body {
     padding: 0;
@@ -462,11 +474,11 @@ table.cport-table tbody tr:hover {
     color: #0f172a;
     text-decoration: none;
 }
-.cport-help-link.active,
-.cport-help-link.active:hover,
-.cport-help-link.active:focus {
+body.local-clientportal .cport-help-nav .cport-help-link.active,
+body.local-clientportal .cport-help-nav .cport-help-link.active:hover,
+body.local-clientportal .cport-help-nav .cport-help-link.active:focus {
     background: var(--cport-accent);
-    color: #fff !important;
+    color: #fff;
     font-weight: 600;
 }
 .cport-help-body {
@@ -544,21 +556,22 @@ table.cport-table tbody tr:hover {
     padding: 8px 16px;
     font-weight: 600;
 }
-.cport-help-prev,
-.cport-help-prev:hover,
-.cport-help-prev:focus {
-    background: #fff !important;
-    border: 1px solid #cbd5e1 !important;
-    color: #0f172a !important;
+body.local-clientportal .cport-help-pager .btn.cport-help-prev,
+body.local-clientportal .cport-help-pager .btn.cport-help-prev:hover,
+body.local-clientportal .cport-help-pager .btn.cport-help-prev:focus {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
 }
-.cport-help-next,
-.cport-help-next:hover,
-.cport-help-next:focus {
+body.local-clientportal .cport-help-pager .btn.cport-help-next,
+body.local-clientportal .cport-help-pager .btn.cport-help-next:hover,
+body.local-clientportal .cport-help-pager .btn.cport-help-next:focus {
     margin-left: auto;
-    background: var(--cport-accent) !important;
-    border: 1px solid var(--cport-accent) !important;
-    color: #fff !important;
+    background: var(--cport-accent);
+    border: 1px solid var(--cport-accent);
+    color: #fff;
 }
+
 @media (max-width: 900px) {
     .cport-help {
         grid-template-columns: 1fr;
