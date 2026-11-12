@@ -32,7 +32,7 @@ Site staff can open any client's portal from the Clients page (support view).
 
 ## Requirements
 
-Moodle 4.5 to 5.3. Optional: local_cohortbranding, mod_customcert, tool_certificate.
+Moodle 4.4 to 5.3. Optional: local_cohortbranding, mod_customcert, tool_certificate.
 
 ## Coming next
 
