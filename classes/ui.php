@@ -78,10 +78,14 @@ class ui {
             'logouturl' => (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false),
             'support' => $scope->support,
             'adminurl' => (new moodle_url('/local/clientportal/admin/clients.php'))->out(false),
-            'title' => $title,
-            'actions' => $actions,
         ];
-        return $OUTPUT->header() . $OUTPUT->render_from_template('local_clientportal/header', $context);
+        $bar = $OUTPUT->render_from_template('local_clientportal/header', $context);
+        $titlebar = $title === null ? '' : html_writer::div(
+            html_writer::tag('h2', s($title), ['class' => 'cport-title']) . html_writer::div($actions, 'cport-actions'),
+            'cport-titlebar'
+        );
+        return $OUTPUT->header() . html_writer::start_div('cport-shell') . $bar .
+            html_writer::start_div('cport-main') . $titlebar;
     }
 
     /**

@@ -29,7 +29,7 @@ use local_clientportal\ui;
 require(__DIR__ . '/../../config.php');
 
 require_login(null, false);
-// pipeline-ignore: require_capability — access comes from client membership, checked by scope::require_portal().
+// Access comes from client membership, checked by scope::require_portal(), so no require_capability() here.
 
 $page = optional_param('page', 0, PARAM_INT);
 $scope = scope::require_portal(new moodle_url('/local/clientportal/team.php'), true);

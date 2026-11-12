@@ -16,18 +16,23 @@
 
 namespace local_clientportal;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(manager::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(scope::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(observer::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(guard::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(help::class)]
 /**
  * Tests for client staff, scoping, enrolment ownership and groups.
  *
  * @package    local_clientportal
  * @copyright  2026 LMS Hosting Services
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers     \local_clientportal\manager
+ * @covers     \local_clientportal\scope
+ * @covers     \local_clientportal\observer
+ * @covers     \local_clientportal\guard
+ * @covers     \local_clientportal\help
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(manager::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(scope::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(observer::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(guard::class)]
-#[\PHPUnit\Framework\Attributes\CoversClass(help::class)]
 final class portal_test extends \advanced_testcase {
     /**
      * Two clients, staff and learners.

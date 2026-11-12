@@ -2,6 +2,15 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v1.0.5] - 2026-11-12
+
+### Fixed
+- Passes the full GitHub CI (moodle-plugin-ci) on every branch in the matrix:
+  - Code checker: no warnings (inline comments start with a capital letter; tests declare coverage in the doc block as well as attributes).
+  - Mustache lint: the header template no longer leaves the page wrappers open; ui::header() opens them and ui::footer() closes them.
+  - Grunt/stylelint: no `!important` except where the portal must beat the theme's layout or Cohort Branding's heading colours (marked with stylelint comments), and blank lines before `@media`.
+- Now installs on Moodle 4.4 (`requires` 2024042200, supported 4.4 to 5.3). Every API it uses exists in 4.4.
+
 ## [v1.0.4] - 2026-11-11
 ### Changed
 - The new-staff email field uses PARAM_EMAIL and the "Extra allowed pages" setting uses PARAM_TEXT (no PARAM_RAW anywhere).

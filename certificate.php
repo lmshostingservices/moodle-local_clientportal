@@ -29,7 +29,7 @@ use local_clientportal\scope;
 require(__DIR__ . '/../../config.php');
 
 require_login(null, false);
-// pipeline-ignore: require_capability — access comes from client membership, checked by scope::require_portal().
+// Access comes from client membership, checked by scope::require_portal(), so no require_capability() here.
 
 $userid = required_param('user', PARAM_INT);
 $type = required_param('type', PARAM_ALPHA);

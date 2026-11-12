@@ -31,7 +31,7 @@ use local_clientportal\ui;
 require(__DIR__ . '/../../config.php');
 
 require_login(null, false);
-// pipeline-ignore: require_capability — access comes from client membership, checked by scope::require_portal().
+// Access comes from client membership, checked by scope::require_portal(), so no require_capability() here.
 
 $action = optional_param('action', '', PARAM_ALPHA);
 $id = optional_param('id', 0, PARAM_INT);
