@@ -303,7 +303,7 @@ class xero {
         $monthstart = make_timestamp((int)userdate($from, '%Y'), (int)userdate($from, '%m'), 1, 0, 0, 0);
         $invoice = $DB->get_record_select(
             'local_clientportal_invoice',
-            "clientid = ? AND periodstart >= ? AND status = 'draft' AND xeroinvoiceid <> ''",
+            "clientid = ? AND periodstart >= ? AND status = 'draft' AND xeroinvoiceid IS NOT NULL AND xeroinvoiceid <> ''",
             [$client->id, $monthstart],
             '*',
             IGNORE_MULTIPLE
@@ -334,7 +334,7 @@ class xero {
                     'AccountCode' => $account,
                 ], $lines),
             ];
-            if ($invoice->xeroinvoiceid !== '') {
+            if (!empty($invoice->xeroinvoiceid)) {
                 $payload['InvoiceID'] = $invoice->xeroinvoiceid;
             }
             $result = $this->http('POST', self::API . 'Invoices', ['Invoices' => [$payload]]);
@@ -343,8 +343,8 @@ class xero {
                 throw new moodle_exception('xero_apierror', 'local_clientportal', '', (string)($result['Message'] ??
                     $result['Detail'] ?? ''));
             }
-            $invoice->xeroinvoiceid = (string)($saved['InvoiceID'] ?? $invoice->xeroinvoiceid);
-            $invoice->xeronumber = (string)($saved['InvoiceNumber'] ?? $invoice->xeronumber);
+            $invoice->xeroinvoiceid = (string)$saved['InvoiceID'];
+            $invoice->xeronumber = (string)($saved['InvoiceNumber'] ?? $invoice->xeronumber ?? '');
             $invoice->lines = json_encode($lines);
             $invoice->total = round(array_sum(array_map(fn($l) => $l['quantity'] * $l['unitamount'], $lines)), 2);
             $invoice->periodend = $to;
@@ -357,7 +357,7 @@ class xero {
             return get_string('xero_added', 'local_clientportal', ['lines' => count($usage->lines),
                 'number' => $invoice->xeronumber ?: $invoice->xeroinvoiceid]);
         } catch (moodle_exception $e) {
-            if ($invoice->xeroinvoiceid === '') {
+            if (empty($invoice->xeroinvoiceid)) {
                 $invoice->status = 'failed';
             }
             $invoice->error = $e->getMessage();
