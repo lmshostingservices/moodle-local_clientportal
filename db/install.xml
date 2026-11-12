@@ -147,7 +147,7 @@
         <FIELD NAME="clientid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="periodstart" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="periodend" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="lines" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON line items"/>
+        <FIELD NAME="lineitems" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON line items"/>
         <FIELD NAME="total" TYPE="number" LENGTH="12" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2"/>
         <FIELD NAME="xeroinvoiceid" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="xeronumber" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>

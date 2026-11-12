@@ -81,7 +81,7 @@ function xmldb_local_clientportal_upgrade($oldversion) {
             $table->add_field('clientid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
             $table->add_field('periodstart', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
             $table->add_field('periodend', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
-            $table->add_field('lines', XMLDB_TYPE_TEXT, null, null, null, null, null);
+            $table->add_field('lineitems', XMLDB_TYPE_TEXT, null, null, null, null, null);
             $table->add_field('total', XMLDB_TYPE_NUMBER, '12, 2', null, XMLDB_NOTNULL, null, '0');
             $table->add_field('xeroinvoiceid', XMLDB_TYPE_CHAR, '64', null, null, null, null);
             $table->add_field('xeronumber', XMLDB_TYPE_CHAR, '64', null, null, null, null);

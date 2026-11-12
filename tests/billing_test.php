@@ -120,7 +120,7 @@ final class billing_test extends \advanced_testcase {
         \curl::mock_response(json_encode(['Invoices' => [['InvoiceID' => 'inv-1', 'InvoiceNumber' => 'INV-0042']]]));
         $xero->bill_client(manager::get_client($d['client']), $monday, $monday + 7 * DAYSECS);
         $invoice = $DB->get_record('local_clientportal_invoice', ['clientid' => $d['client']]);
-        $this->assertCount(2, json_decode($invoice->lines, true));
+        $this->assertCount(2, json_decode($invoice->lineitems, true));
         $this->assertEquals(6.0, (float)$invoice->total);
         $this->assertSame(1, $DB->count_records('local_clientportal_invoice', ['clientid' => $d['client']]));
     }

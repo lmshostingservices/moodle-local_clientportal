@@ -310,12 +310,12 @@ class xero {
         );
         $now = time();
         if (!$invoice) {
-            $invoice = (object)['clientid' => $client->id, 'periodstart' => $from, 'periodend' => $to, 'lines' => '[]',
+            $invoice = (object)['clientid' => $client->id, 'periodstart' => $from, 'periodend' => $to, 'lineitems' => '[]',
                 'total' => 0, 'xeroinvoiceid' => '', 'xeronumber' => '', 'status' => 'draft', 'error' => null,
                 'timecreated' => $now, 'timemodified' => $now];
             $invoice->id = $DB->insert_record('local_clientportal_invoice', $invoice);
         }
-        $lines = array_merge(json_decode((string)$invoice->lines, true) ?: [], $usage->lines);
+        $lines = array_merge(json_decode((string)$invoice->lineitems, true) ?: [], $usage->lines);
         try {
             $contact = $this->contact($client);
             $account = (string)get_config('local_clientportal', 'xeroaccount') ?: '200';
@@ -345,7 +345,7 @@ class xero {
             }
             $invoice->xeroinvoiceid = (string)$saved['InvoiceID'];
             $invoice->xeronumber = (string)($saved['InvoiceNumber'] ?? $invoice->xeronumber ?? '');
-            $invoice->lines = json_encode($lines);
+            $invoice->lineitems = json_encode($lines);
             $invoice->total = round(array_sum(array_map(fn($l) => $l['quantity'] * $l['unitamount'], $lines)), 2);
             $invoice->periodend = $to;
             $invoice->status = 'draft';

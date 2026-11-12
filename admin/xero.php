@@ -120,7 +120,7 @@ if (!$invoices) {
         get_string('xero_period', 'local_clientportal'), get_string('xero_lines', 'local_clientportal'),
         get_string('u_amount', 'local_clientportal'), get_string('status'), get_string('lastmodified')];
     foreach ($invoices as $i) {
-        $lines = json_decode((string)$i->lines, true) ?: [];
+        $lines = json_decode((string)$i->lineitems, true) ?: [];
         $table->data[] = [
             format_string($i->clientname),
             s($i->xeronumber ?: '–'),
