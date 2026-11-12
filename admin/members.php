@@ -58,25 +58,8 @@ if ($mode === 'existing' && ($data = $existing->get_data())) {
         $error = $e->getMessage();
     }
 } else if ($mode === 'new' && ($data = $new->get_data())) {
-    $username = core_text::strtolower(trim($data->email));
-    if ($DB->record_exists('user', ['username' => $username, 'mnethostid' => $CFG->mnet_localhost_id])) {
-        $username .= '.' . random_string(4);
-    }
-    $user = (object)[
-        'auth' => 'manual',
-        'confirmed' => 1,
-        'mnethostid' => $CFG->mnet_localhost_id,
-        'username' => clean_param($username, PARAM_USERNAME),
-        'firstname' => $data->firstname,
-        'lastname' => $data->lastname,
-        'email' => trim($data->email),
-        'password' => '',
-    ];
-    $user->id = user_create_user($user, false, true);
-    set_user_preference('auth_forcepasswordchange', 1, $user->id);
-    setnew_password_and_mail($DB->get_record('user', ['id' => $user->id]));
     try {
-        manager::add_member($clientid, (int)$user->id, $data->role);
+        $user = manager::create_staff($clientid, $data->firstname, $data->lastname, $data->email, $data->role);
         redirect(
             $pageurl,
             get_string('staffcreated', 'local_clientportal', s($user->email)),
@@ -103,11 +86,16 @@ if ($members) {
     $table->attributes['class'] = 'generaltable';
     $table->head = [get_string('name'), get_string('email'), get_string('role', 'local_clientportal'), ''];
     foreach ($members as $m) {
-        $other = $m->role === manager::ROLE_MANAGER ? manager::ROLE_REP : manager::ROLE_MANAGER;
-        $switch = html_writer::link(
-            new moodle_url($pageurl, ['change' => $m->id, 'role' => $other, 'sesskey' => sesskey()]),
-            get_string('makerole', 'local_clientportal', get_string('role_' . $other, 'local_clientportal'))
-        );
+        $links = [];
+        foreach ([manager::ROLE_MANAGER, manager::ROLE_REP, manager::ROLE_TRAINER] as $other) {
+            if ($other !== $m->role) {
+                $links[] = html_writer::link(
+                    new moodle_url($pageurl, ['change' => $m->id, 'role' => $other, 'sesskey' => sesskey()]),
+                    get_string('makerole', 'local_clientportal', get_string('role_' . $other, 'local_clientportal'))
+                );
+            }
+        }
+        $switch = implode(' · ', $links);
         $remove = html_writer::link(
             new moodle_url($pageurl, ['remove' => $m->id, 'sesskey' => sesskey()]),
             get_string('remove'),

@@ -54,6 +54,10 @@ if ($data = $form->get_data()) {
 if ($client) {
     $defaults = (array)$client;
     $defaults['cohortname'] = format_string($DB->get_field('cohort', 'name', ['id' => $client->cohortid]));
+    $defaults['features'] = array_fill_keys(array_filter(explode(',', (string)$client->features)), 1);
+    foreach (['ratecredit', 'ratelearner', 'rateenrol'] as $rate) {
+        $defaults[$rate] = (float)$client->$rate;
+    }
     $form->set_data($defaults);
 }
 echo $OUTPUT->header();

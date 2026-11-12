@@ -70,6 +70,36 @@ class client_form extends \moodleform {
         );
         $mform->setDefault('active', 1);
 
+        $mform->addElement('header', 'featureshdr', get_string('clientfeatures', 'local_clientportal'));
+        $mform->setExpanded('featureshdr');
+        $mform->addElement('static', 'featuresintro', '', get_string('clientfeatures_desc', 'local_clientportal'));
+        foreach (\local_clientportal\courses::FEATURES as $feature) {
+            $mform->addElement(
+                'advcheckbox',
+                'features[' . $feature . ']',
+                get_string('feature_' . $feature, 'local_clientportal'),
+                get_string('feature_' . $feature . '_desc', 'local_clientportal')
+            );
+        }
+        $mform->disabledIf('features[teachers]', 'features[courses]', 'notchecked');
+
+        $mform->addElement('header', 'billinghdr', get_string('billing', 'local_clientportal'));
+        $mform->addElement(
+            'advcheckbox',
+            'billing',
+            get_string('billingon', 'local_clientportal'),
+            get_string('billingon_desc', 'local_clientportal')
+        );
+        foreach (['ratecredit', 'ratelearner', 'rateenrol'] as $rate) {
+            $mform->addElement('text', $rate, get_string($rate, 'local_clientportal'), ['size' => 10]);
+            $mform->setType($rate, PARAM_FLOAT);
+            $mform->setDefault($rate, 0);
+            $mform->addHelpButton($rate, $rate, 'local_clientportal');
+        }
+        $mform->addElement('text', 'xerocontact', get_string('xerocontact', 'local_clientportal'), ['size' => 40]);
+        $mform->setType('xerocontact', PARAM_ALPHANUMEXT);
+        $mform->addHelpButton('xerocontact', 'xerocontact', 'local_clientportal');
+
         $this->add_action_buttons(true, get_string('saveclient', 'local_clientportal'));
     }
 }

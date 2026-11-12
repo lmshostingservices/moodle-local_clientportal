@@ -64,6 +64,7 @@ class member_form extends \moodleform {
         $mform->addElement('select', 'role', get_string('role', 'local_clientportal'), [
             manager::ROLE_MANAGER => get_string('role_manager', 'local_clientportal'),
             manager::ROLE_REP => get_string('role_rep', 'local_clientportal'),
+            manager::ROLE_TRAINER => get_string('role_trainer', 'local_clientportal'),
         ]);
         $mform->setDefault('role', manager::ROLE_MANAGER);
         $mform->addHelpButton('role', 'role', 'local_clientportal');

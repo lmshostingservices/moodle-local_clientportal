@@ -2,6 +2,36 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.0.0] - 2026-11-13
+
+### Added
+- **Client courses.** Tick what each client may do (*Site administration > Client portal > Clients > Edit*):
+  - *Build courses*: the client gets its own course category, hidden from everyone else. Its managers create categories and courses from the new **Courses** tab, choose the layout (including AI Course Format), edit content in Moodle, and enrol their own learners: one by one, a whole group, or everyone in the organisation (including people who join later).
+  - *Trainers*: managers add their own trainers from the Team page (a new account, emailed a password) and make them editing or non-editing teachers in their courses. Trainers sign in to the portal and see only the courses they teach, the work to mark and help.
+  - *Assessors*: managers mark staff as assessors, who mark work in every one of the client's courses without being enrolled.
+- **Marking** tab: assignment submissions and quiz attempts waiting to be marked in the client's courses, oldest first, with a link to the marking screen.
+- Client staff can now work inside their own client's courses (and only those). A "Back to the portal" bar shows at the top of those course pages.
+- **Keep clients apart** (*Site administration > Client portal*): a checklist of the site settings that stop one client's people or courses showing to another (messaging, site search, the course list, profiles, blogs, tags, guest access, the site home page, the online users block), with Fix and Fix all.
+- **Usage and billing** report per client and week or month: AI credits, AI actions, active learners, new enrolments, completions, and the amount at each client's prices; CSV export. Moodle AI actions are counted automatically (credits per action are settings), and other plugins can report usage with `\local_clientportal\api::record_usage()`.
+- **Xero**: connect once, then every Monday the portal adds each billed client's usage to a draft invoice in Xero (one draft per client per month, a line per week); the contact is found by name or created. Supports Xero apps made before and after March 2026 (granular scopes).
+- Six new help guides.
+
+### Changed
+- Every enrolment in a client's own course is owned by that client automatically.
+- Staff accounts can be created with the Trainer role on the admin Staff page as well.
+
+
+
+### Added
+- Staff onboarding and monitoring inside the portal, aligned to the client's departments, positions, competencies and pathways (needs AI Training Matrix and/or Training Pathways):
+  - **Onboarding** tab (managers): who has no role yet, new starters and anyone overdue; set a learner's position, department, start date, direct manager and employee ID; add pathways with a finish-by date; enrol them in every course their role and pathways need. Courses that can't take a manual enrolment are listed instead.
+  - **Compliance** tab: compliance rate, expired, expiring in 30 days, in progress and not started; a people × competencies grid with group, department, position and status filters; CSV export.
+  - **Pathways** tab: pathway cards, each person's current stage, progress, finish-by date and overdue flag; managers sign off "Manager sign-off" steps and add people.
+  - Learner page: role, competencies with expiry dates, and pathways with sign-off buttons. Learners list: role and compliance columns. Dashboard: compliance and onboarding cards.
+  - Six new help guides with screenshots.
+- Settings: *Onboarding enrols learners* and *Client managers can sign off pathway steps* (both on).
+- Everything is limited to the client: its own learners, and its own or shared definitions and pathways. Each action is in the activity log.
+
 ## [v1.0.6] - 2026-11-12
 
 ### Fixed

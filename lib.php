@@ -42,5 +42,5 @@ function local_clientportal_after_require_login(
     if ($preventredirect) {
         return;
     }
-    \local_clientportal\guard::enforce();
+    \local_clientportal\guard::enforce($courseorid);
 }

@@ -36,6 +36,8 @@ class manager {
     public const ROLE_MANAGER = 'manager';
     /** Client representative: learners, groups, reports and certificates. */
     public const ROLE_REP = 'rep';
+    /** Client trainer: teaches the client's own courses. */
+    public const ROLE_TRAINER = 'trainer';
     /** Shortname of the Moodle role given to every client staff member. */
     public const ROLE_SHORTNAME = 'clientportaluser';
 
@@ -139,9 +141,22 @@ class manager {
             'active' => empty($data->active) ? 0 : 1,
             'timemodified' => $now,
         ];
+        if (isset($data->features)) {
+            $features = is_array($data->features) ? array_keys(array_filter($data->features)) : explode(',', $data->features);
+            $record->features = implode(',', array_values(array_intersect(courses::FEATURES, $features)));
+        }
+        foreach (['billing', 'ratecredit', 'ratelearner', 'rateenrol'] as $field) {
+            if (isset($data->$field)) {
+                $record->$field = $field === 'billing' ? (empty($data->billing) ? 0 : 1) : max(0, (float)$data->$field);
+            }
+        }
+        if (isset($data->xerocontact)) {
+            $record->xerocontact = trim((string)$data->xerocontact);
+        }
         if (!empty($data->id)) {
             $record->id = (int)$data->id;
             $DB->update_record('local_clientportal_client', $record);
+            courses::sync_roles($record->id);
             return $record->id;
         }
         $cohortid = (int)($data->cohortid ?? 0);
@@ -160,7 +175,9 @@ class manager {
         }
         $record->cohortid = $cohortid;
         $record->timecreated = $now;
-        return (int)$DB->insert_record('local_clientportal_client', $record);
+        $id = (int)$DB->insert_record('local_clientportal_client', $record);
+        courses::sync_roles($id);
+        return $id;
     }
 
     /**
@@ -171,6 +188,8 @@ class manager {
     public static function delete_client(int $clientid): void {
         global $DB;
         $transaction = $DB->start_delegated_transaction();
+        $DB->set_field('local_clientportal_client', 'features', '', ['id' => $clientid]);
+        courses::sync_roles($clientid);
         foreach ($DB->get_records('local_clientportal_member', ['clientid' => $clientid]) as $member) {
             self::remove_member($clientid, (int)$member->userid);
         }
@@ -182,6 +201,8 @@ class manager {
         $DB->delete_records('local_clientportal_group', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_enrol', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_log', ['clientid' => $clientid]);
+        $DB->delete_records('local_clientportal_usage', ['clientid' => $clientid]);
+        $DB->delete_records('local_clientportal_invoice', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_client', ['id' => $clientid]);
         $transaction->allow_commit();
         guard::reset_cache();
@@ -213,7 +234,7 @@ class manager {
     public static function get_members(int $clientid): array {
         global $DB;
         $fields = \core_user\fields::for_name()->with_identity(context_system::instance())->get_sql('u', false, '', '', false);
-        $sql = "SELECT m.id AS memberid, m.role, m.timecreated AS membersince, u.id, u.email, u.lastaccess,
+        $sql = "SELECT m.id AS memberid, m.role, m.assessor, m.timecreated AS membersince, u.id, u.email, u.lastaccess,
                        u.suspended, {$fields->selects}
                   FROM {local_clientportal_member} m
                   JOIN {user} u ON u.id = m.userid AND u.deleted = 0
@@ -229,11 +250,11 @@ class manager {
      *
      * @param int $clientid
      * @param int $userid
-     * @param string $role manager|rep
+     * @param string $role manager|rep|trainer
      */
     public static function add_member(int $clientid, int $userid, string $role): void {
         global $DB, $USER;
-        if (!in_array($role, [self::ROLE_MANAGER, self::ROLE_REP], true)) {
+        if (!in_array($role, [self::ROLE_MANAGER, self::ROLE_REP, self::ROLE_TRAINER], true)) {
             throw new moodle_exception('error_badrole', 'local_clientportal');
         }
         $client = self::get_client($clientid, MUST_EXIST);
@@ -245,6 +266,7 @@ class manager {
             if ($existing->role !== $role) {
                 $DB->set_field('local_clientportal_member', 'role', $role, ['id' => $existing->id]);
                 self::log($clientid, 'staff_role_changed', $userid, $role);
+                courses::sync_roles($clientid);
             }
             return;
         }
@@ -266,6 +288,7 @@ class manager {
         self::log($clientid, 'staff_added', $userid, $role);
         $transaction->allow_commit();
         guard::reset_cache($userid);
+        courses::sync_roles($clientid);
     }
 
     /**
@@ -282,12 +305,77 @@ class manager {
             return;
         }
         $DB->delete_records('local_clientportal_member', ['clientid' => $clientid, 'userid' => $userid]);
+        courses::sync_roles($clientid);
+        // Out of the client's courses as a teacher too.
+        foreach (courses::category_ids($client) ? enrol_get_all_users_courses($userid, false, 'id') : [] as $course) {
+            if (courses::owner((int)$course->id) === $clientid) {
+                foreach ($DB->get_records('enrol', ['courseid' => $course->id, 'enrol' => 'manual']) as $instance) {
+                    enrol_get_plugin('manual')->unenrol_user($instance, $userid);
+                }
+            }
+        }
         cohort_remove_member($client->cohortid, $userid);
         if (!$DB->record_exists('local_clientportal_member', ['userid' => $userid])) {
             role_unassign(self::role_id(), $userid, context_system::instance()->id, 'local_clientportal');
         }
         self::log($clientid, 'staff_removed', $userid);
         guard::reset_cache($userid);
+    }
+
+    /**
+     * Create a new account for a staff member, email them a password, and add them to the client.
+     *
+     * @param int $clientid
+     * @param string $firstname
+     * @param string $lastname
+     * @param string $email
+     * @param string $role
+     * @return stdClass the new user
+     */
+    public static function create_staff(int $clientid, string $firstname, string $lastname, string $email, string $role): stdClass {
+        global $CFG, $DB;
+        require_once($CFG->dirroot . '/user/lib.php');
+        $email = trim($email);
+        if (!validate_email($email)) {
+            throw new moodle_exception('invalidemail');
+        }
+        $username = \core_text::strtolower($email);
+        if ($DB->record_exists('user', ['username' => $username, 'mnethostid' => $CFG->mnet_localhost_id])) {
+            $username .= '.' . random_string(4);
+        }
+        $user = (object)[
+            'auth' => 'manual',
+            'confirmed' => 1,
+            'mnethostid' => $CFG->mnet_localhost_id,
+            'username' => clean_param($username, PARAM_USERNAME),
+            'firstname' => trim($firstname),
+            'lastname' => trim($lastname),
+            'email' => $email,
+            'password' => '',
+        ];
+        $user->id = user_create_user($user, false, true);
+        set_user_preference('auth_forcepasswordchange', 1, $user->id);
+        setnew_password_and_mail($DB->get_record('user', ['id' => $user->id]));
+        self::add_member($clientid, (int)$user->id, $role);
+        return $user;
+    }
+
+    /**
+     * Mark a staff member as an assessor (marks work in all of the client's courses), or not.
+     *
+     * @param int $clientid
+     * @param int $userid
+     * @param bool $assessor
+     */
+    public static function set_assessor(int $clientid, int $userid, bool $assessor): void {
+        global $DB;
+        $member = $DB->get_record('local_clientportal_member', ['clientid' => $clientid, 'userid' => $userid], '*', MUST_EXIST);
+        if ((bool)$member->assessor === $assessor) {
+            return;
+        }
+        $DB->set_field('local_clientportal_member', 'assessor', $assessor ? 1 : 0, ['id' => $member->id]);
+        self::log($clientid, $assessor ? 'assessor_added' : 'assessor_removed', $userid);
+        courses::sync_roles($clientid);
     }
 
     // Groups.

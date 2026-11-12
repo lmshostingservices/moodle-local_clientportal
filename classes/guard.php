@@ -115,9 +115,11 @@ class guard {
 
     /**
      * Send client staff to the portal from any page outside it.
+     *
+     * @param \stdClass|int|null $courseorid the course require_login() was called with
      */
-    public static function enforce(): void {
-        global $SCRIPT;
+    public static function enforce($courseorid = null): void {
+        global $SCRIPT, $PAGE;
         if (
             during_initial_install() || CLI_SCRIPT || AJAX_SCRIPT || (defined('WS_SERVER') && WS_SERVER) ||
                 !isloggedin() || isguestuser()
@@ -131,7 +133,50 @@ class guard {
         if ($script === '' || self::allowed($script)) {
             return;
         }
+        // The client's own courses: staff of that client may work in them (Moodle still checks their roles).
+        $courseid = is_object($courseorid) ? (int)$courseorid->id : (int)$courseorid;
+        if (!$courseid && isset($PAGE->course->id)) {
+            $courseid = (int)$PAGE->course->id;
+        }
+        if ($courseid > SITEID && self::in_client_course($courseid)) {
+            return;
+        }
         redirect(new moodle_url('/local/clientportal/index.php'));
+    }
+
+    /**
+     * Is the course one of the client's own, and the current user that client's staff?
+     *
+     * @param int $courseid
+     * @return bool
+     */
+    public static function in_client_course(int $courseid): bool {
+        global $DB, $USER;
+        $owner = courses::owner($courseid);
+        return $owner && $DB->record_exists('local_clientportal_member', ['clientid' => $owner, 'userid' => $USER->id]);
+    }
+
+    /**
+     * Hook: a "back to your portal" bar for client staff working in their own courses.
+     *
+     * @param \core\hook\output\before_standard_top_of_body_html_generation $hook
+     */
+    public static function top_of_body(\core\hook\output\before_standard_top_of_body_html_generation $hook): void {
+        global $PAGE;
+        if (during_initial_install() || !isloggedin() || isguestuser() || !self::is_portal_user()) {
+            return;
+        }
+        $courseid = (int)($PAGE->course->id ?? 0);
+        if ($courseid <= SITEID || !self::in_client_course($courseid)) {
+            return;
+        }
+        $client = manager::get_client(courses::owner($courseid));
+        $link = \html_writer::link(
+            new moodle_url('/local/clientportal/coursemanage.php', ['id' => $courseid]),
+            get_string('backtoportal', 'local_clientportal', format_string($client->name)),
+            ['class' => 'cport-backbar-link']
+        );
+        $hook->add_html(\html_writer::div($link, 'cport-backbar'));
     }
 
     /**

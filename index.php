@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use local_clientportal\integration\matrix;
+use local_clientportal\integration\pathways;
 use local_clientportal\report;
 use local_clientportal\scope;
 use local_clientportal\ui;
@@ -58,6 +60,11 @@ $rate = $sum->enrolments ? (int)round($sum->completed * 100 / $sum->enrolments) 
 $filters = ui::filters($scope, $scope->url('/local/clientportal/index.php'), $groupid);
 echo ui::header($scope, 'dashboard', get_string('nav_dashboard', 'local_clientportal'), $filters);
 
+$hasmatrix = matrix::available();
+$haspathways = pathways::available();
+if ($hasmatrix || $haspathways) {
+    echo html_writer::tag('h3', get_string('section_training', 'local_clientportal'), ['class' => 'cport-section']);
+}
 echo html_writer::start_div('cport-stats');
 echo ui::stat(get_string('stat_learners', 'local_clientportal'), $learners);
 echo ui::stat(get_string('stat_enrolments', 'local_clientportal'), $sum->enrolments);
@@ -71,6 +78,136 @@ echo ui::stat(get_string('status_inprogress', 'local_clientportal'), $sum->inpro
 echo ui::stat(get_string('status_notstarted', 'local_clientportal'), $sum->notstarted, '', $sum->notstarted ? 'warn' : 'neutral');
 echo ui::stat(get_string('stat_recent', 'local_clientportal'), $sum->recent, get_string('stat_recent_sub', 'local_clientportal'));
 echo html_writer::end_div();
+
+// Workforce: compliance and onboarding, when Training Matrix or Training Pathways is installed.
+if ($hasmatrix || $haspathways) {
+    echo html_writer::tag('h3', get_string('section_workforce', 'local_clientportal'), ['class' => 'cport-section']);
+    $people = $report->learners($groupid ?: null, '', 'name', 0, 0);
+    $names = [];
+    foreach ($people as $u) {
+        $names[(int)$u->id] = fullname($u);
+    }
+    $ids = array_keys($names);
+    $compliance = $hasmatrix ? matrix::compliance($scope, $ids) : [];
+    $assignments = $haspathways ? pathways::assignments($scope, $ids) : [];
+    echo html_writer::start_div('cport-stats');
+    if ($hasmatrix) {
+        $req = 0;
+        $done = 0;
+        $expired = 0;
+        $soon = 0;
+        foreach ($compliance as $c) {
+            $req += $c['stats']['total'];
+            $done += $c['stats']['completed'];
+            $expired += $c['stats']['expired'];
+            $soon += $c['stats']['expiring_soon'];
+        }
+        echo ui::stat(
+            get_string('stat_compliance', 'local_clientportal'),
+            ($req ? (int)round($done * 100 / $req) : 0) . '%',
+            get_string('stat_complianceof', 'local_clientportal', count($compliance)),
+            'good'
+        );
+        echo ui::stat(get_string('comp_expired', 'local_clientportal'), $expired, '', $expired ? 'warn' : 'neutral');
+        echo ui::stat(get_string('comp_expiring_soon', 'local_clientportal'), $soon, '', $soon ? 'warn' : 'neutral');
+        if ($scope->is_manager()) {
+            echo ui::stat(
+                get_string('stat_notsetup', 'local_clientportal'),
+                count($people) - count($compliance),
+                get_string('stat_notsetup_sub', 'local_clientportal'),
+                count($people) > count($compliance) ? 'warn' : 'good'
+            );
+        }
+    }
+    if ($haspathways) {
+        $active = array_filter($assignments, fn($a) => $a->status === 'active');
+        $signoffs = array_sum(array_map(fn($a) => count($a->signoffs), $active));
+        echo ui::stat(
+            get_string('stat_onpathway', 'local_clientportal'),
+            count($active),
+            get_string('stat_overduen', 'local_clientportal', count(array_filter($active, fn($a) => $a->overdue))),
+            'accent'
+        );
+        echo ui::stat(get_string('stat_signoffs', 'local_clientportal'), $signoffs, '', $signoffs ? 'warn' : 'neutral');
+    }
+    echo html_writer::end_div();
+
+    echo html_writer::start_div('cport-grid');
+    if ($hasmatrix) {
+        // Needs attention: expired first, then expiring soonest.
+        $comps = matrix::competencies($scope);
+        $attention = [];
+        foreach ($compliance as $uid => $c) {
+            foreach ($c['competencies'] as $compid => $item) {
+                if (in_array($item->status, ['expired', 'expiring_soon'], true)) {
+                    $attention[] = [$uid, $compid, $item];
+                }
+            }
+        }
+        usort($attention, fn($a, $b) => (int)$a[2]->expirydate <=> (int)$b[2]->expirydate);
+        $t = new html_table();
+        $t->attributes['class'] = 'table cport-table';
+        $t->head = [get_string('learner', 'local_clientportal'), get_string('competency', 'local_clientportal'),
+            get_string('status', 'local_clientportal'), get_string('expires', 'local_clientportal')];
+        foreach (array_slice($attention, 0, 8) as [$uid, $compid, $item]) {
+            $t->data[] = [
+                html_writer::link(
+                    $scope->url('/local/clientportal/learner.php', ['id' => $uid]),
+                    s($names[$uid]),
+                    ['class' => 'cport-name']
+                ),
+                s(isset($comps[$compid]) ? format_string($comps[$compid]->name) : ''),
+                ui::chip($item->status),
+                ui::date($item->expirydate),
+            ];
+        }
+        echo ui::card(
+            get_string('needsattention', 'local_clientportal'),
+            $attention ? html_writer::div(html_writer::table($t), 'cport-table-wrap')
+                : ui::empty(get_string('nothingdue', 'local_clientportal')),
+            html_writer::link(
+                $scope->url('/local/clientportal/compliance.php'),
+                get_string('nav_compliance', 'local_clientportal'),
+                ['class' => 'btn btn-sm btn-outline-secondary']
+            )
+        );
+    }
+    if ($haspathways) {
+        $open = array_filter($assignments, fn($a) => $a->status === 'active');
+        usort($open, fn($a, $b) => [$b->overdue, count($b->signoffs)] <=> [$a->overdue, count($a->signoffs)]);
+        $t = new html_table();
+        $t->attributes['class'] = 'table cport-table';
+        $t->head = [get_string('learner', 'local_clientportal'), get_string('pathway', 'local_clientportal'),
+            get_string('currentstage', 'local_clientportal'), get_string('progress', 'local_clientportal')];
+        foreach (array_slice($open, 0, 8) as $a) {
+            $t->data[] = [
+                html_writer::link(
+                    $scope->url('/local/clientportal/learner.php', ['id' => $a->userid]),
+                    s($names[(int)$a->userid]),
+                    ['class' => 'cport-name']
+                ),
+                ui::pathway_badge($scope, $a),
+                s($a->stage ? format_string($a->stage->name) : '–') .
+                    ($a->signoffs ? html_writer::div(
+                        get_string('signoffsn', 'local_clientportal', count($a->signoffs)),
+                        'cport-muted'
+                    ) : ''),
+                ui::progress($a->percent),
+            ];
+        }
+        echo ui::card(
+            get_string('onboardingnow', 'local_clientportal'),
+            $open ? html_writer::div(html_writer::table($t), 'cport-table-wrap')
+                : ui::empty(get_string('noonboarding', 'local_clientportal')),
+            html_writer::link(
+                $scope->url('/local/clientportal/pathways.php'),
+                get_string('nav_pathways', 'local_clientportal'),
+                ['class' => 'btn btn-sm btn-outline-secondary']
+            )
+        );
+    }
+    echo html_writer::end_div();
+}
 
 if (!$rows) {
     echo ui::card('', ui::empty(get_string('noenrolments', 'local_clientportal')));
