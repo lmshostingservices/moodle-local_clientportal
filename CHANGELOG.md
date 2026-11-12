@@ -2,6 +2,18 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v1.1.0] - 2026-11-13
+
+### Added
+- Staff onboarding and monitoring inside the portal, aligned to the client's departments, positions, competencies and pathways (needs AI Training Matrix and/or Training Pathways):
+  - **Onboarding** tab (managers): who has no role yet, new starters and anyone overdue; set a learner's position, department, start date, direct manager and employee ID; add pathways with a finish-by date; enrol them in every course their role and pathways need. Courses that can't take a manual enrolment are listed instead.
+  - **Compliance** tab: compliance rate, expired, expiring in 30 days, in progress and not started; a people × competencies grid with group, department, position and status filters; CSV export.
+  - **Pathways** tab: pathway cards, each person's current stage, progress, finish-by date and overdue flag; managers sign off "Manager sign-off" steps and add people.
+  - Learner page: role, competencies with expiry dates, and pathways with sign-off buttons. Learners list: role and compliance columns. Dashboard: compliance and onboarding cards.
+  - Six new help guides with screenshots.
+- Settings: *Onboarding enrols learners* and *Client managers can sign off pathway steps* (both on).
+- Everything is limited to the client: its own learners, and its own or shared definitions and pathways. Each action is in the activity log.
+
 ## [v1.0.6] - 2026-11-12
 
 ### Fixed

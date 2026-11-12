@@ -194,7 +194,8 @@ final class portal_test extends \advanced_testcase {
         $rep = help::guides(new scope($client, manager::ROLE_REP));
         $this->assertArrayHasKey('team', $mgr);
         $this->assertArrayNotHasKey('team', $rep);
-        $this->assertCount(count($mgr) - 1, $rep);
+        $this->assertCount(count(array_filter($mgr, fn($g) => !$g['managers'])), $rep);
+        $this->assertArrayNotHasKey('onboarding', $rep);
         $sm = get_string_manager();
         foreach (help::GUIDES as $id => $guide) {
             $this->assertContains($guide['chapter'], help::CHAPTERS);

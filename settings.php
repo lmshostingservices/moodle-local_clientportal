@@ -47,6 +47,23 @@ if ($hassiteconfig || has_capability('local/clientportal:manageclients', context
             get_string('showemail_desc', 'local_clientportal'),
             1
         ));
+        $settings->add(new admin_setting_heading(
+            'local_clientportal/onboardinghdr',
+            get_string('onboardingsettings', 'local_clientportal'),
+            get_string('onboardingsettings_desc', 'local_clientportal')
+        ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_clientportal/onboardenrol',
+            get_string('onboardenrol', 'local_clientportal'),
+            get_string('onboardenrol_desc', 'local_clientportal'),
+            1
+        ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_clientportal/managersignoff',
+            get_string('managersignoff', 'local_clientportal'),
+            get_string('managersignoff_desc', 'local_clientportal'),
+            1
+        ));
         $settings->add(new admin_setting_configtextarea(
             'local_clientportal/extraallowed',
             get_string('extraallowed', 'local_clientportal'),
