@@ -2,6 +2,11 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v1.0.6] - 2026-11-12
+
+### Fixed
+- Client staff who open one of the portal's site-admin pages (for example by an old bookmark to Clients) are now sent to their portal. Before, they saw Moodle's "Access denied" page in the full site layout. No data was exposed.
+
 ## [v1.0.5] - 2026-11-12
 
 ### Fixed

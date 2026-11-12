@@ -162,6 +162,8 @@ final class portal_test extends \advanced_testcase {
         $this->assertFalse(guard::allowed('/theme/lmslabs/people.php'));
         $this->assertFalse(guard::allowed('/course/view.php'));
         $this->assertFalse(guard::allowed('/login/token.php'));
+        $this->assertFalse(guard::allowed('/local/clientportal/admin/clients.php'));
+        $this->assertFalse(guard::allowed('/local/clientportal/admin/members.php'));
         set_config('extraallowed', "/user/edit.php\n", 'local_clientportal');
         $this->assertTrue(guard::allowed('/user/edit.php'));
     }
