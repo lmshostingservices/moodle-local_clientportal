@@ -112,6 +112,10 @@ class help {
             if (!self::installed($guide['needs'], $scope)) {
                 continue;
             }
+            // Marking is for the people who see the Marking tab: managers, trainers and assessors.
+            if ($guide['needs'] === 'marking' && !$scope->is_manager() && !$scope->is_trainer() && !$scope->is_assessor()) {
+                continue;
+            }
             $out[$id] = $guide;
         }
         return $out;

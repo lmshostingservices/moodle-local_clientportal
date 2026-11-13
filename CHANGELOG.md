@@ -2,6 +2,19 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.0.1] - 2026-11-13
+
+### Added
+- **Clients report** for the site owner (*Site administration > Client portal > Clients report*, and under *Reports* in the Premium SaaS theme's menu and the Quick links block). Cards for clients, courses built, trainers, learners, active learners, enrolments, LMS Labs credits and the amount to invoice; charts of credits by client, by week and by plugin; a table of every client with a total row; this week, last week, this month, last month or any dates; CSV export.
+- LMS Labs credits are counted per client from the LMS Labs AI plugins:
+  - Read from the records the plugins already keep: AI Safety Hazards, AI Soft Skills, AI Visual Learning, AI Advent Speaking and Writing, AI Science, AI Anatomy, AI Slideshow, AI Video Conference, AI Virtual Classroom live classes (1 credit per 2 learner-hours, trainers not counted), AI Quiz Remedial, AI Course Builder, AI PDF feedback and RTO Compliance certificates. Finished records only; each record is counted once.
+  - Reported by the plugins themselves from their next release (AI Content Creator, AI Course Format, AI Quiz, AI Quiz Maker, AI Knowledge Check, AI Video Activity, AI Interactive Video, AI Branched Scenario, AI Language Teacher, AI Course Information, AI Mapping, AI Slide Flow, AI Smart Workbook, AI Essay Grader, AI SCORM Voiceover, AI Training Matrix and the AI Virtual Classroom quiz).
+- `\local_clientportal\api::record_lmslabs_call()`: plugins pass the LMS Labs reply as it came back. The credits it says were charged are used (`creditsCharged`, `creditsUsed`, `credits_used` and similar), otherwise the plugin's own price; failed calls are not counted, and a job id makes a polled job count once. When a plugin can only pass the system context, the page's course decides the client.
+
+### Fixed
+- Client representatives saw the "Mark work" help guide, though marking is only for managers, trainers and assessors.
+- The usage report showed plugin names as component names for plugins that are not installed on the site any more; it now uses the name recorded with the usage.
+
 ## [v2.0.0] - 2026-11-13
 
 ### Added
@@ -20,7 +33,7 @@ All notable changes to the Client portal (local_clientportal) are listed here.
 - Every enrolment in a client's own course is owned by that client automatically.
 - Staff accounts can be created with the Trainer role on the admin Staff page as well.
 
-
+## [v1.1.0] - 2026-11-13
 
 ### Added
 - Staff onboarding and monitoring inside the portal, aligned to the client's departments, positions, competencies and pathways (needs AI Training Matrix and/or Training Pathways):

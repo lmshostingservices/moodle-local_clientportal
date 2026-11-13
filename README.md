@@ -44,7 +44,13 @@ Site staff can open any client's portal from the Clients page (support view).
 2. Open *Client portal > Keep clients apart* and select *Fix all*. This turns off the shared site pages where one client could see another's people or courses.
 3. For billing, set the client's prices and tick *Bill this client*. Connect Xero on *Client portal > Xero* (create a Web app at developer.xero.com with the redirect URI shown there). Usage is added to each client's draft invoice every Monday; check *Usage and billing* at any time.
 
-Other plugins can report AI credits with:
+The site owner's **Clients report** (*Client portal > Clients report*, or *Reports > Clients report* in the Premium SaaS theme) shows every client's courses, trainers, learners and LMS Labs credits, with the amount to invoice.
+
+LMS Labs AI plugins report their credits to the portal by themselves. Another plugin can report a call to the LMS Labs service with:
+
+    \local_clientportal\api::record_lmslabs_call($userid, $contextid, 'mod_yourplugin', $reply, $price, 'What it was', $jobid);
+
+or any other usage with:
 
     \local_clientportal\api::record_usage($userid, $contextid, 'mod_yourplugin', $credits, 'What it was');
 

@@ -32,6 +32,7 @@ admin_externalpage_setup('local_clientportal_usage');
 require_capability('local/clientportal:manageclients', context_system::instance());
 
 $period = optional_param('period', 'lastweek', PARAM_ALPHA);
+$detail = optional_param('client', 0, PARAM_INT);
 $download = optional_param('download', '', PARAM_ALPHA);
 $weekstart = usage::week_start(time());
 $monthstart = make_timestamp((int)date('Y'), (int)date('n'), 1);
@@ -47,6 +48,7 @@ if (!isset($periods[$period])) {
 }
 [$from, $to] = $periods[$period];
 usage::collect_core_ai();
+local_clientportal\ledgers::collect();
 $rows = usage::summary($from, $to);
 $pageurl = new moodle_url('/local/clientportal/admin/usage.php', ['period' => $period]);
 
@@ -76,6 +78,34 @@ foreach (array_keys($periods) as $p) {
 echo html_writer::div(implode(' · ', $links) . ' — ' . userdate($from, get_string('strftimedate', 'langconfig')) . ' – ' .
     userdate($to - 1, get_string('strftimedate', 'langconfig')), 'mb-3');
 
+if ($detail && isset($rows[$detail])) {
+    // One client: credits by plugin.
+    $parts = $DB->get_records_sql(
+        "SELECT component, SUM(quantity) AS credits, COUNT(1) AS actions
+           FROM {local_clientportal_usage}
+          WHERE clientid = :c AND kind = 'aicredits' AND timecreated >= :f AND timecreated < :t
+       GROUP BY component
+       ORDER BY SUM(quantity) DESC",
+        ['c' => $detail, 'f' => $from, 't' => $to]
+    );
+    echo $OUTPUT->heading(format_string($rows[$detail]->client->name), 3);
+    $t = new html_table();
+    $t->attributes['class'] = 'generaltable';
+    $t->head = [get_string('u_plugin', 'local_clientportal'), get_string('u_credits', 'local_clientportal'),
+        get_string('u_actions', 'local_clientportal')];
+    foreach ($parts as $p) {
+        $name = get_string_manager()->string_exists('pluginname', $p->component)
+            ? get_string('pluginname', $p->component) : $p->component;
+        $t->data[] = [s($name), format_float((float)$p->credits, 2, true, true), (int)$p->actions];
+    }
+    echo $parts ? html_writer::table($t) : $OUTPUT->notification(get_string('u_none', 'local_clientportal'), 'info');
+    echo html_writer::link(
+        new moodle_url($pageurl),
+        get_string('u_allclients', 'local_clientportal'),
+        ['class' => 'btn btn-secondary mb-4']
+    );
+}
+
 $table = new html_table();
 $table->attributes['class'] = 'generaltable';
 $table->head = [get_string('clientname', 'local_clientportal'), get_string('u_credits', 'local_clientportal'),
@@ -89,7 +119,8 @@ foreach ($rows as $r) {
             new moodle_url('/local/clientportal/admin/client.php', ['id' => $r->client->id]),
             format_string($r->client->name)
         ),
-        format_float($r->credits, 2, true, true), $r->actions, $r->activelearners, $r->newenrolments, $r->completions,
+        html_writer::link(new moodle_url($pageurl, ['client' => $r->client->id]), format_float($r->credits, 2, true, true)),
+        $r->actions, $r->activelearners, $r->newenrolments, $r->completions,
         format_float($r->total, 2),
         $r->client->billing ? get_string('billing_xero', 'local_clientportal') : get_string('no'),
     ];

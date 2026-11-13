@@ -1081,3 +1081,209 @@ body.local-clientportal .cport-form .mform .ftoggler h3 {
 .cport-trainerfield {
     flex: 1 1 180px;
 }
+
+/* Site owner's Clients report (admin page). */
+.cport-adminreport {
+    --cport-accent: var(--ll-accent, var(--bs-primary, #0f6cbf));
+    --cport-ink: #111827;
+    --cport-muted: #6b7280;
+    --cport-line: #e5e7eb;
+    --cport-soft: #f6f7f9;
+}
+.cport-ar-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.cport-ar-title {
+    margin: 0;
+    font-weight: 700;
+}
+.cport-ar-period {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.cport-ar-chips {
+    display: flex;
+    gap: 6px;
+}
+.cport-adminreport a.cport-ar-chip {
+    padding: 6px 12px;
+    border: 1px solid var(--cport-line);
+    border-radius: 999px;
+    color: var(--cport-ink);
+    text-decoration: none;
+    font-size: .88rem;
+}
+.cport-adminreport a.cport-ar-chip.active {
+    background: var(--cport-ink);
+    border-color: var(--cport-ink);
+    color: #fff;
+}
+.cport-ar-custom {
+    display: flex;
+    gap: 6px;
+}
+.cport-ar-custom .form-control {
+    width: auto;
+}
+.cport-ar-range {
+    color: var(--cport-muted);
+    font-size: .9rem;
+}
+.cport-ar-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+    .cport-ar-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+.cport-ar-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+.cport-ar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    font-size: .8rem;
+    color: var(--cport-muted);
+    margin-bottom: 12px;
+}
+.cport-ar-key {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: -8px;
+}
+.cport-ar-labs {
+    background: #7f10f9;
+}
+.cport-ar-ai {
+    background: #0e88ff;
+}
+.cport-ar-hrow {
+    display: grid;
+    grid-template-columns: minmax(90px, 34%) 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: .875rem;
+}
+.cport-ar-hname {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cport-ar-htrack {
+    display: flex;
+    height: 16px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.cport-ar-seg {
+    display: block;
+    height: 100%;
+}
+.cport-ar-hval {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    min-width: 3ch;
+    text-align: right;
+}
+.cport-ar-vbars {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    height: 200px;
+}
+.cport-ar-vcol {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.cport-ar-vtrack {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: #f1f5f9;
+    border-radius: 8px 8px 4px 4px;
+    overflow: hidden;
+}
+.cport-ar-vseg {
+    display: block;
+    width: 100%;
+    order: 0;
+}
+.cport-ar-vtrack .cport-ar-labs {
+    order: 1;
+}
+.cport-ar-vtrack .cport-ar-ai {
+    order: 2;
+}
+.cport-ar-vval {
+    font-size: .75rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+}
+.cport-ar-vlabel {
+    font-size: .7rem;
+    color: var(--cport-muted);
+    margin-top: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+.cport-ar-chart {
+    min-width: 0;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--cport-line);
+    border-radius: 12px;
+    padding: 16px;
+}
+.cport-ar-chart h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+.cport-ar-tablewrap {
+    background: #fff;
+    border: 1px solid var(--cport-line);
+    border-radius: 12px;
+    overflow-x: auto;
+}
+.cport-ar-table {
+    margin: 0;
+}
+.cport-ar-table th,
+.cport-ar-table td {
+    white-space: nowrap;
+}
+.cport-ar-table td:first-child {
+    white-space: normal;
+    min-width: 210px;
+}
+.cport-ar-table tr:last-child td {
+    background: var(--cport-soft);
+}

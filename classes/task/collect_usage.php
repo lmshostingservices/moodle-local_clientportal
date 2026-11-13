@@ -38,6 +38,7 @@ class collect_usage extends \core\task\scheduled_task {
      */
     public function execute() {
         $n = \local_clientportal\usage::collect_core_ai();
-        mtrace("Client portal: recorded {$n} AI actions.");
+        $m = \local_clientportal\ledgers::collect();
+        mtrace("Client portal: recorded {$n} Moodle AI actions and {$m} LMS Labs plugin charges.");
     }
 }

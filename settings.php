@@ -34,6 +34,12 @@ if ($hassiteconfig || has_capability('local/clientportal:manageclients', context
     ));
 
     $ADMIN->add('local_clientportal_cat', new admin_externalpage(
+        'local_clientportal_report',
+        get_string('clientsreport', 'local_clientportal'),
+        new moodle_url('/local/clientportal/admin/report.php'),
+        'local/clientportal:manageclients'
+    ));
+    $ADMIN->add('local_clientportal_cat', new admin_externalpage(
         'local_clientportal_usage',
         get_string('usagereport', 'local_clientportal'),
         new moodle_url('/local/clientportal/admin/usage.php'),

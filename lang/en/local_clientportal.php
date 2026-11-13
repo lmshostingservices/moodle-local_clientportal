@@ -62,7 +62,8 @@ $string['addstaff'] = 'Add to client';
 $string['addteacher'] = 'Add a teacher';
 $string['addtogroup'] = 'Add to group';
 $string['addtrainer'] = 'Add a trainer';
-$string['addtrainer_desc'] = 'Trainers teach your courses. They get their own sign-in, see only the courses they teach and the work to mark, and are emailed a password.';
+$string['addtrainer_desc'] = 'Trainers teach your courses. They get their own sign-in, see only the courses they teach and the ' .
+    'work to mark, and are emailed a password.';
 $string['ai_explain_text'] = 'Explain text (Moodle AI)';
 $string['ai_generate_image'] = 'Generate an image (Moodle AI)';
 $string['ai_generate_text'] = 'Generate text (Moodle AI)';
@@ -80,12 +81,15 @@ $string['assessor_off'] = 'No';
 $string['assessor_on'] = 'Yes';
 $string['assessorhelp'] = 'Anyone marked "Marks all courses" can mark work in every one of your courses without being enrolled.';
 $string['assignpathway'] = 'Put on this pathway';
-$string['assignpathway_enrol'] = 'They are enrolled in the pathway\'s courses straight away. Courses they have already finished count at once.';
-$string['assignpathway_noenrol'] = 'Courses they have already finished count at once. Your training provider enrols them in the pathway\'s courses.';
+$string['assignpathway_enrol'] = 'They are enrolled in the pathway\'s courses straight away. Courses they have already finished ' .
+    'count at once.';
+$string['assignpathway_noenrol'] = 'Courses they have already finished count at once. Your training provider enrols them in the ' .
+    'pathway\'s courses.';
 $string['assignpeople'] = 'Add people to this pathway';
 $string['auditlog'] = 'Activity log';
 $string['autoclaim'] = 'Assign new enrolments to the learner\'s client';
-$string['autoclaim_desc'] = 'When a learner who belongs to exactly one client is enrolled in a course, that client owns the enrolment and sees it in the portal. Learners in more than one client are left for you to assign under Owned enrolments.';
+$string['autoclaim_desc'] = 'When a learner who belongs to exactly one client is enrolled in a course, that client owns the ' .
+    'enrolment and sees it in the portal. Learners in more than one client are left for you to assign under Owned enrolments.';
 $string['autoenrol'] = 'Everyone in our organisation';
 $string['autoenrol_desc'] = 'Enrol all our learners now, and everyone who joins later.';
 $string['autoenrol_off'] = 'Off: only the learners you choose are enrolled.';
@@ -107,7 +111,8 @@ $string['branding'] = 'Branding';
 $string['bulk_apply'] = 'Apply';
 $string['bulk_choose'] = 'Tick some learners, then choose a position or a pathway.';
 $string['bulk_done'] = 'Updated {$a} learners.';
-$string['bulk_help'] = 'Tick learners, choose a position and/or a pathway, then Apply. Each person is enrolled in the courses they need and put on the pathways usual for their position.';
+$string['bulk_help'] = 'Tick learners, choose a position and/or a pathway, then Apply. Each person is enrolled in the courses ' .
+    'they need and put on the pathways usual for their position.';
 $string['bulk_keepposition'] = 'Position: keep as is';
 $string['bulk_nopathway'] = 'Pathway: none';
 $string['categories'] = 'Categories';
@@ -126,20 +131,28 @@ $string['chooselearners'] = 'Choose learners';
 $string['claimall'] = 'Assign all {$a} to this client';
 $string['claimedcount'] = '{$a} enrolment(s) assigned to this client.';
 $string['claimselected'] = 'Assign selected to this client';
-$string['claimsintro'] = 'A client only sees a learner\'s progress in courses it owns. New enrolments are assigned automatically when the learner belongs to one client. Use this page for enrolments made before the client was set up, and for learners who belong to more than one client.';
+$string['claimsintro'] = 'A client only sees a learner\'s progress in courses it owns. New enrolments are assigned automatically ' .
+    'when the learner belongs to one client. Use this page for enrolments made before the client was set up, and for learners ' .
+    'who belong to more than one client.';
 $string['clientcoursessettings'] = 'Client courses';
-$string['clientcoursessettings_desc'] = 'Clients you allow to build courses get their own category. Their managers create courses and categories in it from the portal, add their own trainers, and enrol their own learners.';
+$string['clientcoursessettings_desc'] = 'Clients you allow to build courses get their own category. Their managers create ' .
+    'courses and categories in it from the portal, add their own trainers, and enrol their own learners.';
 $string['clientdeleted'] = 'Deleted client {$a}. The cohort and its members were kept.';
 $string['clientfeatures'] = 'What this client can do';
-$string['clientfeatures_desc'] = 'Every client can follow their learners, groups, reports and certificates. Tick what else this client\'s managers may do from their portal.';
-$string['clientinactive'] = 'The client portal is switched off for your organisation. Contact your training provider to switch it back on.';
+$string['clientfeatures_desc'] = 'Every client can follow their learners, groups, reports and certificates. Tick what else this ' .
+    'client\'s managers may do from their portal.';
+$string['clientinactive'] = 'The client portal is switched off for your organisation. Contact your training provider to switch ' .
+    'it back on.';
 $string['clientname'] = 'Client name';
 $string['clientportal:manageclients'] = 'Manage client portal clients';
 $string['clients'] = 'Clients';
 $string['clientsaved'] = 'Saved: {$a}';
-$string['clientsintro'] = 'Each client is a cohort. Its staff (client managers and representatives) sign in to the portal and see only that cohort\'s learners and the enrolments the client owns.';
+$string['clientsintro'] = 'Each client is a cohort. Its staff (client managers and representatives) sign in to the portal and ' .
+    'see only that cohort\'s learners and the enrolments the client owns.';
+$string['clientsreport'] = 'Clients report';
 $string['cohort'] = 'Cohort';
-$string['cohort_help'] = 'The cohort that holds this client\'s learners. Choose an existing cohort, or create a new one with the client\'s name. Cohort Branding for this cohort applies to the portal too.';
+$string['cohort_help'] = 'The cohort that holds this client\'s learners. Choose an existing cohort, or create a new one with the ' .
+    'client\'s name. Cohort Branding for this cohort applies to the portal too.';
 $string['cohortmembers'] = 'Learners';
 $string['comp_completed'] = 'Current';
 $string['comp_expired'] = 'Expired';
@@ -163,7 +176,8 @@ $string['coursecreated'] = 'Course "{$a}" created. Add a teacher and enrol learn
 $string['courseformat'] = 'Course layout';
 $string['coursefullname'] = 'Course name';
 $string['coursemanagerrole'] = 'Client course manager';
-$string['coursemanagerrole_desc'] = 'Given by the Client portal on a client\'s own course category: builds and edits that client\'s courses only.';
+$string['coursemanagerrole_desc'] = 'Given by the Client portal on a client\'s own course category: builds and edits that ' .
+    'client\'s courses only.';
 $string['courses'] = 'Courses';
 $string['coursesaved'] = 'Course settings saved.';
 $string['coursesettings'] = 'Course settings';
@@ -175,12 +189,14 @@ $string['coursevisible'] = 'Show to learners';
 $string['coursevisible_desc'] = 'Enrolled learners can open the course. Untick while you are still building it.';
 $string['creategroup'] = 'Create a group';
 $string['createnewstaff'] = 'Create a new user';
-$string['createnewstaff_desc'] = 'Creates a Moodle account and emails the person a password. They must change it when they first sign in.';
+$string['createnewstaff_desc'] = 'Creates a Moodle account and emails the person a password. They must change it when they first ' .
+    'sign in.';
 $string['createstaff'] = 'Create and add';
 $string['currentpathways'] = 'Already on:';
 $string['currentstage'] = 'Current stage';
 $string['daysago'] = '{$a} days';
-$string['deleteclientconfirm'] = 'Delete the client {$a}? Its staff lose portal access, and its groups, owned enrolments and activity log are deleted. The cohort, its learners and their course records are kept.';
+$string['deleteclientconfirm'] = 'Delete the client {$a}? Its staff lose portal access, and its groups, owned enrolments and ' .
+    'activity log are deleted. The cohort, its learners and their course records are kept.';
 $string['deleteemptycategory'] = 'Delete (empty only)';
 $string['deletegroup'] = 'Delete group';
 $string['deletegroupconfirm'] = 'Delete the group {$a}? The learners stay; they are only taken out of this group.';
@@ -199,13 +215,15 @@ $string['enrollearners'] = 'Enrol learners';
 $string['enrolled'] = 'Enrolled on';
 $string['enrolment'] = 'Enrolment';
 $string['enrolrequired'] = 'Enrol in required courses';
-$string['enrolrequired_desc'] = 'Enrol them now in every course their position and new pathways need. Courses they can\'t join are listed after you save.';
+$string['enrolrequired_desc'] = 'Enrol them now in every course their position and new pathways need. Courses they can\'t join ' .
+    'are listed after you save.';
 $string['error_baddepartment'] = 'That department isn\'t available to your organisation.';
 $string['error_badmanager'] = 'Choose a manager from your organisation\'s portal staff.';
 $string['error_badpathway'] = 'That pathway isn\'t available to your organisation.';
 $string['error_badposition'] = 'Choose one of your organisation\'s positions.';
 $string['error_badrole'] = 'Choose Client manager or Client representative.';
-$string['error_badsignoff'] = 'This step can\'t be signed off. The pathway may already be complete, or the step isn\'t a manager sign-off.';
+$string['error_badsignoff'] = 'This step can\'t be signed off. The pathway may already be complete, or the step isn\'t a manager ' .
+    'sign-off.';
 $string['error_categorynotempty'] = 'Move or delete the courses and categories in it first.';
 $string['error_certlocked'] = 'This learner has not earned the certificate yet.';
 $string['error_cohorttaken'] = 'That cohort already belongs to another client. Choose another cohort, or create a new one.';
@@ -218,10 +236,12 @@ $string['error_notowned'] = 'Your organisation did not enrol this learner in tha
 $string['error_notyourcategory'] = 'That category isn\'t one of your organisation\'s.';
 $string['error_notyourcourse'] = 'That course isn\'t one of your organisation\'s.';
 $string['error_notyourstaff'] = 'Choose someone from your organisation\'s trainers or managers.';
-$string['error_otherclientstaff'] = 'This person already has a role with another organisation. Ask your training provider to move them.';
+$string['error_otherclientstaff'] = 'This person already has a role with another organisation. Ask your training provider to ' .
+    'move them.';
 $string['error_shortnametaken'] = 'Another course already uses the short name "{$a}".';
 $string['error_staffadmin'] = 'Site administrators cannot be client staff. Use a separate account.';
-$string['error_staffenrolled'] = '{$a} is enrolled in courses. Client staff need an account with no enrolments, so create a separate account for them.';
+$string['error_staffenrolled'] = '{$a} is enrolled in courses. Client staff need an account with no enrolments, so create a ' .
+    'separate account for them.';
 $string['everyoneenrolled'] = 'Everyone enrolled';
 $string['everyoneisenrolled'] = 'Every learner in your organisation is already enrolled.';
 $string['expires'] = 'Expires';
@@ -229,15 +249,19 @@ $string['expireson'] = 'Expires {$a}';
 $string['exportcsv'] = 'Export CSV';
 $string['exportxlsx'] = 'Export Excel';
 $string['extraallowed'] = 'Extra pages client staff may open';
-$string['extraallowed_desc'] = 'Client staff are kept inside the portal. List any other pages they may open, one path per line, starting with a slash (for example /user/edit.php). Leave empty unless you need it.';
+$string['extraallowed_desc'] = 'Client staff are kept inside the portal. List any other pages they may open, one path per line, ' .
+    'starting with a slash (for example /user/edit.php). Leave empty unless you need it.';
 $string['feature_assessors'] = 'Assessors';
-$string['feature_assessors_desc'] = 'Managers can mark staff as assessors, who mark work in all of the client\'s courses (non-editing teacher on the client\'s category).';
+$string['feature_assessors_desc'] = 'Managers can mark staff as assessors, who mark work in all of the client\'s courses ' .
+    '(non-editing teacher on the client\'s category).';
 $string['feature_assessors_short'] = 'assessors';
 $string['feature_courses'] = 'Build courses';
-$string['feature_courses_desc'] = 'The client gets its own hidden category. Its managers create categories and courses, edit content and enrol their learners.';
+$string['feature_courses_desc'] = 'The client gets its own hidden category. Its managers create categories and courses, edit ' .
+    'content and enrol their learners.';
 $string['feature_courses_short'] = 'courses';
 $string['feature_teachers'] = 'Trainers';
-$string['feature_teachers_desc'] = 'Managers add their own trainers and make them editing or non-editing teachers in their courses. Needs "Build courses".';
+$string['feature_teachers_desc'] = 'Managers add their own trainers and make them editing or non-editing teachers in their ' .
+    'courses. Needs "Build courses".';
 $string['feature_teachers_short'] = 'trainers';
 $string['grade'] = 'Grade';
 $string['gradehidden'] = 'Hidden';
@@ -246,7 +270,8 @@ $string['groupdeleted'] = 'Deleted group {$a}.';
 $string['groupname'] = 'Group name';
 $string['groups'] = 'Groups';
 $string['groupsaved'] = 'Saved: {$a}';
-$string['groupsintro'] = 'Group your learners your own way, for example Sales and Warehouse. Groups are only used in this portal: they do not change anything in Moodle courses.';
+$string['groupsintro'] = 'Group your learners your own way, for example Sales and Warehouse. Groups are only used in this ' .
+    'portal: they do not change anything in Moodle courses.';
 $string['help_activities'] = 'Check the activities in a course';
 $string['help_activities_desc'] = 'Open a course on the learner\'s page to see each activity, when it was completed and its grade.';
 $string['help_activities_pin1'] = 'Activity';
@@ -255,40 +280,50 @@ $string['help_bulk'] = 'Add several learners to a group';
 $string['help_bulk_desc'] = 'Select the learners with the tick boxes, choose a group, then select Add to group.';
 $string['help_bulk_pin1'] = 'Choose a group';
 $string['help_certs'] = 'Download certificates';
-$string['help_certs_desc'] = 'Certificates lists every certificate issued to your learners. Download one, or download them all as a ZIP.';
+$string['help_certs_desc'] = 'Certificates lists every certificate issued to your learners. Download one, or download them all ' .
+    'as a ZIP.';
 $string['help_certs_pin1'] = 'Download one';
 $string['help_certs_pin2'] = 'Download all';
 $string['help_compliance'] = 'Check compliance';
-$string['help_compliance_desc'] = 'Compliance shows everyone against the competencies their position needs. The numbers show your compliance rate, what has expired and what expires in the next 30 days. Filter by group, department, position or status, and export the grid to CSV for an audit.';
+$string['help_compliance_desc'] = 'Compliance shows everyone against the competencies their position needs. The numbers show ' .
+    'your compliance rate, what has expired and what expires in the next 30 days. Filter by group, department, position or ' .
+    'status, and export the grid to CSV for an audit.';
 $string['help_compliance_pin1'] = 'Your numbers';
 $string['help_compliance_pin2'] = 'Filters';
 $string['help_compliance_pin3'] = 'Every competency';
 $string['help_compliance_pin4'] = 'Export CSV';
 $string['help_coursemanage'] = 'Teachers and learners';
-$string['help_coursemanage_desc'] = 'Each course page shows who teaches it and who is enrolled. Add your trainers as teachers (builds and marks) or non-editing teachers (marks only), enrol learners one by one or a whole group, then select Open course to add content.';
+$string['help_coursemanage_desc'] = 'Each course page shows who teaches it and who is enrolled. Add your trainers as teachers ' .
+    '(builds and marks) or non-editing teachers (marks only), enrol learners one by one or a whole group, then select Open ' .
+    'course to add content.';
 $string['help_coursemanage_pin1'] = 'Teachers';
 $string['help_coursemanage_pin2'] = 'Enrolment';
 $string['help_coursemanage_pin3'] = 'Open course';
 $string['help_courses'] = 'Build your own courses';
-$string['help_courses_desc'] = 'Courses lists every course your organisation has built, in your own categories. Select New course to start one, and add categories on the left to keep them in order. Only your people ever see them.';
+$string['help_courses_desc'] = 'Courses lists every course your organisation has built, in your own categories. Select New ' .
+    'course to start one, and add categories on the left to keep them in order. Only your people ever see them.';
 $string['help_courses_pin1'] = 'New course';
 $string['help_courses_pin2'] = 'Your categories';
 $string['help_courses_pin3'] = 'A course';
 $string['help_dashboard'] = 'Read the dashboard';
-$string['help_dashboard_desc'] = 'The numbers at the top show your learners, course enrolments, completions, work in progress and anyone who hasn\'t started yet.';
+$string['help_dashboard_desc'] = 'The numbers at the top show your learners, course enrolments, completions, work in progress ' .
+    'and anyone who hasn\'t started yet.';
 $string['help_dashboard_pin1'] = 'Learners';
 $string['help_dashboard_pin2'] = 'Completed';
 $string['help_dashboard_pin3'] = 'Not started';
 $string['help_dashcourses'] = 'Courses, completions and groups';
-$string['help_dashcourses_desc'] = 'Below the numbers you see every course with its completion rate, the latest completions, and how each of your groups is going.';
+$string['help_dashcourses_desc'] = 'Below the numbers you see every course with its completion rate, the latest completions, and ' .
+    'how each of your groups is going.';
 $string['help_dashcourses_pin1'] = 'Courses';
 $string['help_dashcourses_pin2'] = 'Recent completions';
 $string['help_dashcourses_pin3'] = 'Groups';
 $string['help_dashgroup'] = 'Show one group';
-$string['help_dashgroup_desc'] = 'Choose a group from the All groups menu and every number on the dashboard updates for just that group.';
+$string['help_dashgroup_desc'] = 'Choose a group from the All groups menu and every number on the dashboard updates for just ' .
+    'that group.';
 $string['help_dashgroup_pin1'] = 'Group menu';
 $string['help_groupmembers'] = 'Add or remove group members';
-$string['help_groupmembers_desc'] = 'Open a group to move learners in or out. Groups exist only in this portal, so nobody\'s courses change.';
+$string['help_groupmembers_desc'] = 'Open a group to move learners in or out. Groups exist only in this portal, so nobody\'s ' .
+    'courses change.';
 $string['help_groupmembers_pin1'] = 'In the group';
 $string['help_groupmembers_pin2'] = 'Not in the group';
 $string['help_groupnew'] = 'Create a group';
@@ -296,61 +331,76 @@ $string['help_groupnew_desc'] = 'Select New group, enter a name and, if you use 
 $string['help_groupnew_pin1'] = 'Name';
 $string['help_groupnew_pin2'] = 'Cost centre';
 $string['help_groups'] = 'Organise learners into groups';
-$string['help_groups_desc'] = 'Groups let you organise learners your own way, for example Depot, Drivers and Office. A cost centre is optional.';
+$string['help_groups_desc'] = 'Groups let you organise learners your own way, for example Depot, Drivers and Office. A cost ' .
+    'centre is optional.';
 $string['help_groups_pin1'] = 'A group';
 $string['help_groups_pin2'] = 'Cost centre';
 $string['help_learner'] = 'See a learner\'s courses';
-$string['help_learner_desc'] = 'Open a learner to see each course with its status, progress, enrolment and completion dates, grade and certificates.';
+$string['help_learner_desc'] = 'Open a learner to see each course with its status, progress, enrolment and completion dates, ' .
+    'grade and certificates.';
 $string['help_learner_pin1'] = 'Status';
 $string['help_learner_pin2'] = 'Progress';
 $string['help_learner_pin3'] = 'Grade';
 $string['help_learnercert'] = 'Download a learner\'s certificate';
-$string['help_learnercert_desc'] = 'Select the certificate to download it as a PDF. If the learner has earned it but hasn\'t opened it yet, the portal issues it for them.';
+$string['help_learnercert_desc'] = 'Select the certificate to download it as a PDF. If the learner has earned it but hasn\'t ' .
+    'opened it yet, the portal issues it for them.';
 $string['help_learnercert_pin1'] = 'Issued for the learner';
 $string['help_learnercert_pin2'] = 'Download';
 $string['help_learnerrole'] = 'A learner\'s role, competencies and pathways';
-$string['help_learnerrole_desc'] = 'Each learner\'s page shows their position, department, start date and manager, every competency their role needs with its expiry date, and how far they are through each pathway.';
+$string['help_learnerrole_desc'] = 'Each learner\'s page shows their position, department, start date and manager, every ' .
+    'competency their role needs with its expiry date, and how far they are through each pathway.';
 $string['help_learnerrole_pin1'] = 'Role';
 $string['help_learnerrole_pin2'] = 'Competencies';
 $string['help_learnerrole_pin3'] = 'Pathways';
 $string['help_learners'] = 'Find a learner';
-$string['help_learners_desc'] = 'Learners lists everyone in your organisation with their groups, courses, completions and when they last signed in. Search by name or email, or filter by group.';
+$string['help_learners_desc'] = 'Learners lists everyone in your organisation with their groups, courses, completions and when ' .
+    'they last signed in. Search by name or email, or filter by group.';
 $string['help_learners_pin1'] = 'Groups';
 $string['help_learners_pin2'] = 'Last signed in';
 $string['help_marking'] = 'Mark work';
-$string['help_marking_desc'] = 'Marking lists every activity with work waiting in your courses, oldest first. Select Mark to open the marking screen for that activity.';
+$string['help_marking_desc'] = 'Marking lists every activity with work waiting in your courses, oldest first. Select Mark to ' .
+    'open the marking screen for that activity.';
 $string['help_marking_pin1'] = 'Waiting to be marked';
 $string['help_marking_pin2'] = 'Mark';
 $string['help_newcourse'] = 'Create a course';
-$string['help_newcourse_desc'] = 'Give the course a name and choose its layout, for example AI Course Format. Tick Everyone in our organisation to enrol all your learners now and everyone who joins later, or leave it off and choose learners yourself.';
+$string['help_newcourse_desc'] = 'Give the course a name and choose its layout, for example AI Course Format. Tick Everyone in ' .
+    'our organisation to enrol all your learners now and everyone who joins later, or leave it off and choose learners yourself.';
 $string['help_newcourse_pin1'] = 'Course name';
 $string['help_newcourse_pin2'] = 'Layout';
 $string['help_newcourse_pin3'] = 'Everyone in our organisation';
 $string['help_onboardform'] = 'Set up a new starter';
-$string['help_onboardform_desc'] = 'Choose their position, start date and direct manager, then tick the pathways they should work through and add a finish-by date. Leave Enrol in required courses ticked and they are enrolled straight away in every course their role and pathways need.';
+$string['help_onboardform_desc'] = 'Choose their position, start date and direct manager, then tick the pathways they should ' .
+    'work through and add a finish-by date. Leave Enrol in required courses ticked and they are enrolled straight away in every ' .
+    'course their role and pathways need.';
 $string['help_onboardform_pin1'] = 'Position';
 $string['help_onboardform_pin2'] = 'Pathways';
 $string['help_onboardform_pin3'] = 'Courses';
 $string['help_onboarding'] = 'See who needs onboarding';
-$string['help_onboarding_desc'] = 'Onboarding lists everyone with their role, start date, direct manager, compliance and pathways. The numbers show who has no role yet, new starters, and anyone overdue on a pathway. Select Set up for anyone without a role.';
+$string['help_onboarding_desc'] = 'Onboarding lists everyone with their role, start date, direct manager, compliance and ' .
+    'pathways. The numbers show who has no role yet, new starters, and anyone overdue on a pathway. Select Set up for anyone ' .
+    'without a role.';
 $string['help_onboarding_pin1'] = 'Who needs you';
 $string['help_onboarding_pin2'] = 'Set up a role';
 $string['help_onboarding_pin3'] = 'Their pathway';
 $string['help_pathwaypeople'] = 'Sign off steps and add people';
-$string['help_pathwaypeople_desc'] = 'Open a pathway to see its stages and where each person is up to. Managers sign off the waiting steps here and add more people, with a finish-by date.';
+$string['help_pathwaypeople_desc'] = 'Open a pathway to see its stages and where each person is up to. Managers sign off the ' .
+    'waiting steps here and add more people, with a finish-by date.';
 $string['help_pathwaypeople_pin1'] = 'Stages';
 $string['help_pathwaypeople_pin2'] = 'Sign off';
 $string['help_pathwaypeople_pin3'] = 'Add people';
 $string['help_pathways'] = 'Follow onboarding pathways';
-$string['help_pathways_desc'] = 'Pathways shows each onboarding pathway with how many people are working through it, finished and overdue. The sign-offs number counts the steps waiting for a manager.';
+$string['help_pathways_desc'] = 'Pathways shows each onboarding pathway with how many people are working through it, finished ' .
+    'and overdue. The sign-offs number counts the steps waiting for a manager.';
 $string['help_pathways_pin1'] = 'A pathway';
 $string['help_pathways_pin2'] = 'Sign-offs waiting';
 $string['help_portal'] = 'Your portal';
-$string['help_portal_desc'] = 'This portal shows your organisation\'s learners and nothing else. Your logo and colours are at the top. Use the tabs to move between pages; you come back here each time you log in.';
+$string['help_portal_desc'] = 'This portal shows your organisation\'s learners and nothing else. Your logo and colours are at ' .
+    'the top. Use the tabs to move between pages; you come back here each time you log in.';
 $string['help_portal_pin1'] = 'Your organisation';
 $string['help_portal_pin2'] = 'The portal tabs';
 $string['help_private'] = 'Why a course shows as private';
-$string['help_private_desc'] = 'If a learner also studies privately or through another organisation, those courses stay private. You see "This course is private" instead of the details.';
+$string['help_private_desc'] = 'If a learner also studies privately or through another organisation, those courses stay private. ' .
+    'You see "This course is private" instead of the details.';
 $string['help_private_pin1'] = 'Private course';
 $string['help_report'] = 'See everyone\'s progress';
 $string['help_report_desc'] = 'Reports shows every learner against every course on one page.';
@@ -361,11 +411,13 @@ $string['help_reportfilter_pin1'] = 'Filters';
 $string['help_reportfilter_pin2'] = 'Export Excel';
 $string['help_reportfilter_pin3'] = 'Export CSV';
 $string['help_team'] = 'Your team and activity log';
-$string['help_team_desc'] = 'Managers see everyone with access to the portal, and an activity log of exports, downloads and changes.';
+$string['help_team_desc'] = 'Managers see everyone with access to the portal, and an activity log of exports, downloads and ' .
+    'changes.';
 $string['help_team_pin1'] = 'Portal access';
 $string['help_team_pin2'] = 'Activity log';
 $string['help_trainers'] = 'Add trainers and assessors';
-$string['help_trainers_desc'] = 'On the Team page, add a trainer with their name and email; they are emailed a password and see only the courses they teach. Set Marks all courses to Yes for anyone who marks work in every course.';
+$string['help_trainers_desc'] = 'On the Team page, add a trainer with their name and email; they are emailed a password and see ' .
+    'only the courses they teach. Set Marks all courses to Yes for anyone who marks work in every course.';
 $string['help_trainers_pin1'] = 'Marks all courses';
 $string['help_trainers_pin2'] = 'Add a trainer';
 $string['helpch_certificates'] = 'Certificates';
@@ -407,11 +459,13 @@ $string['import_preview'] = 'Check before importing';
 $string['import_ready'] = 'Ready';
 $string['import_skip'] = 'Skipped';
 $string['import_step1'] = 'Download your learners as a spreadsheet. Roles and pathways they already have are filled in.';
-$string['import_step2'] = 'Fill in or change the columns you need ({$a}). Leave a cell blank to keep what is there. Separate several pathways with a semicolon.';
+$string['import_step2'] = 'Fill in or change the columns you need ({$a}). Leave a cell blank to keep what is there. Separate ' .
+    'several pathways with a semicolon.';
 $string['import_step3'] = 'Upload the file. You see every change before anything is saved.';
 $string['import_template'] = 'Download your learners';
 $string['import_title'] = 'Import roles and pathways';
 $string['importcsv'] = 'Import CSV';
+$string['inactive'] = 'Switched off';
 $string['ingroup'] = 'In this group ({$a})';
 $string['issuecert'] = 'Issue and download {$a}';
 $string['issued'] = 'Issued';
@@ -465,9 +519,11 @@ $string['makerole'] = 'Make {$a}';
 $string['managecourse'] = 'Manage';
 $string['managemembers'] = 'Learners';
 $string['managersignoff'] = 'Client managers can sign off pathway steps';
-$string['managersignoff_desc'] = 'Client managers can sign off "Manager sign-off" steps in Training Pathways for their own learners, from the portal.';
+$string['managersignoff_desc'] = 'Client managers can sign off "Manager sign-off" steps in Training Pathways for their own ' .
+    'learners, from the portal.';
 $string['markthese'] = 'Mark';
 $string['membershelp'] = 'Select learners in either list (hold Ctrl or Cmd to pick several), then add or remove them.';
+$string['moodleai'] = 'Moodle AI credits';
 $string['nav_certificates'] = 'Certificates';
 $string['nav_compliance'] = 'Compliance';
 $string['nav_coursebuilder'] = 'Courses';
@@ -534,10 +590,12 @@ $string['onboard_pathwaysadded'] = 'Added to: {$a}.';
 $string['onboard_role'] = 'Role';
 $string['onboard_saved'] = 'Role saved for {$a}.';
 $string['onboardenrol'] = 'Onboarding enrols learners';
-$string['onboardenrol_desc'] = 'When a client manager sets a learner\'s role or adds a pathway, the learner is enrolled (manual enrolment) in the courses it needs, and the client owns those enrolments. Turn off if your team enrols learners itself.';
+$string['onboardenrol_desc'] = 'When a client manager sets a learner\'s role or adds a pathway, the learner is enrolled (manual ' .
+    'enrolment) in the courses it needs, and the client owns those enrolments. Turn off if your team enrols learners itself.';
 $string['onboardingnow'] = 'Onboarding now';
 $string['onboardingsettings'] = 'Onboarding, compliance and pathways';
-$string['onboardingsettings_desc'] = 'Used when Training Matrix or Training Pathways is installed. The portal shows each client only its own and shared departments, positions, competencies and pathways.';
+$string['onboardingsettings_desc'] = 'Used when Training Matrix or Training Pathways is installed. The portal shows each client ' .
+    'only its own and shared departments, positions, competencies and pathways.';
 $string['onboardtitle'] = 'Onboarding: {$a}';
 $string['opencourse'] = 'Open course';
 $string['openpathway'] = 'Open pathway';
@@ -562,7 +620,8 @@ $string['period_thisweek'] = 'This week';
 $string['phone'] = 'Phone';
 $string['pluginname'] = 'Client portal';
 $string['position'] = 'Position';
-$string['position_help'] = 'The position sets which competencies are tracked and which courses they need. Positions are set up by your training provider.';
+$string['position_help'] = 'The position sets which competencies are tracked and which courses they need. Positions are set up ' .
+    'by your training provider.';
 $string['privacy:metadata:enrol'] = 'Course enrolments a client owns, which decides what the client sees in its portal.';
 $string['privacy:metadata:enrol:clientid'] = 'The client that owns the enrolment.';
 $string['privacy:metadata:enrol:courseid'] = 'The course.';
@@ -585,16 +644,46 @@ $string['privacy:metadata:usage:component'] = 'The plugin that used it.';
 $string['privacy:metadata:usage:description'] = 'What was used.';
 $string['privacy:metadata:usage:quantity'] = 'How much was used.';
 $string['privacy:metadata:usage:userid'] = 'The person who used it.';
-$string['privacy:metadata:xero'] = 'When billing is on, weekly usage totals for each client are sent to the site\'s Xero organisation as invoice lines. No names of learners are sent.';
+$string['privacy:metadata:xero'] = 'When billing is on, weekly usage totals for each client are sent to the site\'s Xero ' .
+    'organisation as invoice lines. No names of learners are sent.';
 $string['privacy:metadata:xero:clientname'] = 'The client\'s name, for the Xero contact.';
 $string['privacy:metadata:xero:usage'] = 'Usage totals and prices for the week.';
 $string['privatecourse'] = 'This course is private';
-$string['privatecourse_desc'] = 'Your organisation did not enrol this learner in this course, so its records stay private. You can see every course your organisation enrolled them in.';
+$string['privatecourse_desc'] = 'Your organisation did not enrol this learner in this course, so its records stay private. You ' .
+    'can see every course your organisation enrolled them in.';
 $string['progress'] = 'Progress';
 $string['pw_finished'] = 'Finished';
 $string['pw_working'] = 'Working through';
+$string['r_activeclients'] = '{$a} switched on';
+$string['r_activesub'] = '{$a} active in the period';
+$string['r_aisub'] = 'plus {$a} Moodle AI credits';
+$string['r_assessorsn'] = 'Assessors: {$a}';
+$string['r_byplugin'] = 'By plugin';
+$string['r_categories'] = 'in {$a} categories';
+$string['r_chart_clients'] = 'Credits by client';
+$string['r_chart_plugins'] = 'Credits by plugin';
+$string['r_chart_weekly'] = 'Credits per week (last 8 weeks)';
+$string['r_clients'] = 'Clients';
+$string['r_courses'] = 'Courses built';
+$string['r_enrolments'] = 'Enrolments';
+$string['r_footnote'] = 'Courses, trainers, learners and enrolments are as of now. Active learners, new enrolments, completions, ' .
+    'credits and amounts are for the period. Amounts use each client\'s prices; set them on the client\'s Edit page. LMS Labs ' .
+    'credits come from the LMS Labs AI plugins; Moodle AI credits from Moodle\'s own AI tools.';
+$string['r_from'] = 'From';
+$string['r_inperiod'] = 'used a course in the period';
+$string['r_labscredits'] = 'LMS Labs credits';
+$string['r_learners'] = 'Learners';
+$string['r_newn'] = 'New: {$a}';
+$string['r_newsub'] = '{$a->new} new, {$a->done} completed in the period';
+$string['r_rate'] = '{$a} per credit';
+$string['r_staffsub'] = '{$a->managers} managers, {$a->assessors} assessors';
+$string['r_to'] = 'To';
+$string['r_toinvoice'] = 'To invoice';
+$string['r_toinvoicesub'] = 'at each client\'s prices';
+$string['r_trainers'] = 'Trainers';
 $string['ratecredit'] = 'Price per AI credit';
-$string['ratecredit_help'] = 'Charged for each AI credit used by the client\'s people or in the client\'s courses. 0 = not charged.';
+$string['ratecredit_help'] = 'Charged for each AI credit used by the client\'s people or in the client\'s courses. 0 = not ' .
+    'charged.';
 $string['rateenrol'] = 'Price per new enrolment';
 $string['rateenrol_help'] = 'Charged for each new course enrolment the client owns in the week. 0 = not charged.';
 $string['ratelearner'] = 'Price per active learner (per week)';
@@ -608,11 +697,13 @@ $string['removeselected'] = 'Remove selected';
 $string['rename'] = 'Rename';
 $string['renamecategory'] = 'Rename this category';
 $string['role'] = 'Portal role';
-$string['role_help'] = 'Client managers see everything in the portal, including the team list and activity log. Client representatives see learners, groups, reports and certificates.';
+$string['role_help'] = 'Client managers see everything in the portal, including the team list and activity log. Client ' .
+    'representatives see learners, groups, reports and certificates.';
 $string['role_manager'] = 'Client manager';
 $string['role_rep'] = 'Client representative';
 $string['role_trainer'] = 'Trainer';
-$string['roledescription'] = 'Given automatically to client managers and representatives. It keeps them inside the client portal. Do not assign it by hand.';
+$string['roledescription'] = 'Given automatically to client managers and representatives. It keeps them inside the client ' .
+    'portal. Do not assign it by hand.';
 $string['rolename'] = 'Client portal user';
 $string['rowcount'] = '{$a} row(s)';
 $string['saveclient'] = 'Save client';
@@ -646,7 +737,8 @@ $string['sep_messaging_desc'] = 'Messaging lets people search for and contact an
 $string['sep_onlineusers'] = 'Online users block off';
 $string['sep_onlineusers_desc'] = 'The block lists everyone signed in across the site.';
 $string['sep_rolecaps'] = 'No site-wide course list or profiles';
-$string['sep_rolecaps_desc'] = 'Signed-in users and guests can\'t browse the course list or open other people\'s profiles. Client course managers still see their own courses.';
+$string['sep_rolecaps_desc'] = 'Signed-in users and guests can\'t browse the course list or open other people\'s profiles. ' .
+    'Client course managers still see their own courses.';
 $string['sep_usetags'] = 'Tags off';
 $string['sep_usetags_desc'] = 'Tag pages list people and content from across the site.';
 $string['separation'] = 'Keep clients apart';
@@ -654,7 +746,8 @@ $string['separation_allgood'] = 'Every setting is in place. Clients can\'t see e
 $string['separation_fix'] = 'Fix';
 $string['separation_fixall'] = 'Fix all {$a}';
 $string['separation_fixed'] = 'Changed {$a} settings.';
-$string['separation_intro'] = 'Clients share this site. The portal only ever shows a client its own people and courses; these site settings close the shared pages where one client\'s people or courses could otherwise appear to another.';
+$string['separation_intro'] = 'Clients share this site. The portal only ever shows a client its own people and courses; these ' .
+    'site settings close the shared pages where one client\'s people or courses could otherwise appear to another.';
 $string['separation_ok'] = 'In place';
 $string['separation_open'] = '{$a} site settings that keep clients apart are not in place yet.';
 $string['separation_review'] = 'Review them';
@@ -686,7 +779,8 @@ $string['staff'] = 'Staff';
 $string['staffadded'] = 'Staff member added. They can now sign in to the portal.';
 $string['staffcreated'] = 'Account created and a password emailed to {$a}.';
 $string['stafffor'] = 'Staff: {$a}';
-$string['staffintro'] = 'Client managers and representatives sign in to Moodle and land in the portal. They cannot open courses or any other part of the site, and see only this client\'s learners.';
+$string['staffintro'] = 'Client managers and representatives sign in to Moodle and land in the portal. They cannot open courses ' .
+    'or any other part of the site, and see only this client\'s learners.';
 $string['staffremoved'] = 'Staff member removed. They can no longer open the portal.';
 $string['staffupdated'] = 'Role changed.';
 $string['stagen'] = 'Stage {$a}';
@@ -755,12 +849,18 @@ $string['turnoff'] = 'Turn off';
 $string['turnon'] = 'Turn on';
 $string['u_actions'] = 'AI actions';
 $string['u_active'] = 'Active learners';
+$string['u_allclients'] = 'All clients';
 $string['u_amount'] = 'Amount';
 $string['u_completions'] = 'Completions';
 $string['u_credits'] = 'AI credits';
 $string['u_enrolments'] = 'New enrolments';
+$string['u_none'] = 'No AI credits in this period.';
+$string['u_plugin'] = 'Plugin';
 $string['unownedenrolments'] = 'Not owned by any client ({$a})';
-$string['usage_howcredits'] = 'AI credits come from Moodle\'s AI tools (set the credits per action in the settings) and from any plugin that reports usage to the Client portal. Usage is filed under a client when it happens in one of that client\'s own courses, or by one of that client\'s people.';
+$string['usage_howcredits'] = 'AI credits come from Moodle\'s AI tools (set the credits per action in the settings), from the ' .
+    'credit records LMS Labs AI plugins keep, and from any plugin that reports usage to the Client portal. Select a client\'s ' .
+    'credits to see them by plugin. Usage is filed under a client when it happens in one of that client\'s own courses, or by ' .
+    'one of that client\'s people.';
 $string['usage_intro'] = 'What each client used in the period, and what it comes to at each client\'s prices.';
 $string['usagereport'] = 'Usage and billing';
 $string['usualpathways'] = 'Add the usual pathways for their position';
@@ -785,7 +885,8 @@ $string['xero_disconnected'] = 'Xero disconnected.';
 $string['xero_draft'] = 'Draft in Xero';
 $string['xero_failed'] = 'Not sent: {$a}';
 $string['xero_failedshort'] = 'Not sent';
-$string['xero_intro'] = 'Once a week the portal adds each billed client\'s usage to a draft invoice in Xero: one draft per client per month, with a line for each week. You review and approve the invoice in Xero.';
+$string['xero_intro'] = 'Once a week the portal adds each billed client\'s usage to a draft invoice in Xero: one draft per ' .
+    'client per month, with a line for each week. You review and approve the invoice in Xero.';
 $string['xero_invoices'] = 'Invoices';
 $string['xero_lines'] = 'Lines';
 $string['xero_noclients'] = 'No clients have billing turned on.';
@@ -798,7 +899,8 @@ $string['xero_number'] = 'Invoice';
 $string['xero_period'] = 'Covers';
 $string['xero_redirect'] = 'Your Xero app\'s redirect URI must be {$a}';
 $string['xero_reference'] = 'Client portal usage, {$a}';
-$string['xero_setup'] = 'Create an app at developer.xero.com (Web app), use {$a->url} as its redirect URI, then enter its client ID and secret in the <a href="{$a->settings}">Client portal settings</a>.';
+$string['xero_setup'] = 'Create an app at developer.xero.com (Web app), use {$a->url} as its redirect URI, then enter its client ' .
+    'ID and secret in the <a href="{$a->settings}">Client portal settings</a>.';
 $string['xero_tokenfailed'] = 'Xero didn\'t accept the connection. {$a}';
 $string['xeroaccount'] = 'Xero sales account code';
 $string['xeroaccount_desc'] = 'The account each invoice line goes to, for example 200 (Sales).';

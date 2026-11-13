@@ -38,6 +38,7 @@ class send_invoices extends \core\task\scheduled_task {
      */
     public function execute() {
         \local_clientportal\usage::collect_core_ai();
+        \local_clientportal\ledgers::collect();
         $xero = new \local_clientportal\xero();
         if (!$xero->connected()) {
             mtrace('Client portal: Xero is not connected; nothing sent.');

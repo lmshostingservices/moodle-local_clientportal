@@ -65,6 +65,10 @@ echo html_writer::div($OUTPUT->single_button(
     'get',
     ['type' => single_button::BUTTON_PRIMARY]
 ) . ' ' . html_writer::link(
+    new moodle_url('/local/clientportal/admin/report.php'),
+    get_string('clientsreport', 'local_clientportal'),
+    ['class' => 'btn btn-secondary']
+) . ' ' . html_writer::link(
     new moodle_url('/local/clientportal/admin/usage.php'),
     get_string('usagereport', 'local_clientportal'),
     ['class' => 'btn btn-secondary']
