@@ -1287,6 +1287,7 @@ body.local-clientportal .cport-form .mform .ftoggler h3 {
 .cport-ar-table tr:last-child td {
     background: var(--cport-soft);
 }
+
 @media (max-width: 900px) {
     .cport-ar-charts {
         grid-template-columns: 1fr;
