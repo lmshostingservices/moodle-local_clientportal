@@ -67,19 +67,19 @@ final class integration_test extends \advanced_testcase {
         $course1 = $gen->create_course(['enablecompletion' => 1]);
         $course2 = $gen->create_course(['enablecompletion' => 1]);
         $now = time();
-        $dept = $DB->insert_record('local_tm_departments', (object)['name' => 'Mine site', 'clientid' => $bhp,
+        $dept = $DB->insert_record(matrix::t('local_tm_departments'), (object)['name' => 'Mine site', 'clientid' => $bhp,
             'parentid' => 0, 'managerid' => 0, 'sortorder' => 0, 'timecreated' => $now, 'timemodified' => $now]);
-        $pos = $DB->insert_record('local_tm_positions', (object)['name' => 'Haul truck operator', 'departmentid' => $dept,
-            'level' => 1, 'clientid' => $bhp, 'timecreated' => $now, 'timemodified' => $now]);
-        $riopos = $DB->insert_record('local_tm_positions', (object)['name' => 'Rio role', 'departmentid' => 0,
+        $pos = $DB->insert_record(matrix::t('local_tm_positions'), (object)['name' => 'Haul truck operator',
+            'departmentid' => $dept, 'level' => 1, 'clientid' => $bhp, 'timecreated' => $now, 'timemodified' => $now]);
+        $riopos = $DB->insert_record(matrix::t('local_tm_positions'), (object)['name' => 'Rio role', 'departmentid' => 0,
             'level' => 1, 'clientid' => $rio, 'timecreated' => $now, 'timemodified' => $now]);
         $comps = [];
         foreach ([$course1, $course2] as $i => $course) {
-            $comps[$i] = $DB->insert_record('local_tm_competencies', (object)['name' => 'Comp ' . $i, 'code' => 'C' . $i,
+            $comps[$i] = $DB->insert_record(matrix::t('local_tm_competencies'), (object)['name' => 'Comp ' . $i, 'code' => 'C' . $i,
                 'category' => 'Safety', 'mandatory' => 1, 'clientid' => 0, 'timecreated' => $now, 'timemodified' => $now]);
-            $DB->insert_record('local_tm_comp_courses', (object)['competencyid' => $comps[$i], 'courseid' => $course->id,
+            $DB->insert_record(matrix::t('local_tm_comp_courses'), (object)['competencyid' => $comps[$i], 'courseid' => $course->id,
                 'expirymonths' => 12, 'notifydays' => 30, 'timecreated' => $now]);
-            $DB->insert_record('local_tm_pos_comps', (object)['positionid' => $pos, 'competencyid' => $comps[$i],
+            $DB->insert_record(matrix::t('local_tm_pos_comps'), (object)['positionid' => $pos, 'competencyid' => $comps[$i],
                 'mandatory' => 1, 'timecreated' => $now]);
         }
         $pathway = $DB->insert_record('local_tp_pathways', (object)['name' => 'BHP induction', 'description' => '',
@@ -136,7 +136,7 @@ final class integration_test extends \advanced_testcase {
             'managerid' => $d['mgr']->id, 'employeeid' => 'E1'], true);
         $this->assertEquals(2, $result['enrolled']);
         $this->assertSame([], $result['blocked']);
-        $staff = $DB->get_record('local_tm_staff', ['userid' => $d['zoe']->id, 'status' => 'active']);
+        $staff = $DB->get_record(matrix::t('local_tm_staff'), ['userid' => $d['zoe']->id, 'status' => 'active']);
         $this->assertEquals($d['bhp'], $staff->clientid);
         $this->assertEquals($d['dept'], $staff->departmentid);
         foreach ([$d['course1'], $d['course2']] as $course) {
@@ -147,10 +147,10 @@ final class integration_test extends \advanced_testcase {
                 ['userid' => $d['zoe']->id, 'courseid' => $course->id]
             ));
         }
-        $this->assertEquals(2, $DB->count_records('local_tm_completions', ['userid' => $d['zoe']->id]));
+        $this->assertEquals(2, $DB->count_records(matrix::t('local_tm_completions'), ['userid' => $d['zoe']->id]));
         // Saving again changes the record, never duplicates it.
         matrix::save_staff($scope, $d['zoe']->id, (object)['positionid' => $d['pos'], 'employeeid' => 'E2'], true);
-        $this->assertEquals(1, $DB->count_records('local_tm_staff', ['userid' => $d['zoe']->id]));
+        $this->assertEquals(1, $DB->count_records(matrix::t('local_tm_staff'), ['userid' => $d['zoe']->id]));
     }
 
     public function test_save_staff_refuses_other_clients(): void {
@@ -172,7 +172,7 @@ final class integration_test extends \advanced_testcase {
         $scope = $this->scope($d['bhp'], manager::ROLE_MANAGER);
         matrix::save_staff($scope, $d['zoe']->id, (object)['positionid' => $d['pos']], false);
         $now = time();
-        $DB->insert_record('local_tm_completions', (object)['userid' => $d['zoe']->id, 'competencyid' => $d['comps'][0],
+        $DB->insert_record(matrix::t('local_tm_completions'), (object)['userid' => $d['zoe']->id, 'competencyid' => $d['comps'][0],
             'courseid' => $d['course1']->id, 'status' => 'completed', 'progress' => 100, 'completiondate' => $now - DAYSECS,
             'expirydate' => $now + 10 * DAYSECS, 'timecreated' => $now, 'timemodified' => $now]);
         $mine = matrix::compliance($scope)[$d['zoe']->id];

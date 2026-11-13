@@ -2,6 +2,11 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.0.3] - 2026-11-13
+
+### Fixed
+- Works with AI Training Matrix 1.1.3, which renamed its database tables. Client Portal finds the tables under either name, so it works with Training Matrix before and after the update.
+
 ## [v2.0.2] - 2026-11-13
 
 ### Fixed
