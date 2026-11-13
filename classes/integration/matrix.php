@@ -50,7 +50,9 @@ class matrix {
             $dir = \core_component::get_component_directory('local_trainingmatrix');
             self::$available = false;
             if ($dir && file_exists($dir . '/lib.php')) {
-                $columns = $DB->get_manager()->table_exists('local_tm_staff') ? $DB->get_columns('local_tm_staff') : [];
+                $columns = $DB->get_manager()->table_exists(
+                    self::t('local_tm_staff')
+                ) ? $DB->get_columns(self::t('local_tm_staff')) : [];
                 self::$available = isset($columns['clientid']);
                 if (self::$available) {
                     require_once($CFG->dirroot . '/local/trainingmatrix/lib.php');
@@ -60,11 +62,55 @@ class matrix {
         return self::$available;
     }
 
+    /** @var array|null Training Matrix table names in use on this site, keyed by their old name. */
+    protected static ?array $tables = null;
+
     /**
-     * Forget the cached check (tests).
+     * Forget the cached checks (tests).
      */
     public static function reset_cache(): void {
         self::$available = null;
+        self::$tables = null;
+    }
+
+    /**
+     * Name of a Training Matrix table on this site.
+     *
+     * Training Matrix 1.1.3 renamed its tables from local_tm_* to local_trainingmatrix_*. Both work here.
+     *
+     * @param string $oldname The table's name before Training Matrix 1.1.3, for example local_tm_staff.
+     * @return string The name of the table that exists.
+     */
+    public static function t(string $oldname): string {
+        global $DB;
+        if (self::$tables === null) {
+            $renamed = [
+                'local_tm_departments' => 'local_trainingmatrix_dept',
+                'local_tm_positions' => 'local_trainingmatrix_pos',
+                'local_tm_competencies' => 'local_trainingmatrix_comp',
+                'local_tm_comp_courses' => 'local_trainingmatrix_compcrs',
+                'local_tm_pos_comps' => 'local_trainingmatrix_poscomp',
+                'local_tm_staff' => 'local_trainingmatrix_staff',
+                'local_tm_completions' => 'local_trainingmatrix_compl',
+                'local_tm_notifications' => 'local_trainingmatrix_notif',
+            ];
+            $usenew = $DB->get_manager()->table_exists('local_trainingmatrix_staff');
+            self::$tables = [];
+            foreach ($renamed as $old => $new) {
+                self::$tables[$old] = $usenew ? $new : $old;
+            }
+        }
+        return self::$tables[$oldname] ?? $oldname;
+    }
+
+    /**
+     * Point the Training Matrix table names in an SQL query at the tables on this site.
+     *
+     * @param string $sql Query written with the old local_tm_* names.
+     * @return string The query for this site.
+     */
+    public static function sql(string $sql): string {
+        return preg_replace_callback('/\{(local_tm_\w+)\}/', fn($m) => '{' . self::t($m[1]) . '}', $sql);
     }
 
     /**
@@ -89,7 +135,7 @@ class matrix {
         global $DB;
         [$sql, $params] = self::owned('d', $scope, 'dclient');
         $rows = $DB->get_records_sql(
-            "SELECT d.id, d.name FROM {local_tm_departments} d WHERE $sql ORDER BY d.sortorder, d.name",
+            self::sql("SELECT d.id, d.name FROM {local_tm_departments} d WHERE $sql ORDER BY d.sortorder, d.name"),
             $params
         );
         return array_map(fn($r) => format_string($r->name), $rows);
@@ -105,7 +151,7 @@ class matrix {
         global $DB;
         [$sql, $params] = self::owned('p', $scope, 'pclient');
         return $DB->get_records_sql(
-            "SELECT p.id, p.name, p.departmentid FROM {local_tm_positions} p WHERE $sql ORDER BY p.name",
+            self::sql("SELECT p.id, p.name, p.departmentid FROM {local_tm_positions} p WHERE $sql ORDER BY p.name"),
             $params
         );
     }
@@ -123,12 +169,12 @@ class matrix {
         $where = $positionid ? 'AND p.id = :pid' : '';
         $params['pid'] = $positionid;
         return $DB->get_records_sql(
-            "SELECT DISTINCT c.id, c.name, c.code, c.category
+            self::sql("SELECT DISTINCT c.id, c.name, c.code, c.category
                FROM {local_tm_competencies} c
                JOIN {local_tm_pos_comps} pc ON pc.competencyid = c.id
                JOIN {local_tm_positions} p ON p.id = pc.positionid
               WHERE $sql $where
-           ORDER BY c.category, c.name",
+           ORDER BY c.category, c.name"),
             $params
         );
     }
@@ -165,12 +211,12 @@ class matrix {
             $params += $inparams;
         }
         $rows = $DB->get_records_sql(
-            "SELECT s.*
+            self::sql("SELECT s.*
                FROM {local_tm_staff} s
                JOIN {user} u ON u.id = s.userid
                $join
               WHERE $where AND s.status = 'active' $limit
-           ORDER BY s.id",
+           ORDER BY s.id"),
             $params
         );
         $out = [];
@@ -199,15 +245,15 @@ class matrix {
         [$in, $params] = $DB->get_in_or_equal($positionids, SQL_PARAMS_NAMED, 'pos');
         $required = [];
         foreach (
-            $DB->get_recordset_sql("SELECT pc.id, pc.positionid, pc.competencyid FROM {local_tm_pos_comps} pc
-                                          WHERE pc.positionid $in", $params) as $r
+            $DB->get_recordset_sql(self::sql("SELECT pc.id, pc.positionid, pc.competencyid FROM {local_tm_pos_comps} pc
+                                          WHERE pc.positionid $in"), $params) as $r
         ) {
             $required[(int)$r->positionid][(int)$r->competencyid] = true;
         }
         [$uin, $uparams] = $DB->get_in_or_equal(array_keys($staff), SQL_PARAMS_NAMED, 'usr');
         $rank = ['completed' => 4, 'expiring_soon' => 3, 'expired' => 2, 'in_progress' => 1, 'not_started' => 0];
         $best = [];
-        $rs = $DB->get_recordset_sql("SELECT * FROM {local_tm_completions} WHERE userid $uin", $uparams);
+        $rs = $DB->get_recordset_sql(self::sql("SELECT * FROM {local_tm_completions} WHERE userid $uin"), $uparams);
         foreach ($rs as $c) {
             $prev = $best[(int)$c->userid][(int)$c->competencyid] ?? null;
             $crank = $rank[$c->status] ?? 0;
@@ -284,7 +330,7 @@ class matrix {
             throw new moodle_exception('error_badmanager', 'local_clientportal');
         }
         $now = time();
-        $columns = $DB->get_columns('local_tm_staff');
+        $columns = $DB->get_columns(self::t('local_tm_staff'));
         $record = [
             'userid' => $userid,
             'positionid' => (int)$position->id,
@@ -298,18 +344,18 @@ class matrix {
         ];
         $record = array_intersect_key($record, $columns);
         $transaction = $DB->start_delegated_transaction();
-        $existing = $DB->get_record('local_tm_staff', ['userid' => $userid, 'status' => 'active'], '*', IGNORE_MULTIPLE);
+        $existing = $DB->get_record(self::t('local_tm_staff'), ['userid' => $userid, 'status' => 'active'], '*', IGNORE_MULTIPLE);
         if ($existing) {
             if ((int)($existing->clientid ?? 0) !== 0 && (int)$existing->clientid !== $scope->id()) {
                 throw new moodle_exception('error_otherclientstaff', 'local_clientportal');
             }
             $record['id'] = $existing->id;
-            $DB->update_record('local_tm_staff', (object)$record);
+            $DB->update_record(self::t('local_tm_staff'), (object)$record);
         } else {
             if (isset($columns['timecreated'])) {
                 $record['timecreated'] = $now;
             }
-            $DB->insert_record('local_tm_staff', (object)$record);
+            $DB->insert_record(self::t('local_tm_staff'), (object)$record);
         }
         $result = ['enrolled' => 0, 'blocked' => []];
         if ($enrol) {
@@ -334,9 +380,9 @@ class matrix {
     public static function enrol_required(scope $scope, int $userid, int $positionid): array {
         global $DB;
         $links = $DB->get_records_sql(
-            "SELECT cc.* FROM {local_tm_comp_courses} cc
+            self::sql("SELECT cc.* FROM {local_tm_comp_courses} cc
                JOIN {local_tm_pos_comps} pc ON pc.competencyid = cc.competencyid
-              WHERE pc.positionid = ?",
+              WHERE pc.positionid = ?"),
             [$positionid]
         );
         $courseids = array_map(fn($l) => (int)$l->courseid, $links);
@@ -348,8 +394,8 @@ class matrix {
                 continue;
             }
             $key = ['userid' => $userid, 'competencyid' => $link->competencyid, 'courseid' => $link->courseid];
-            if (!$DB->record_exists('local_tm_completions', $key)) {
-                $DB->insert_record('local_tm_completions', (object)($key + [
+            if (!$DB->record_exists(self::t('local_tm_completions'), $key)) {
+                $DB->insert_record(self::t('local_tm_completions'), (object)($key + [
                     'status' => 'not_started', 'progress' => 0, 'timecreated' => $now, 'timemodified' => $now,
                 ]));
             }
