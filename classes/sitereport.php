@@ -151,10 +151,7 @@ class sitereport {
         foreach ($rows as $component => $credits) {
             $name = $component === 'core_ai' ? get_string('moodleai', 'local_clientportal')
                 : (get_string_manager()->string_exists('pluginname', $component) ? get_string('pluginname', $component)
-                : (string)($DB->get_field_sql(
-                    "SELECT MAX(description) FROM {local_clientportal_usage} WHERE component = ?",
-                    [$component]
-                ) ?: $component));
+                : $component);
             $out[$name] = round((float)$credits, 2);
         }
         return $out;

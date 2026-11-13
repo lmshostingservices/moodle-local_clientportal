@@ -13,7 +13,6 @@ All notable changes to the Client portal (local_clientportal) are listed here.
 
 ### Fixed
 - Client representatives saw the "Mark work" help guide, though marking is only for managers, trainers and assessors.
-- The usage report showed plugin names as component names for plugins that are not installed on the site any more; it now uses the name recorded with the usage.
 
 ## [v2.0.0] - 2026-11-13
 
