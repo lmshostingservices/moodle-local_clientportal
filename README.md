@@ -10,6 +10,13 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 - **Groups:** the client's own groups (for example Sales and Warehouse), with an optional cost centre. These are portal-only: they do not change Moodle groups or cohorts.
 - **Reports:** a learners × courses matrix, or a detailed list filtered by group, course and status. Exports to CSV or Excel.
 - **Certificates:** download one certificate, or all of them as a ZIP. Supports Custom certificate (mod_customcert) and Certificate manager (tool_certificate). If a learner can see a Custom certificate but has not opened it yet, downloading it from the portal issues it, just as the learner opening it would.
+- **Onboarding (managers, with Training Matrix or Training Pathways):** give each learner a role in your organisation (position, department, start date, direct manager, employee ID) and put them on pathways with a finish-by date. Saving enrols them in every course their role and pathways need (manual enrolment, owned by the client). Courses that can't take the enrolment are listed, never forced.
+- **Compliance (with Training Matrix):** compliance rate, expired, expiring in the next 30 days, in progress and not started; a people × competencies grid filtered by group, department, position and status; CSV export for audits.
+- **Pathways (with Training Pathways):** each onboarding pathway with who is working through it, finished and overdue; each person's current stage and progress; manager sign-offs waiting. Client managers sign off steps and add people from the portal.
+- **Everywhere:** the learners list shows each person's role and compliance; a learner's page shows their role, competencies (with expiry dates) and pathways; the dashboard adds compliance and onboarding cards.
+- **Courses (when switched on for the client):** the client's own hidden category; managers create categories and courses, open them in Moodle to add content, add teachers and enrol learners (one by one, a group, or everyone automatically).
+- **Trainers and assessors (when switched on):** managers add their own trainers, who see only the courses they teach; assessors mark in every course of the client.
+- **Marking:** work waiting to be marked in the client's courses.
 - **Team and activity log (managers only):** who has portal access, plus a log of portal actions such as exports, certificate downloads and group changes.
 
 ## Privacy rules
@@ -17,6 +24,7 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 - A client's learners are the members of its cohort, minus its staff.
 - A client sees a learner's progress only in courses it **owns**. A learner who also studies through another client, or privately, keeps those courses private.
 - When a learner who belongs to exactly one client is enrolled, that client owns the enrolment automatically. Learners in two or more clients are left for an administrator to assign under *Owned enrolments*.
+- Onboarding, compliance and pathways show only the client's own learners, and only the client's own or shared (client "0") departments, positions, competencies and pathways. Client staff never open the Training Matrix or Training Pathways pages; everything happens inside the portal.
 - Client staff need an account with no course enrolments. Site administrators are never locked into the portal.
 
 ## Set up
@@ -30,9 +38,33 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 
 Site staff can open any client's portal from the Clients page (support view).
 
+### Client courses, trainers and billing
+
+1. Edit a client and tick *Build courses*, *Trainers* and/or *Assessors*. The client's category is created under the category set in *Client portal > Settings* (top level by default), hidden from everyone else.
+2. Open *Client portal > Keep clients apart* and select *Fix all*. This turns off the shared site pages where one client could see another's people or courses.
+3. For billing, set the client's prices and tick *Bill this client*. Connect Xero on *Client portal > Xero* (create a Web app at developer.xero.com with the redirect URI shown there). Usage is added to each client's draft invoice every Monday; check *Usage and billing* at any time.
+
+The site owner's **Clients report** (*Client portal > Clients report*, or *Reports > Clients report* in the Premium SaaS theme) shows every client's courses, trainers, learners and LMS Labs credits, with the amount to invoice.
+
+LMS Labs AI plugins report their credits to the portal by themselves. Another plugin can report a call to the LMS Labs service with:
+
+    \local_clientportal\api::record_lmslabs_call($userid, $contextid, 'mod_yourplugin', $reply, $price, 'What it was', $jobid);
+
+or any other usage with:
+
+    \local_clientportal\api::record_usage($userid, $contextid, 'mod_yourplugin', $credits, 'What it was');
+
+### Onboarding, compliance and pathways
+
+Install AI Training Matrix 1.1.1 or later and/or Training Pathways 1.1.0 or later. Set each department, position, competency and pathway's client there (or leave it shared). The Onboarding, Compliance and Pathways tabs appear in the portal on their own.
+
+Two settings (*Client portal > Settings*):
+- *Onboarding enrols learners* (on): onboarding enrols learners in the courses they need. Turn off if your team enrols learners itself.
+- *Client managers can sign off pathway steps* (on).
+
 ## Requirements
 
-Moodle 4.4 to 5.3. Optional: local_cohortbranding, mod_customcert, tool_certificate.
+Moodle 4.4 to 5.3. Optional: local_cohortbranding, mod_customcert, tool_certificate, local_trainingmatrix (1.1.1+), local_trainingpathways (1.1.0+).
 
 ## Coming next
 

@@ -15,6 +15,13 @@
         <FIELD NAME="phone" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="notes" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="active" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
+        <FIELD NAME="features" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Comma list of what the client may do: courses, teachers, assessors"/>
+        <FIELD NAME="categoryid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The client's own course category (0 = none yet)"/>
+        <FIELD NAME="billing" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Send usage to the accounting system"/>
+        <FIELD NAME="ratecredit" TYPE="number" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="4" COMMENT="Price per AI credit"/>
+        <FIELD NAME="ratelearner" TYPE="number" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="4" COMMENT="Price per active learner per week"/>
+        <FIELD NAME="rateenrol" TYPE="number" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="4" COMMENT="Price per new course enrolment"/>
+        <FIELD NAME="xerocontact" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" COMMENT="Xero ContactID"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
@@ -28,7 +35,8 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="clientid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="role" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="rep" SEQUENCE="false" COMMENT="manager or rep"/>
+        <FIELD NAME="role" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="rep" SEQUENCE="false" COMMENT="manager, rep or trainer"/>
+        <FIELD NAME="assessor" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marks work in all of the client's courses"/>
         <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
@@ -109,6 +117,49 @@
       <INDEXES>
         <INDEX NAME="clienttime" UNIQUE="false" FIELDS="clientid, timecreated"/>
       </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_clientportal_usage" COMMENT="Billable usage per client, for example AI credits.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="clientid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="contextid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="kind" TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT="aicredits" SEQUENCE="false"/>
+        <FIELD NAME="quantity" TYPE="number" LENGTH="12" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="description" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="source" TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT="api" SEQUENCE="false" COMMENT="core_ai or api"/>
+        <FIELD NAME="sourceid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="clientid" TYPE="foreign" FIELDS="clientid" REFTABLE="local_clientportal_client" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="clienttime" UNIQUE="false" FIELDS="clientid, timecreated"/>
+        <INDEX NAME="sourceid" UNIQUE="false" FIELDS="source, sourceid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_clientportal_invoice" COMMENT="Usage sent to the accounting system, one row per client per invoice.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="clientid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="periodstart" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="periodend" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="lineitems" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON line items"/>
+        <FIELD NAME="total" TYPE="number" LENGTH="12" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="xeroinvoiceid" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="xeronumber" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="draft" SEQUENCE="false" COMMENT="draft, failed"/>
+        <FIELD NAME="error" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="clientid" TYPE="foreign" FIELDS="clientid" REFTABLE="local_clientportal_client" REFFIELDS="id"/>
+      </KEYS>
     </TABLE>
   </TABLES>
 </XMLDB>

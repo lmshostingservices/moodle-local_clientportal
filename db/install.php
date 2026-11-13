@@ -29,5 +29,6 @@
  */
 function xmldb_local_clientportal_install() {
     \local_clientportal\manager::ensure_role();
+    \local_clientportal\courses::ensure_roles();
     return true;
 }

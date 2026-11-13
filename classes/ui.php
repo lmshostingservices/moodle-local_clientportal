@@ -38,15 +38,40 @@ class ui {
      */
     public static function header(scope $scope, string $active, ?string $title = null, string $actions = ''): string {
         global $OUTPUT, $USER;
-        $nav = [
-            'dashboard' => ['/local/clientportal/index.php', get_string('nav_dashboard', 'local_clientportal')],
-            'learners' => ['/local/clientportal/learners.php', get_string('nav_learners', 'local_clientportal')],
-            'groups' => ['/local/clientportal/groups.php', get_string('nav_groups', 'local_clientportal')],
-            'reports' => ['/local/clientportal/report.php', get_string('nav_reports', 'local_clientportal')],
-            'certificates' => ['/local/clientportal/certificates.php', get_string('nav_certificates', 'local_clientportal')],
-        ];
-        if ($scope->is_manager()) {
-            $nav['team'] = ['/local/clientportal/team.php', get_string('nav_team', 'local_clientportal')];
+        $client = $scope->client;
+        $coursesfeature = courses::has($client, courses::FEATURE_COURSES);
+        $marking = courses::has($client, courses::FEATURE_TEACHERS) || courses::has($client, courses::FEATURE_ASSESSORS);
+        $nav = [];
+        if (!$scope->is_trainer()) {
+            $nav = [
+                'dashboard' => ['/local/clientportal/index.php', get_string('nav_dashboard', 'local_clientportal')],
+                'learners' => ['/local/clientportal/learners.php', get_string('nav_learners', 'local_clientportal')],
+            ];
+        }
+        if ($coursesfeature && ($scope->is_manager() || $scope->is_trainer())) {
+            $nav['courses'] = ['/local/clientportal/courses.php', get_string('nav_coursebuilder', 'local_clientportal')];
+        }
+        if ($marking && ($scope->is_manager() || $scope->is_trainer() || $scope->is_assessor())) {
+            $nav['marking'] = ['/local/clientportal/marking.php', get_string('nav_marking', 'local_clientportal')];
+        }
+        if (!$scope->is_trainer()) {
+            $nav += [
+                'groups' => ['/local/clientportal/groups.php', get_string('nav_groups', 'local_clientportal')],
+                'reports' => ['/local/clientportal/report.php', get_string('nav_reports', 'local_clientportal')],
+                'certificates' => ['/local/clientportal/certificates.php', get_string('nav_certificates', 'local_clientportal')],
+            ];
+            if ($scope->is_manager() && (integration\matrix::available() || integration\pathways::available())) {
+                $nav['onboarding'] = ['/local/clientportal/onboarding.php', get_string('nav_onboarding', 'local_clientportal')];
+            }
+            if (integration\matrix::available()) {
+                $nav['compliance'] = ['/local/clientportal/compliance.php', get_string('nav_compliance', 'local_clientportal')];
+            }
+            if (integration\pathways::available()) {
+                $nav['pathways'] = ['/local/clientportal/pathways.php', get_string('nav_pathways', 'local_clientportal')];
+            }
+            if ($scope->is_manager()) {
+                $nav['team'] = ['/local/clientportal/team.php', get_string('nav_team', 'local_clientportal')];
+            }
         }
         $nav['help'] = ['/local/clientportal/help.php', get_string('nav_help', 'local_clientportal')];
         $items = [];
@@ -69,7 +94,8 @@ class ui {
         $context = [
             'clientname' => format_string($scope->client->name),
             'logo' => self::logo_url($scope),
-            'homeurl' => $scope->url('/local/clientportal/index.php')->out(false),
+            'homeurl' => $scope->url($scope->is_trainer() ? '/local/clientportal/courses.php'
+                : '/local/clientportal/index.php')->out(false),
             'nav' => $items,
             'clients' => $clients,
             'hasclients' => !empty($clients),
@@ -250,6 +276,60 @@ class ui {
                 ['id' => 'cport-' . $name, 'class' => 'custom-select form-select', 'onchange' => 'this.form.submit()']
             );
         }
+        $html .= html_writer::end_tag('form');
+        return $html;
+    }
+
+    /**
+     * Competency status chip (Training Matrix). Never red: expired and missing use amber shades.
+     *
+     * @param string $status completed|expiring_soon|in_progress|not_started|expired
+     * @param string $title tooltip, e.g. the expiry date
+     * @return string
+     */
+    public static function chip(string $status, string $title = ''): string {
+        $attrs = ['class' => 'cport-chip cport-chip-' . $status];
+        if ($title !== '') {
+            $attrs['title'] = $title;
+        }
+        return html_writer::span(get_string('comp_' . $status, 'local_clientportal'), '', $attrs);
+    }
+
+    /**
+     * Pathway badge: name, percent and an overdue flag.
+     *
+     * @param scope $scope
+     * @param \stdClass $assignment from integration\pathways::assignments()
+     * @return string
+     */
+    public static function pathway_badge(scope $scope, \stdClass $assignment): string {
+        $label = format_string($assignment->pathway->name) . ' · ' . $assignment->percent . '%';
+        $class = 'cport-pw cport-pw-' . ($assignment->status === 'completed' ? 'done' : ($assignment->overdue ? 'late' : 'open'));
+        return html_writer::link(
+            $scope->url('/local/clientportal/pathways.php', ['pathway' => $assignment->pathwayid]),
+            s($label),
+            ['class' => $class]
+        );
+    }
+
+    /**
+     * Name search box that keeps the page's other filters.
+     *
+     * @param moodle_url $url current page URL with its filters
+     * @param string $search
+     * @return string
+     */
+    public static function search(moodle_url $url, string $search): string {
+        $html = html_writer::start_tag('form', ['method' => 'get', 'action' => $url->out_omit_querystring(),
+            'class' => 'cport-filters', 'role' => 'search']);
+        foreach ($url->params() as $k => $v) {
+            if ($k !== 'search' && $k !== 'page') {
+                $html .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => $k, 'value' => $v]);
+            }
+        }
+        $html .= html_writer::label(get_string('search'), 'cport-namesearch', true, ['class' => 'sr-only']);
+        $html .= html_writer::empty_tag('input', ['type' => 'search', 'name' => 'search', 'id' => 'cport-namesearch',
+            'value' => $search, 'class' => 'form-control', 'placeholder' => get_string('searchlearners', 'local_clientportal')]);
         $html .= html_writer::end_tag('form');
         return $html;
     }

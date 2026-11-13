@@ -64,6 +64,26 @@ class scope {
     }
 
     /**
+     * Is this a client trainer (teaches the client's own courses only)?
+     *
+     * @return bool
+     */
+    public function is_trainer(): bool {
+        return $this->role === manager::ROLE_TRAINER;
+    }
+
+    /**
+     * Does this person mark work across the client's courses?
+     *
+     * @return bool
+     */
+    public function is_assessor(): bool {
+        global $DB, $USER;
+        return !$this->support && courses::has($this->client, courses::FEATURE_ASSESSORS) &&
+            (bool)$DB->get_field('local_clientportal_member', 'assessor', ['clientid' => $this->id(), 'userid' => $USER->id]);
+    }
+
+    /**
      * Client id.
      *
      * @return int
@@ -143,6 +163,13 @@ class scope {
             echo \html_writer::div(get_string('clientinactive', 'local_clientportal'), 'alert alert-warning');
             echo ui::footer();
             exit;
+        }
+        // Trainers only see their courses, marking and help.
+        if ($scope->is_trainer()) {
+            $page = basename($url->get_path());
+            if (!in_array($page, ['courses.php', 'coursemanage.php', 'marking.php', 'help.php'], true)) {
+                redirect(new moodle_url('/local/clientportal/courses.php'));
+            }
         }
         if ($managersonly && !$scope->is_manager()) {
             throw new moodle_exception('error_managersonly', 'local_clientportal');

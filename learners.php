@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use local_clientportal\integration\matrix;
 use local_clientportal\manager;
 use local_clientportal\report;
 use local_clientportal\scope;
@@ -72,6 +73,10 @@ $total = $report->count_learners($groupid ?: null, $search);
 $learners = $report->learners($groupid ?: null, $search, $sort, $page, $perpage);
 $groups = manager::get_groups($scope->id());
 $showemail = (bool)get_config('local_clientportal', 'showemail');
+$hasmatrix = matrix::available();
+$compliance = $hasmatrix ? matrix::compliance($scope, array_map(fn($u) => (int)$u->id, $learners)) : [];
+$positions = $hasmatrix ? matrix::positions($scope) : [];
+$departments = $hasmatrix ? matrix::departments($scope) : [];
 
 $export = html_writer::link(
     $scope->url(
@@ -123,9 +128,14 @@ $table->attributes['class'] = 'table cport-table';
 $selectall = html_writer::checkbox('', 1, false, '', ['class' => 'cport-selectall', 'title' => get_string('selectall'),
     'onclick' => "this.closest('table').querySelectorAll('input[name=\"users[]\"]').forEach(c => c.checked = this.checked)"]);
 $table->head = [$selectall, $sortlink('name', get_string('learner', 'local_clientportal')),
-    get_string('groups', 'local_clientportal'), get_string('nav_courses', 'local_clientportal'),
+    get_string('groups', 'local_clientportal')];
+if ($hasmatrix) {
+    $table->head[] = get_string('jobrole', 'local_clientportal');
+    $table->head[] = get_string('compliance', 'local_clientportal');
+}
+$table->head = array_merge($table->head, [get_string('nav_courses', 'local_clientportal'),
     get_string('status_completed', 'local_clientportal'), get_string('status_inprogress', 'local_clientportal'),
-    get_string('status_notstarted', 'local_clientportal'), $sortlink('lastaccess', get_string('lastlogin', 'local_clientportal'))];
+    get_string('status_notstarted', 'local_clientportal'), $sortlink('lastaccess', get_string('lastlogin', 'local_clientportal'))]);
 foreach ($learners as $u) {
     $name = html_writer::link($scope->url('/local/clientportal/learner.php', ['id' => $u->id]), fullname($u));
     if ($showemail) {
@@ -138,13 +148,32 @@ foreach ($learners as $u) {
     foreach ($u->groups as $gname) {
         $tags .= html_writer::span(s($gname), 'cport-tag');
     }
-    $table->data[] = [
+    $row = [
         html_writer::checkbox('users[]', $u->id, false, '', ['aria-label' => fullname($u)]),
         html_writer::div($name, 'cport-name'),
         $tags ?: html_writer::span('–', 'text-muted'),
+    ];
+    if ($hasmatrix) {
+        $c = $compliance[$u->id] ?? null;
+        if ($c) {
+            $st = $c['staff'];
+            $posname = isset($positions[$st->positionid]) ? format_string($positions[$st->positionid]->name) : '–';
+            $row[] = html_writer::div(s($posname)) .
+                html_writer::div(s($departments[$st->departmentid] ?? ''), 'cport-muted');
+            $row[] = $c['stats']['total'] ? ui::progress((int)$c['stats']['compliance_rate']) : '–';
+        } else {
+            $row[] = $scope->is_manager() ? html_writer::link(
+                $scope->url('/local/clientportal/onboarding.php', ['id' => $u->id]),
+                get_string('setup', 'local_clientportal'),
+                ['class' => 'btn btn-sm btn-outline-primary']
+            ) : html_writer::span(get_string('notsetup', 'local_clientportal'), 'cport-muted');
+            $row[] = html_writer::span('–', 'text-muted');
+        }
+    }
+    $table->data[] = array_merge($row, [
         $u->courses, $u->completed, $u->inprogress, $u->notstarted,
         ui::date($u->lastaccess ? (int)$u->lastaccess : null),
-    ];
+    ]);
 }
 $body .= html_writer::div(html_writer::table($table), 'cport-table-wrap');
 

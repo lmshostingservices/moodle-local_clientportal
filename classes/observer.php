@@ -33,12 +33,19 @@ class observer {
      */
     public static function user_enrolment_created(\core\event\user_enrolment_created $event): void {
         global $DB;
-        if (!get_config('local_clientportal', 'autoclaim')) {
-            return;
-        }
         $userid = (int)$event->relateduserid;
         $courseid = (int)$event->courseid;
         if (!$userid || !$courseid || $courseid == SITEID) {
+            return;
+        }
+        // The client's own courses: the client always owns its learners' enrolments.
+        if ($owner = courses::owner($courseid)) {
+            if (scope::is_learner($owner, $userid)) {
+                manager::claim($owner, $userid, $courseid, 'clientcourse');
+            }
+            return;
+        }
+        if (!get_config('local_clientportal', 'autoclaim')) {
             return;
         }
         $sql = "SELECT c.id

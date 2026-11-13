@@ -68,6 +68,17 @@ class provider implements
             'details' => 'privacy:metadata:log:details',
             'timecreated' => 'privacy:metadata:timecreated',
         ], 'privacy:metadata:log');
+        $collection->add_database_table('local_clientportal_usage', [
+            'userid' => 'privacy:metadata:usage:userid',
+            'component' => 'privacy:metadata:usage:component',
+            'quantity' => 'privacy:metadata:usage:quantity',
+            'description' => 'privacy:metadata:usage:description',
+            'timecreated' => 'privacy:metadata:timecreated',
+        ], 'privacy:metadata:usage');
+        $collection->add_external_location_link('xero', [
+            'clientname' => 'privacy:metadata:xero:clientname',
+            'usage' => 'privacy:metadata:xero:usage',
+        ], 'privacy:metadata:xero');
         return $collection;
     }
 
@@ -82,6 +93,7 @@ class provider implements
         return $DB->record_exists('local_clientportal_member', ['userid' => $userid]) ||
             $DB->record_exists('local_clientportal_enrol', ['userid' => $userid]) ||
             $DB->record_exists('local_clientportal_groupmem', ['userid' => $userid]) ||
+            $DB->record_exists('local_clientportal_usage', ['userid' => $userid]) ||
             $DB->record_exists_select('local_clientportal_log', 'userid = ? OR relateduserid = ?', [$userid, $userid]);
     }
 
@@ -112,6 +124,7 @@ class provider implements
         $userlist->add_from_sql('userid', 'SELECT userid FROM {local_clientportal_enrol}', []);
         $userlist->add_from_sql('userid', 'SELECT userid FROM {local_clientportal_groupmem}', []);
         $userlist->add_from_sql('userid', 'SELECT userid FROM {local_clientportal_log}', []);
+        $userlist->add_from_sql('userid', 'SELECT userid FROM {local_clientportal_usage} WHERE userid > 0', []);
         $userlist->add_from_sql('relateduserid', 'SELECT relateduserid FROM {local_clientportal_log}
                                                   WHERE relateduserid IS NOT NULL', []);
     }
@@ -154,7 +167,14 @@ class provider implements
                 [$userid, $userid],
                 'timecreated'
             )));
+            $usage = array_map(fn($u) => [
+                'component' => $u->component,
+                'quantity' => $u->quantity,
+                'description' => $u->description,
+                'time' => transform::datetime($u->timecreated),
+            ], array_values($DB->get_records('local_clientportal_usage', ['userid' => $userid], 'timecreated')));
             writer::with_context($context)->export_data($sub, (object)[
+                'usage' => $usage,
                 'staff' => $staff,
                 'ownedenrolments' => $owned,
                 'groups' => $groups,
@@ -177,6 +197,7 @@ class provider implements
         $DB->delete_records('local_clientportal_enrol');
         $DB->delete_records('local_clientportal_groupmem');
         $DB->delete_records('local_clientportal_log');
+        $DB->set_field('local_clientportal_usage', 'userid', 0);
     }
 
     /**
@@ -218,6 +239,8 @@ class provider implements
         $DB->delete_records_select('local_clientportal_enrol', "userid $in", $params);
         $DB->delete_records_select('local_clientportal_groupmem', "userid $in", $params);
         $DB->delete_records_select('local_clientportal_log', "userid $in", $params);
+        // Usage stays for billing, without the person.
+        $DB->set_field_select('local_clientportal_usage', 'userid', 0, "userid $in", $params);
         // Details can name the learner (for example a certificate file name), so they go too.
         $DB->set_field_select('local_clientportal_log', 'details', null, "relateduserid $in", $params);
         $DB->set_field_select('local_clientportal_log', 'relateduserid', null, "relateduserid $in", $params);

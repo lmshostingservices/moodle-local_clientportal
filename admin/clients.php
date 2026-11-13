@@ -64,7 +64,28 @@ echo html_writer::div($OUTPUT->single_button(
     get_string('addclient', 'local_clientportal'),
     'get',
     ['type' => single_button::BUTTON_PRIMARY]
+) . ' ' . html_writer::link(
+    new moodle_url('/local/clientportal/admin/report.php'),
+    get_string('clientsreport', 'local_clientportal'),
+    ['class' => 'btn btn-secondary']
+) . ' ' . html_writer::link(
+    new moodle_url('/local/clientportal/admin/usage.php'),
+    get_string('usagereport', 'local_clientportal'),
+    ['class' => 'btn btn-secondary']
+) . ' ' . html_writer::link(
+    new moodle_url('/local/clientportal/admin/separation.php'),
+    get_string('separation', 'local_clientportal'),
+    ['class' => 'btn btn-secondary']
 ), 'mb-3');
+$checks = \local_clientportal\separation::checks();
+$open = count(array_filter($checks, fn($c) => !$c->ok));
+if ($open) {
+    echo $OUTPUT->notification(get_string('separation_open', 'local_clientportal', $open) . ' ' .
+        html_writer::link(new moodle_url('/local/clientportal/admin/separation.php'), get_string(
+            'separation_review',
+            'local_clientportal'
+        )), 'warning');
+}
 
 if (!$clients) {
     echo $OUTPUT->notification(get_string('noclients', 'local_clientportal'), 'info');
@@ -75,7 +96,8 @@ $table = new html_table();
 $table->attributes['class'] = 'generaltable';
 $table->head = [get_string('clientname', 'local_clientportal'), get_string('cohort', 'local_clientportal'),
     get_string('staff', 'local_clientportal'), get_string('cohortmembers', 'local_clientportal'),
-    get_string('ownedenrolments', 'local_clientportal'), get_string('active', 'local_clientportal'), ''];
+    get_string('ownedenrolments', 'local_clientportal'), get_string('clientfeatures', 'local_clientportal'),
+    get_string('active', 'local_clientportal'), ''];
 $branding = class_exists('\\local_cohortbranding\\manager');
 foreach ($clients as $c) {
     $links = [
@@ -114,6 +136,10 @@ foreach ($clients as $c) {
         $c->staffcount,
         max(0, $c->cohortcount - $c->staffcount),
         $c->enrolcount,
+        implode(', ', array_map(
+            fn($f) => get_string('feature_' . $f . '_short', 'local_clientportal'),
+            array_filter(explode(',', (string)$c->features))
+        )) ?: '–',
         $c->active ? get_string('yes') : get_string('no'),
         implode(' · ', $links),
     ];

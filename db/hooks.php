@@ -31,4 +31,9 @@ $callbacks = [
         'callback' => [\local_clientportal\guard::class, 'before_http_headers'],
         'priority' => 1000,
     ],
+    [
+        // A "back to your portal" bar when client staff work in their own courses.
+        'hook' => \core\hook\output\before_standard_top_of_body_html_generation::class,
+        'callback' => [\local_clientportal\guard::class, 'top_of_body'],
+    ],
 ];

@@ -23,6 +23,12 @@ body.local-clientportal #page {
     padding: 0 !important;
     max-width: none;
 }
+/* Cancel in portal forms is a quiet outline button, whatever the theme does to secondary buttons. */
+body.local-clientportal .cport-form .mform #id_cancel {
+    background: #fff !important;
+    color: #344054 !important;
+    border-color: #d0d5dd !important;
+}
 /* stylelint-enable declaration-no-important */
 body.local-clientportal #page-content,
 body.local-clientportal #region-main-box,
@@ -578,5 +584,712 @@ body.local-clientportal .cport-help-pager .btn.cport-help-next:focus {
     }
     .cport-help-nav {
         position: static;
+    }
+}
+
+/* Onboarding, compliance and pathways (Training Matrix and Training Pathways). Never red: amber for what needs action. */
+.cport-tone-accent .cport-stat-value {
+    color: #7f10f9;
+}
+.cport-chip {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 6px;
+    font-size: .76rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.cport-chip-completed {
+    background: #ecfdf3;
+    color: #067647;
+}
+.cport-chip-expiring_soon {
+    background: #fffaeb;
+    color: #b54708;
+}
+.cport-chip-expired {
+    background: #fdead7;
+    color: #93370d;
+    border: 1px solid #f9b27a;
+}
+.cport-chip-in_progress {
+    background: #eff4ff;
+    color: #1d4ed8;
+}
+.cport-chip-not_started {
+    background: #f2f4f7;
+    color: #475467;
+}
+.cport-chip-none {
+    color: #d0d5dd;
+}
+.cport-matrix th,
+.cport-matrix td {
+    text-align: center;
+    vertical-align: middle;
+}
+.cport-matrix th:first-child,
+.cport-matrix td:first-child {
+    text-align: left;
+    min-width: 200px;
+}
+.cport-matrix td:nth-child(2) {
+    min-width: 140px;
+}
+.cport-matrix-head {
+    display: inline-block;
+    max-width: 120px;
+    white-space: normal;
+    line-height: 1.2;
+}
+.cport-pill-late {
+    background: #fffaeb;
+    color: #b54708;
+}
+.cport-pw {
+    display: inline-block;
+    padding: 2px 10px;
+    margin: 1px 4px 1px 0;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.cport-shell a.cport-pw-open:not(.btn),
+.cport-pw-open {
+    background: #f4ebff;
+    color: #6941c6;
+}
+.cport-shell a.cport-pw-late:not(.btn),
+.cport-pw-late {
+    background: #fffaeb;
+    color: #b54708;
+}
+.cport-shell a.cport-pw-done:not(.btn),
+.cport-pw-done {
+    background: #ecfdf3;
+    color: #067647;
+}
+.cport-pwgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+}
+.cport-pwcard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 22px;
+    border-top: 4px solid #7f10f9;
+    transition: box-shadow .15s ease, transform .15s ease;
+}
+.cport-pwcard:hover {
+    box-shadow: 0 10px 28px rgba(16, 24, 40, .08);
+    transform: translateY(-1px);
+}
+.cport-pwcard-blue {
+    border-top-color: #0e88ff;
+}
+.cport-pwcard-green {
+    border-top-color: #22c65e;
+}
+.cport-pwcard-orange {
+    border-top-color: #f78e08;
+}
+.cport-pwcard-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+.cport-pwcard-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+}
+.cport-shell .cport-pwcard-title a:not(.btn) {
+    color: var(--cport-ink, #0f172a);
+    text-decoration: none;
+}
+.cport-pwcard-desc {
+    margin: 0;
+    font-size: .9rem;
+    color: #344054;
+}
+.cport-pwcard-foot {
+    margin-top: auto;
+    padding-top: 6px;
+}
+.cport-tag-own {
+    background: #f4ebff;
+    color: #6941c6;
+}
+.cport-minis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 6px 0;
+}
+.cport-mini {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+.cport-mini-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+.cport-mini-good .cport-mini-value {
+    color: #067647;
+}
+.cport-mini-warn .cport-mini-value {
+    color: #b54708;
+}
+.cport-mini-label {
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--cport-muted);
+    text-transform: uppercase;
+    letter-spacing: .02em;
+}
+.cport-split {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+.cport-section {
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--cport-muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin: 6px 0 10px;
+}
+.cport-field-label {
+    display: block;
+    font-weight: 600;
+    font-size: .88rem;
+    margin-bottom: 6px;
+}
+.cport-picklist {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 4px;
+}
+.cport-pick {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--cport-line);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: .9rem;
+}
+.cport-pick:hover {
+    background: #f9fafb;
+}
+.cport-pick:has(input:checked) {
+    border-color: #7f10f9;
+    background: #f9f5ff;
+}
+.cport-assign-row {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 14px;
+}
+.cport-assign-row .cport-assign-date {
+    margin: 0;
+}
+.cport-matrix td:first-child,
+.cport-matrix th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #fff;
+}
+.cport-matrix thead th:first-child {
+    background: inherit;
+}
+.cport-stages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+.cport-stage {
+    background: #fcfcfd;
+    border: 1px solid var(--cport-line);
+    border-left: 3px solid #7f10f9;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+.cport-stage-num {
+    font-size: .75rem;
+    font-weight: 700;
+    color: #7f10f9;
+    text-transform: uppercase;
+}
+.cport-stage-tasks {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    font-size: .88rem;
+}
+.cport-stage-tasks li {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    border-top: 1px dashed var(--cport-line);
+}
+.cport-stage-tasks .cport-tag {
+    flex-shrink: 0;
+}
+.cport-complist {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+}
+.cport-complist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-top: 1px solid var(--cport-line);
+}
+.cport-comp-name {
+    flex: 1;
+    font-weight: 500;
+}
+.cport-pwitem {
+    padding: 10px 0;
+    border-top: 1px solid var(--cport-line);
+}
+.cport-pwitem:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+.cport-signoff {
+    display: inline-block;
+    margin: 6px 6px 0 0;
+}
+.cport-assign-date {
+    margin: 12px 0;
+    max-width: 220px;
+}
+body.local-clientportal .cport-form .collapsible-actions {
+    display: none;
+}
+body.local-clientportal .cport-form .mform legend,
+body.local-clientportal .cport-form .mform .ftoggler h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+.cport-complist li:first-child {
+    margin-top: 4px;
+}
+.cport-who {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--cport-line);
+}
+.cport-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--cport-accent);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .02em;
+}
+.cport-who-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.cport-bulkbar {
+    border-top: 1px solid var(--cport-line);
+    flex-wrap: wrap;
+}
+.cport-bulkbar .form-control {
+    width: auto;
+}
+.cport-usual {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    font-size: .85rem;
+    color: var(--cport-muted);
+}
+.cport-steps {
+    margin: 0 0 18px;
+    padding-left: 20px;
+}
+.cport-steps li {
+    margin-bottom: 8px;
+}
+.cport-import-error {
+    color: #93370d;
+    font-size: .85rem;
+}
+
+/* Client courses: course builder, course page, trainers. */
+.cport-backbar {
+    background: var(--cohort-primary, var(--ll-accent, var(--bs-primary, #0f6cbf)));
+    border-radius: 10px;
+    margin: 8px 12px 0;
+    padding: 8px 18px;
+    font-size: .9rem;
+    font-weight: 600;
+}
+.cport-backbar a.cport-backbar-link,
+.cport-backbar a.cport-backbar-link:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.cport-coursebuilder {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: 18px;
+    align-items: start;
+}
+.cport-coursebuilder > .cport-card:only-child {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 900px) {
+    .cport-coursebuilder {
+        grid-template-columns: 1fr;
+    }
+}
+.cport-cats {
+    padding: 8px;
+}
+.cport-shell a.cport-cat:not(.btn) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: var(--cport-ink);
+    text-decoration: none;
+    font-size: .92rem;
+}
+.cport-shell a.cport-cat:not(.btn):hover {
+    background: var(--cport-soft);
+}
+.cport-shell a.cport-cat.active:not(.btn) {
+    background: #f4ebff;
+    color: #6941c6;
+    font-weight: 600;
+}
+.cport-count {
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--cport-muted);
+    background: #f2f4f7;
+    border-radius: 999px;
+    padding: 1px 8px;
+}
+.cport-catform {
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px solid var(--cport-line);
+}
+.cport-course-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border-top: 1px solid var(--cport-line);
+}
+.cport-course-row:first-child {
+    border-top: 0;
+}
+.cport-course-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 2px;
+}
+.cport-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+}
+.cport-course-actions {
+    flex-shrink: 0;
+    display: flex;
+    gap: 6px;
+}
+.cport-person {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid var(--cport-line);
+}
+.cport-person:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+.cport-addteacher {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-top: 14px;
+    margin-top: 6px;
+    border-top: 1px solid var(--cport-line);
+}
+.cport-addteacher .cport-field-label {
+    width: 100%;
+    margin: 0;
+}
+.cport-addteacher .form-select,
+.cport-addteacher .custom-select {
+    width: auto;
+}
+.cport-picklist-sm {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    max-height: 220px;
+}
+.cport-trainerform {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+}
+.cport-trainerfield {
+    flex: 1 1 180px;
+}
+
+/* Site owner's Clients report (admin page). */
+.cport-adminreport {
+    --cport-accent: var(--ll-accent, var(--bs-primary, #0f6cbf));
+    --cport-ink: #111827;
+    --cport-muted: #6b7280;
+    --cport-line: #e5e7eb;
+    --cport-soft: #f6f7f9;
+}
+.cport-ar-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.cport-ar-title {
+    margin: 0;
+    font-weight: 700;
+}
+.cport-ar-period {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.cport-ar-chips {
+    display: flex;
+    gap: 6px;
+}
+.cport-adminreport a.cport-ar-chip {
+    padding: 6px 12px;
+    border: 1px solid var(--cport-line);
+    border-radius: 999px;
+    color: var(--cport-ink);
+    text-decoration: none;
+    font-size: .88rem;
+}
+.cport-adminreport a.cport-ar-chip.active {
+    background: var(--cport-ink);
+    border-color: var(--cport-ink);
+    color: #fff;
+}
+.cport-ar-custom {
+    display: flex;
+    gap: 6px;
+}
+.cport-ar-custom .form-control {
+    width: auto;
+}
+.cport-ar-range {
+    color: var(--cport-muted);
+    font-size: .9rem;
+}
+.cport-ar-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+    .cport-ar-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+.cport-ar-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+.cport-ar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    font-size: .8rem;
+    color: var(--cport-muted);
+    margin-bottom: 12px;
+}
+.cport-ar-key {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: -8px;
+}
+.cport-ar-labs {
+    background: #7f10f9;
+}
+.cport-ar-ai {
+    background: #0e88ff;
+}
+.cport-ar-hrow {
+    display: grid;
+    grid-template-columns: minmax(90px, 34%) 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: .875rem;
+}
+.cport-ar-hname {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cport-ar-htrack {
+    display: flex;
+    height: 16px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.cport-ar-seg {
+    display: block;
+    height: 100%;
+}
+.cport-ar-hval {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    min-width: 3ch;
+    text-align: right;
+}
+.cport-ar-vbars {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    height: 200px;
+}
+.cport-ar-vcol {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.cport-ar-vtrack {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: #f1f5f9;
+    border-radius: 8px 8px 4px 4px;
+    overflow: hidden;
+}
+.cport-ar-vseg {
+    display: block;
+    width: 100%;
+    order: 0;
+}
+.cport-ar-vtrack .cport-ar-labs {
+    order: 1;
+}
+.cport-ar-vtrack .cport-ar-ai {
+    order: 2;
+}
+.cport-ar-vval {
+    font-size: .75rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+}
+.cport-ar-vlabel {
+    font-size: .7rem;
+    color: var(--cport-muted);
+    margin-top: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+.cport-ar-chart {
+    min-width: 0;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--cport-line);
+    border-radius: 12px;
+    padding: 16px;
+}
+.cport-ar-chart h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+.cport-ar-tablewrap {
+    background: #fff;
+    border: 1px solid var(--cport-line);
+    border-radius: 12px;
+    overflow-x: auto;
+}
+.cport-ar-table {
+    margin: 0;
+}
+.cport-ar-table th,
+.cport-ar-table td {
+    white-space: nowrap;
+}
+.cport-ar-table td:first-child {
+    white-space: normal;
+    min-width: 210px;
+}
+.cport-ar-table tr:last-child td {
+    background: var(--cport-soft);
+}
+
+@media (max-width: 900px) {
+    .cport-ar-charts {
+        grid-template-columns: 1fr;
     }
 }
