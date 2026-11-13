@@ -1148,7 +1148,7 @@ body.local-clientportal .cport-form .mform .ftoggler h3 {
 }
 .cport-ar-charts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 16px;
     margin-bottom: 22px;
 }
@@ -1286,4 +1286,9 @@ body.local-clientportal .cport-form .mform .ftoggler h3 {
 }
 .cport-ar-table tr:last-child td {
     background: var(--cport-soft);
+}
+@media (max-width: 900px) {
+    .cport-ar-charts {
+        grid-template-columns: 1fr;
+    }
 }
