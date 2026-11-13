@@ -2,6 +2,14 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.0.2] - 2026-11-13
+
+### Fixed
+- The New course button showed "[[createcourse]]" instead of "Create course".
+- The first column on *Keep clients apart* showed "[[setting]]" instead of "Setting".
+- *Usage and billing* by plugin showed "core_ai" instead of "Moodle AI credits".
+- Clients report cards no longer read "1 assessors" or "in 1 categories".
+
 ## [v2.0.1] - 2026-11-13
 
 ### Added
@@ -11,7 +19,6 @@ All notable changes to the Client portal (local_clientportal) are listed here.
   - Reported by the plugins themselves from their next release (AI Content Creator, AI Course Format, AI Quiz, AI Quiz Maker, AI Knowledge Check, AI Video Activity, AI Interactive Video, AI Branched Scenario, AI Language Teacher, AI Course Information, AI Mapping, AI Slide Flow, AI Smart Workbook, AI Essay Grader, AI SCORM Voiceover, AI Training Matrix and the AI Virtual Classroom quiz).
 - `\local_clientportal\api::record_lmslabs_call()`: plugins pass the LMS Labs reply as it came back. The credits it says were charged are used (`creditsCharged`, `creditsUsed`, `credits_used` and similar), otherwise the plugin's own price; failed calls are not counted, and a job id makes a polled job count once. When a plugin can only pass the system context, the page's course decides the client.
 
-### Fixed
 - Client representatives saw the "Mark work" help guide, though marking is only for managers, trainers and assessors.
 
 ## [v2.0.0] - 2026-11-13

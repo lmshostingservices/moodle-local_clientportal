@@ -94,8 +94,9 @@ if ($detail && isset($rows[$detail])) {
     $t->head = [get_string('u_plugin', 'local_clientportal'), get_string('u_credits', 'local_clientportal'),
         get_string('u_actions', 'local_clientportal')];
     foreach ($parts as $p) {
-        $name = get_string_manager()->string_exists('pluginname', $p->component)
-            ? get_string('pluginname', $p->component) : $p->component;
+        $name = $p->component === 'core_ai' ? get_string('moodleai', 'local_clientportal')
+            : (get_string_manager()->string_exists('pluginname', $p->component)
+            ? get_string('pluginname', $p->component) : $p->component);
         $t->data[] = [s($name), format_float((float)$p->credits, 2, true, true), (int)$p->actions];
     }
     echo $parts ? html_writer::table($t) : $OUTPUT->notification(get_string('u_none', 'local_clientportal'), 'info');

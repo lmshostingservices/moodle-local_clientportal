@@ -53,7 +53,7 @@ if ($open) {
 }
 $table = new html_table();
 $table->attributes['class'] = 'generaltable mt-3';
-$table->head = [get_string('setting'), get_string('description'), get_string('status'), ''];
+$table->head = [get_string('keepsetting', 'local_clientportal'), get_string('description'), get_string('status'), ''];
 foreach ($checks as $c) {
     $table->data[] = [
         html_writer::tag('strong', s($c->name)),
