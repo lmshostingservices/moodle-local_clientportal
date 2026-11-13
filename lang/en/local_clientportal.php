@@ -494,6 +494,7 @@ $string['log_certificates_zipped'] = 'Downloaded certificates as ZIP';
 $string['log_compliance_downloaded'] = 'Downloaded the compliance report';
 $string['log_course_created'] = 'Created a course';
 $string['log_course_updated'] = 'Changed a course\'s settings';
+$string['log_enrolleddetails'] = '{$a->course}: {$a->count} learners';
 $string['log_enrolment_released'] = 'Enrolment released';
 $string['log_enrolments_claimed'] = 'Enrolments assigned';
 $string['log_group_created'] = 'Created a group';

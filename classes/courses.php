@@ -656,7 +656,7 @@ class courses {
         // Teachers are not learners of the course.
         role_unassign(self::role('student'), $userid, $context->id);
         $DB->delete_records('local_clientportal_enrol', ['userid' => $userid, 'courseid' => $courseid]);
-        manager::log($scope->id(), 'teacher_added', $userid, (string)$courseid);
+        manager::log($scope->id(), 'teacher_added', $userid, self::course_name($courseid));
     }
 
     /**
@@ -677,7 +677,7 @@ class courses {
         foreach ($DB->get_records('enrol', ['courseid' => $courseid, 'enrol' => 'manual']) as $instance) {
             $plugin->unenrol_user($instance, $userid);
         }
-        manager::log($scope->id(), 'teacher_removed', $userid, (string)$courseid);
+        manager::log($scope->id(), 'teacher_removed', $userid, self::course_name($courseid));
     }
 
     /**
@@ -704,7 +704,11 @@ class courses {
             $plugin->enrol_user($manual, $userid, self::role('student'), time());
             $count++;
         }
-        manager::log($scope->id(), 'learners_enrolled', null, $courseid . ':' . $count);
+        manager::log($scope->id(), 'learners_enrolled', null, get_string(
+            'log_enrolleddetails',
+            'local_clientportal',
+            ['course' => self::course_name($courseid), 'count' => $count]
+        ));
         return $count;
     }
 
@@ -724,7 +728,7 @@ class courses {
         foreach ($DB->get_records('enrol', ['courseid' => $courseid, 'enrol' => 'manual']) as $instance) {
             $plugin->unenrol_user($instance, $userid);
         }
-        manager::log($scope->id(), 'learner_unenrolled', $userid, (string)$courseid);
+        manager::log($scope->id(), 'learner_unenrolled', $userid, self::course_name($courseid));
     }
 
     /**
@@ -745,6 +749,18 @@ class courses {
             $instance->status = ENROL_INSTANCE_ENABLED;
         }
         return $instance;
+    }
+
+    /**
+     * A course's name for the activity log.
+     *
+     * @param int $courseid
+     * @return string
+     */
+    protected static function course_name(int $courseid): string {
+        global $DB;
+        $name = $DB->get_field('course', 'fullname', ['id' => $courseid]);
+        return $name === false ? (string)$courseid : format_string($name, true, ['context' => \context_system::instance()]);
     }
 
     /**

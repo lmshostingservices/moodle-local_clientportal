@@ -9,6 +9,7 @@ All notable changes to the Client portal (local_clientportal) are listed here.
 - The first column on *Keep clients apart* showed "[[setting]]" instead of "Setting".
 - *Usage and billing* by plugin showed "core_ai" instead of "Moodle AI credits".
 - Clients report cards no longer read "1 assessors" or "in 1 categories".
+- The Team page's activity log showed a course number instead of the course name for teacher and enrolment changes.
 
 ## [v2.0.1] - 2026-11-13
 
