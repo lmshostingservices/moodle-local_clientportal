@@ -85,7 +85,7 @@ if ($action === 'assign' && $canassign && $pathwayid && confirm_sesskey()) {
         pathways::allocate($scope, $pathwayid, (int)$uid, $targetdate);
         $count++;
     }
-    $msg = get_string('pathwayassigned', 'local_clientportal', $count);
+    $msg = ui::count('pathwayassigned', (int)$count);
     if ($blocked) {
         $msg .= ' ' . get_string('onboard_blocked', 'local_clientportal', implode(', ', array_unique($blocked)));
     }

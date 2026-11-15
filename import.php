@@ -148,7 +148,7 @@ if (optional_param('confirm', '', PARAM_ALPHANUM) && confirm_sesskey()) {
     }
     local_clientportal\manager::log($scope->id(), 'onboarding_imported', null, (string)$count);
     [$parts, $warn] = onboarding::messages($total);
-    array_unshift($parts, get_string('import_done', 'local_clientportal', $count));
+    array_unshift($parts, ui::count('import_done', (int)$count));
     redirect($listurl, implode(' ', $parts), null, $warn ? \core\output\notification::NOTIFY_WARNING
         : \core\output\notification::NOTIFY_SUCCESS);
 }
@@ -341,7 +341,7 @@ if ($data = $form->get_data()) {
             }
             $confirm .= html_writer::tag(
                 'button',
-                get_string('import_go', 'local_clientportal', $counts['ready']),
+                ui::count('import_go', (int)$counts['ready']),
                 ['type' => 'submit', 'class' => 'btn btn-primary']
             );
             $confirm .= html_writer::end_tag('form');

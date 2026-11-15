@@ -150,6 +150,21 @@ class ui {
     }
 
     /**
+     * A count string, using the singular form (the key with _one) when the count is 1.
+     *
+     * @param string $key language string for two or more, for example 'peoplecount'
+     * @param int $count the count, also passed to the string as {$a}
+     * @return string
+     */
+    public static function count(string $key, int $count): string {
+        $manager = get_string_manager();
+        if ($count === 1 && $manager->string_exists($key . '_one', 'local_clientportal')) {
+            return get_string($key . '_one', 'local_clientportal', $count);
+        }
+        return get_string($key, 'local_clientportal', $count);
+    }
+
+    /**
      * A headline number card.
      *
      * @param string $label

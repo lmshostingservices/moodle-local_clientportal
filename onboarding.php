@@ -198,7 +198,7 @@ if (optional_param('bulk', '', PARAM_ALPHA) === 'apply' && confirm_sesskey()) {
     $total['blocked'] = array_unique($total['blocked']);
     $total['pathways'] = array_unique($total['pathways']);
     [$parts, $warn] = onboarding::messages($total);
-    array_unshift($parts, get_string('bulk_done', 'local_clientportal', $done));
+    array_unshift($parts, ui::count('bulk_done', (int)$done));
     redirect($listurl, implode(' ', $parts), null, $warn ? \core\output\notification::NOTIFY_WARNING
         : \core\output\notification::NOTIFY_SUCCESS);
 }
@@ -325,7 +325,7 @@ foreach ($rows as [$u, $staff, $mine, $notsetup]) {
 $listurl = $scope->url('/local/clientportal/onboarding.php', array_filter(['show' => $show !== 'all' ? $show : null,
     'group' => $groupid, 'search' => $search]));
 $body = html_writer::div(
-    ui::search($listurl, $search) . html_writer::span(get_string('peoplecount', 'local_clientportal', $matching), 'cport-muted'),
+    ui::search($listurl, $search) . html_writer::span(ui::count('peoplecount', (int)$matching), 'cport-muted'),
     'cport-toolbar'
 );
 $body .= html_writer::start_tag('form', ['method' => 'post', 'action' => $listurl->out(false)]);
