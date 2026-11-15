@@ -77,6 +77,33 @@ final class lmslabs_usage_test extends \advanced_testcase {
         $this->assertEquals(24, $DB->get_field_sql('SELECT SUM(quantity) FROM {local_clientportal_usage}'));
     }
 
+    public function test_named_client_is_billed_whoever_asked(): void {
+        global $DB;
+        $d = $this->setup_data();
+        $system = \context_system::instance()->id;
+        $admin = get_admin()->id;
+        // The site admin is in no client: without a client nothing can be billed.
+        $this->assertSame(0, api::record_lmslabs_call($admin, $system, 'local_trainingmatrix', ['creditsCharged' => 10], 0));
+        // The plugin says the work was for the client: billed to that client.
+        $this->assertGreaterThan(0, api::record_lmslabs_call(
+            $admin,
+            $system,
+            'local_trainingmatrix',
+            ['creditsCharged' => 10],
+            0,
+            'Competencies for a position',
+            '',
+            $d['client']
+        ));
+        $this->assertEquals($d['client'], $DB->get_field('local_clientportal_usage', 'clientid', ['userid' => $admin]));
+        // An unknown client id falls back to working it out from the person.
+        $this->assertGreaterThan(
+            0,
+            api::record_lmslabs_call($d['zoe']->id, $system, 'mod_x', ['creditsCharged' => 2], 0, '', '', 99999)
+        );
+        $this->assertEquals($d['client'], $DB->get_field('local_clientportal_usage', 'clientid', ['userid' => $d['zoe']->id]));
+    }
+
     public function test_course_is_used_when_the_plugin_cannot_see_it(): void {
         global $COURSE, $DB;
         $this->resetAfterTest();

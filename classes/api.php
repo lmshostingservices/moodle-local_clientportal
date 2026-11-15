@@ -69,6 +69,7 @@ class api {
      * @param float $fallback credits to record when the reply does not say
      * @param string $description
      * @param string $ref optional id of the charge, so it is recorded once
+     * @param int $clientid optional client the work was for; 0 to work it out from the user and course
      * @return int usage id, or 0
      */
     public static function record_lmslabs_call(
@@ -78,7 +79,8 @@ class api {
         $reply,
         float $fallback = 0,
         string $description = '',
-        string $ref = ''
+        string $ref = '',
+        int $clientid = 0
     ): int {
         global $DB, $COURSE;
         try {
@@ -101,7 +103,7 @@ class api {
                     return 0;
                 }
             }
-            return usage::record($userid, $contextid, $component, $credits, $description, 'aicredits', $source);
+            return usage::record($userid, $contextid, $component, $credits, $description, 'aicredits', $source, 0, $clientid);
         } catch (\Throwable $e) {
             // Billing must never break the plugin that called us.
             debugging('Client portal could not record usage: ' . $e->getMessage(), DEBUG_DEVELOPER);

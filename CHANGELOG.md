@@ -2,6 +2,11 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.0.4] - 2026-11-15
+
+### Added
+- LMS Labs plugins can say which client an AI action was for. The credits are then billed to that client, whoever clicked. AI Training Matrix 1.1.5 uses this for a client's own positions.
+
 ## [v2.0.3] - 2026-11-13
 
 ### Fixed
