@@ -71,6 +71,7 @@ class usage {
      * @param string $kind aicredits
      * @param string $source api|core_ai
      * @param int $sourceid
+     * @param int $clientid optional client the work was for; 0 to work it out from the user and course
      * @return int
      */
     public static function record(
@@ -81,10 +82,14 @@ class usage {
         string $description = '',
         string $kind = 'aicredits',
         string $source = 'api',
-        int $sourceid = 0
+        int $sourceid = 0,
+        int $clientid = 0
     ): int {
         global $DB;
-        $clientid = self::client_for($userid, $contextid);
+        // A plugin may say which client the work was for (for example a client's own position).
+        if ($clientid <= 0 || !$DB->record_exists('local_clientportal_client', ['id' => $clientid])) {
+            $clientid = self::client_for($userid, $contextid);
+        }
         if (!$clientid || $quantity == 0) {
             return 0;
         }
