@@ -72,7 +72,7 @@ if ($action && confirm_sesskey()) {
             }
             $userids = array_filter($userids, fn($u) => scope::is_learner($scope->id(), (int)$u));
             $n = $userids ? courses::enrol_learners($scope, $id, $userids) : 0;
-            redirect($baseurl, get_string('learnersenrolled', 'local_clientportal', $n), null, $ok);
+            redirect($baseurl, ui::count('learnersenrolled', (int)$n), null, $ok);
             break;
         case 'unenrol':
             courses::unenrol_learner($scope, $id, required_param('user', PARAM_INT));

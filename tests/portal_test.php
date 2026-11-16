@@ -207,4 +207,17 @@ final class portal_test extends \advanced_testcase {
             $this->assertFileExists($CFG->dirroot . '/local/clientportal/pix/help/' . $guide['shot'] . '.jpg');
         }
     }
+
+    /**
+     * Counts read naturally: one learner, two learners.
+     */
+    public function test_count_strings_use_the_singular_for_one(): void {
+        $this->assertSame('1 person', \local_clientportal\ui::count('peoplecount', 1));
+        $this->assertSame('2 people', \local_clientportal\ui::count('peoplecount', 2));
+        $this->assertSame('0 people', \local_clientportal\ui::count('peoplecount', 0));
+        $this->assertStringStartsWith('1 learner doesn', \local_clientportal\ui::count('notsetupcount', 1));
+        $this->assertSame('1 day', \local_clientportal\ui::count('daysago', 1));
+        // A key without a singular form falls back to the normal string.
+        $this->assertSame(get_string('pluginname', 'local_clientportal'), \local_clientportal\ui::count('pluginname', 1));
+    }
 }

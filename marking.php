@@ -46,11 +46,13 @@ $oldest = $items ? min(array_map(fn($i) => $i->oldest, $items)) : null;
 echo html_writer::start_div('cport-stats');
 echo ui::stat(get_string('stat_towork', 'local_clientportal'), $total, '', $total ? 'warn' : 'good');
 echo ui::stat(get_string('stat_activities', 'local_clientportal'), count($items));
-echo ui::stat(get_string('stat_oldest', 'local_clientportal'), $oldest ? get_string(
-    'daysago',
-    'local_clientportal',
-    (int)floor((time() - $oldest) / DAYSECS)
-) : '–', '', $oldest && $oldest < time() - 7 * DAYSECS ? 'warn' : 'neutral');
+$oldestdays = $oldest ? ui::count('daysago', (int)floor((time() - $oldest) / DAYSECS)) : '–';
+echo ui::stat(
+    get_string('stat_oldest', 'local_clientportal'),
+    $oldestdays,
+    '',
+    $oldest && $oldest < time() - 7 * DAYSECS ? 'warn' : 'neutral'
+);
 echo html_writer::end_div();
 
 if (!$items) {

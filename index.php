@@ -105,7 +105,7 @@ if ($hasmatrix || $haspathways) {
         echo ui::stat(
             get_string('stat_compliance', 'local_clientportal'),
             ($req ? (int)round($done * 100 / $req) : 0) . '%',
-            get_string('stat_complianceof', 'local_clientportal', count($compliance)),
+            ui::count('stat_complianceof', count($compliance)),
             'good'
         );
         echo ui::stat(get_string('comp_expired', 'local_clientportal'), $expired, '', $expired ? 'warn' : 'neutral');

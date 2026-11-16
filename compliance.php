@@ -182,12 +182,12 @@ echo ui::stat(
 echo html_writer::end_div();
 
 $toolbar = html_writer::div($filters . ui::search($baseurl, $search) . html_writer::span(
-    get_string('peoplecount', 'local_clientportal', count($people)),
+    ui::count('peoplecount', count($people)),
     'cport-muted'
 ), 'cport-toolbar');
 if ($notsetup > 0 && $scope->is_manager()) {
     $toolbar .= html_writer::div(
-        get_string('notsetupcount', 'local_clientportal', $notsetup) . ' ' .
+        ui::count('notsetupcount', (int)$notsetup) . ' ' .
         html_writer::link(
             $scope->url('/local/clientportal/onboarding.php', ['show' => 'notsetup']),
             get_string('setupnow', 'local_clientportal')

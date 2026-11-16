@@ -2,6 +2,11 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.0.5] - 2026-11-15
+
+### Fixed
+- Counts of one read correctly, for example "1 learner doesn't have a role yet" and "1 person", instead of "1 learners" and "1 people".
+
 ## [v2.0.4] - 2026-11-15
 
 ### Added
