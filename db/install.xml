@@ -161,5 +161,20 @@
         <KEY NAME="clientid" TYPE="foreign" FIELDS="clientid" REFTABLE="local_clientportal_client" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
+    <TABLE NAME="local_clientportal_main" COMMENT="Each person's main client: sets their branding and who is billed when it is not otherwise clear.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="clientid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="clientid" TYPE="foreign" FIELDS="clientid" REFTABLE="local_clientportal_client" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>
+      </INDEXES>
+    </TABLE>
   </TABLES>
 </XMLDB>

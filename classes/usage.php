@@ -56,8 +56,13 @@ class usage {
         $sql = "SELECT c.id
                   FROM {local_clientportal_client} c
                   JOIN {cohort_members} cm ON cm.cohortid = c.cohortid AND cm.userid = :userid";
-        $clients = $DB->get_fieldset_sql($sql, ['userid' => $userid]);
-        return count($clients) === 1 ? (int)reset($clients) : 0;
+        $clients = array_map('intval', $DB->get_fieldset_sql($sql, ['userid' => $userid]));
+        if (count($clients) === 1) {
+            return reset($clients);
+        }
+        // Several clients: the person's main client pays.
+        $main = people::main_client($userid);
+        return in_array($main, $clients, true) ? $main : 0;
     }
 
     /**
@@ -117,6 +122,10 @@ class usage {
         foreach ($rows as $r) {
             $last = max($last, (int)$r->id);
             if (empty($r->success)) {
+                continue;
+            }
+            // Already billed when the action ran (for example by the portal's own AI features).
+            if ($DB->record_exists('local_clientportal_usage', ['source' => 'core_ai', 'sourceid' => (int)$r->id])) {
                 continue;
             }
             $credits = self::ai_credits((string)$r->actionname);

@@ -67,6 +67,12 @@ if ($hassiteconfig || has_capability('local/clientportal:manageclients', context
             1
         ));
         $settings->add(new admin_setting_configcheckbox(
+            'local_clientportal/oneaccount',
+            get_string('oneaccount', 'local_clientportal'),
+            get_string('oneaccount_desc', 'local_clientportal'),
+            1
+        ));
+        $settings->add(new admin_setting_configcheckbox(
             'local_clientportal/showemail',
             get_string('showemail', 'local_clientportal'),
             get_string('showemail_desc', 'local_clientportal'),

@@ -62,7 +62,7 @@ if ($mode === 'existing' && ($data = $existing->get_data())) {
         $user = manager::create_staff($clientid, $data->firstname, $data->lastname, $data->email, $data->role);
         redirect(
             $pageurl,
-            get_string('staffcreated', 'local_clientportal', s($user->email)),
+            get_string($user->existing ? 'staffaddedexisting' : 'staffcreated', 'local_clientportal', s($user->email)),
             null,
             \core\output\notification::NOTIFY_SUCCESS
         );

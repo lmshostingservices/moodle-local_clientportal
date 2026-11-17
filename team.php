@@ -51,7 +51,7 @@ if ($action && confirm_sesskey() && !$scope->support) {
             );
             redirect(
                 $teamurl,
-                get_string('staffcreated', 'local_clientportal', s($user->email)),
+                get_string($user->existing ? 'staffaddedexisting' : 'staffcreated', 'local_clientportal', s($user->email)),
                 null,
                 \core\output\notification::NOTIFY_SUCCESS
             );
@@ -75,6 +75,7 @@ if ($action && confirm_sesskey() && !$scope->support) {
 echo ui::header($scope, 'team', get_string('nav_team', 'local_clientportal'));
 
 $members = manager::get_members($scope->id());
+$others = \local_clientportal\people::other_client_counts(array_map(fn($m) => (int)$m->id, $members), $scope->id());
 $table = new html_table();
 $table->attributes['class'] = 'table cport-table';
 $table->head = [get_string('name'), get_string('email'), get_string('role', 'local_clientportal'),
@@ -102,7 +103,7 @@ function local_clientportal_team_button(moodle_url $url, array $fields, string $
 }
 
 foreach ($members as $m) {
-    $row = [html_writer::span(fullname($m), 'cport-name'), s($m->email),
+    $row = [html_writer::span(fullname($m), 'cport-name') . ui::other_clients_badge($others[$m->id] ?? 0), s($m->email),
         get_string('role_' . $m->role, 'local_clientportal'), ui::date($m->lastaccess ? (int)$m->lastaccess : null, true)];
     if ($canassessors) {
         $row[] = $scope->support ? ($m->assessor ? get_string('yes') : get_string('no')) : local_clientportal_team_button(
@@ -125,6 +126,18 @@ echo ui::card(
     html_writer::div(html_writer::table($table), 'cport-table-wrap') .
     html_writer::div(get_string('teamhelp', 'local_clientportal') . ($canassessors ? ' ' .
         get_string('assessorhelp', 'local_clientportal') : ''), 'cport-pad cport-muted')
+);
+
+$loginurl = \local_clientportal\branding::login_url($scope->id())->out(false);
+echo ui::card(
+    get_string('signinlink', 'local_clientportal'),
+    html_writer::div(
+        html_writer::div(get_string('signinlink_help', 'local_clientportal'), 'cport-muted mb-2') .
+        html_writer::empty_tag('input', ['type' => 'text', 'readonly' => 'readonly', 'value' => $loginurl,
+            'class' => 'form-control cport-copyfield', 'aria-label' => get_string('signinlink', 'local_clientportal'),
+            'onclick' => 'this.select()']),
+        'cport-pad'
+    )
 );
 
 if ($canteachers && !$scope->support) {

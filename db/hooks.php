@@ -36,4 +36,16 @@ $callbacks = [
         'hook' => \core\hook\output\before_standard_top_of_body_html_generation::class,
         'callback' => [\local_clientportal\guard::class, 'top_of_body'],
     ],
+    [
+        'hook' => \core\hook\output\before_standard_top_of_body_html_generation::class,
+        'callback' => [\local_clientportal\branding::class, 'top_of_body'],
+    ],
+    [
+        'hook' => \core\hook\output\before_standard_head_html_generation::class,
+        'callback' => [\local_clientportal\branding::class, 'head'],
+    ],
+    [
+        'hook' => \core\hook\navigation\primary_extend::class,
+        'callback' => [\local_clientportal\catalogue::class, 'primary_navigation'],
+    ],
 ];

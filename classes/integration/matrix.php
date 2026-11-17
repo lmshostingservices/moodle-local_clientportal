@@ -215,14 +215,19 @@ class matrix {
                FROM {local_tm_staff} s
                JOIN {user} u ON u.id = s.userid
                $join
-              WHERE $where AND s.status = 'active' $limit
+              WHERE $where AND s.status = 'active' AND (s.clientid = :stowner OR s.clientid = 0) $limit
            ORDER BY s.id"),
-            $params
+            $params + ['stowner' => $scope->id()]
         );
         $out = [];
         foreach ($rows as $r) {
-            // One active record per person; the newest wins.
-            $out[(int)$r->userid] = $r;
+            // A person can hold positions with several clients: only this client's record counts, and a record
+            // not tied to any client is used only when this client has none.
+            $userid = (int)$r->userid;
+            if (isset($out[$userid]) && (int)$out[$userid]->clientid === $scope->id() && (int)$r->clientid === 0) {
+                continue;
+            }
+            $out[$userid] = $r;
         }
         return $out;
     }
@@ -344,11 +349,19 @@ class matrix {
         ];
         $record = array_intersect_key($record, $columns);
         $transaction = $DB->start_delegated_transaction();
-        $existing = $DB->get_record(self::t('local_tm_staff'), ['userid' => $userid, 'status' => 'active'], '*', IGNORE_MULTIPLE);
-        if ($existing) {
-            if ((int)($existing->clientid ?? 0) !== 0 && (int)$existing->clientid !== $scope->id()) {
-                throw new moodle_exception('error_otherclientstaff', 'local_clientportal');
+        // One staff record per client: a person can hold a position with several clients.
+        $where = ['userid' => $userid, 'status' => 'active'];
+        $existing = null;
+        if (isset($columns['clientid'])) {
+            $existing = $DB->get_record(self::t('local_tm_staff'), $where + ['clientid' => $scope->id()], '*', IGNORE_MULTIPLE);
+            if (!$existing) {
+                // A record not yet tied to any client is taken over by this client.
+                $existing = $DB->get_record(self::t('local_tm_staff'), $where + ['clientid' => 0], '*', IGNORE_MULTIPLE);
             }
+        } else {
+            $existing = $DB->get_record(self::t('local_tm_staff'), $where, '*', IGNORE_MULTIPLE);
+        }
+        if ($existing) {
             $record['id'] = $existing->id;
             $DB->update_record(self::t('local_tm_staff'), (object)$record);
         } else {
