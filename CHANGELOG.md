@@ -2,6 +2,11 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.1.1] - 2026-11-17
+
+### Changed
+- Changing a person's main organisation updates their branding straight away (with Cohort Branding 1.4.3, which brands people by their main organisation).
+
 ## [v2.1.0] - 2026-11-17
 
 ### Added
