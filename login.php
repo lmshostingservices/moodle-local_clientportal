@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// pipeline-no-login: public sign-in link; it only remembers which client's branding to show, then opens the sign-in page.
+// pipeline-no-login: public sign-in link; it remembers the client's branding, then opens sign-in.
 // phpcs:ignore moodle.Files.RequireLogin.Missing
 require(__DIR__ . '/../../config.php');
 
