@@ -188,6 +188,7 @@ class manager {
     public static function delete_client(int $clientid): void {
         global $DB;
         $transaction = $DB->start_delegated_transaction();
+        $mainusers = $DB->get_fieldset_select('local_clientportal_main', 'userid', 'clientid = ?', [$clientid]);
         $DB->set_field('local_clientportal_client', 'features', '', ['id' => $clientid]);
         courses::sync_roles($clientid);
         foreach ($DB->get_records('local_clientportal_member', ['clientid' => $clientid]) as $member) {
@@ -203,7 +204,11 @@ class manager {
         $DB->delete_records('local_clientportal_log', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_usage', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_invoice', ['clientid' => $clientid]);
+        $DB->delete_records('local_clientportal_main', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_client', ['id' => $clientid]);
+        foreach ($mainusers as $userid) {
+            people::ensure_main((int)$userid);
+        }
         $transaction->allow_commit();
         guard::reset_cache();
     }
@@ -270,7 +275,7 @@ class manager {
             }
             return;
         }
-        if (enrol_get_all_users_courses($userid, false)) {
+        if (!people::one_account() && enrol_get_all_users_courses($userid, false)) {
             throw new moodle_exception('error_staffenrolled', 'local_clientportal', '', fullname($user));
         }
         $transaction = $DB->start_delegated_transaction();
@@ -284,6 +289,7 @@ class manager {
         // Staff are not learners: take them out of any client groups.
         self::remove_user_from_client_groups($clientid, $userid);
         cohort_add_member($client->cohortid, $userid);
+        people::ensure_main($userid);
         role_assign(self::role_id(), $userid, context_system::instance()->id, 'local_clientportal');
         self::log($clientid, 'staff_added', $userid, $role);
         $transaction->allow_commit();
@@ -323,14 +329,15 @@ class manager {
     }
 
     /**
-     * Create a new account for a staff member, email them a password, and add them to the client.
+     * Add a staff member by email. Someone who already has an account keeps it (one person, one account);
+     * otherwise a new account is created and emailed a password. Either way they join the client.
      *
      * @param int $clientid
      * @param string $firstname
      * @param string $lastname
      * @param string $email
      * @param string $role
-     * @return stdClass the new user
+     * @return stdClass the user; ->existing is true when an account was already there
      */
     public static function create_staff(int $clientid, string $firstname, string $lastname, string $email, string $role): stdClass {
         global $CFG, $DB;
@@ -338,6 +345,11 @@ class manager {
         $email = trim($email);
         if (!validate_email($email)) {
             throw new moodle_exception('invalidemail');
+        }
+        if ($found = people::find_by_email($email)) {
+            self::add_member($clientid, (int)$found->id, $role);
+            $found->existing = true;
+            return $found;
         }
         $username = \core_text::strtolower($email);
         if ($DB->record_exists('user', ['username' => $username, 'mnethostid' => $CFG->mnet_localhost_id])) {
@@ -353,10 +365,13 @@ class manager {
             'email' => $email,
             'password' => '',
         ];
-        $user->id = user_create_user($user, false, true);
+        // Moodle 5.3 moved user creation to \core\user::create_user().
+        $user->id = method_exists('\\core\\user', 'create_user')
+            ? \core\user::create_user($user, false, true) : user_create_user($user, false, true);
         set_user_preference('auth_forcepasswordchange', 1, $user->id);
         setnew_password_and_mail($DB->get_record('user', ['id' => $user->id]));
         self::add_member($clientid, (int)$user->id, $role);
+        $user->existing = false;
         return $user;
     }
 

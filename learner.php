@@ -40,6 +40,15 @@ $courseid = optional_param('course', 0, PARAM_INT);
 $params = ['id' => $userid] + ($courseid ? ['course' => $courseid] : []);
 $scope = scope::require_portal(new moodle_url('/local/clientportal/learner.php', $params));
 $learner = $scope->require_learner($userid);
+if ($scope->support && optional_param('makemain', 0, PARAM_BOOL) && confirm_sesskey()) {
+    \local_clientportal\people::set_main_client($userid, $scope->id());
+    redirect(
+        $scope->url('/local/clientportal/learner.php', ['id' => $userid]),
+        get_string('mainclientset', 'local_clientportal'),
+        null,
+        \core\output\notification::NOTIFY_SUCCESS
+    );
+}
 $report = new report($scope);
 $rows = $report->enrolments([$userid]);
 $groups = $report->user_groups([$userid])[$userid] ?? [];
@@ -93,6 +102,19 @@ if ($compliance) {
         get_string('notsetup', 'local_clientportal'),
         'cport-pill cport-pill-notstarted'
     );
+}
+$otherclients = \local_clientportal\people::other_client_counts([$userid], $scope->id())[$userid] ?? 0;
+if ($otherclients) {
+    $ismain = \local_clientportal\people::main_client($userid) === $scope->id();
+    $mainvalue = get_string($ismain ? 'mainclient_this' : 'mainclient_other', 'local_clientportal');
+    if (!$ismain && $scope->support) {
+        $mainvalue .= ' ' . html_writer::link(
+            $scope->url('/local/clientportal/learner.php', ['id' => $userid, 'makemain' => 1, 'sesskey' => sesskey()]),
+            get_string('mainclient_make', 'local_clientportal'),
+            ['class' => 'btn btn-sm btn-outline-primary ms-2']
+        );
+    }
+    $items[get_string('mainclient', 'local_clientportal')] = $mainvalue . ui::other_clients_badge($otherclients);
 }
 $items[get_string('nav_courses', 'local_clientportal')] = count($rows);
 $items[get_string('status_completed', 'local_clientportal')] = $completed;

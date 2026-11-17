@@ -96,5 +96,27 @@ function xmldb_local_clientportal_upgrade($oldversion) {
         \local_clientportal\courses::ensure_roles();
         upgrade_plugin_savepoint(true, 2026111310, 'local', 'clientportal');
     }
+
+    if ($oldversion < 2026111700) {
+        $table = new xmldb_table('local_clientportal_main');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('clientid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('clientid', XMLDB_KEY_FOREIGN, ['clientid'], 'local_clientportal_client', ['id']);
+            $table->add_index('userid', XMLDB_INDEX_UNIQUE, ['userid']);
+            $dbman->create_table($table);
+        }
+        // Everyone already in a client gets a main client.
+        $userids = $DB->get_fieldset_sql('SELECT DISTINCT cm.userid
+                                            FROM {cohort_members} cm
+                                            JOIN {local_clientportal_client} c ON c.cohortid = cm.cohortid');
+        foreach ($userids as $userid) {
+            \local_clientportal\people::ensure_main((int)$userid);
+        }
+        upgrade_plugin_savepoint(true, 2026111700, 'local', 'clientportal');
+    }
     return true;
 }

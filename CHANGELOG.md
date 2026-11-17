@@ -2,6 +2,22 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.1.0] - 2026-11-17
+
+### Added
+- One account across organisations. A person can be a learner with one client and a trainer, assessor or manager with another, with a single sign-in. Adding staff by email reuses their existing account instead of creating a second one. Staff who are also learners can open their own courses, dashboard and learner pages as well as the portal, and get a "My learning" button in the portal bar. New setting *One account across organisations* (on).
+- Main organisation. Everyone in a client has a main organisation, set automatically when they first join a client and moved when they leave it. When usage cannot be tied to a client's course, the main organisation is billed. Training providers can change it on the learner's page.
+- "Also with another organisation" badge on the learners list, team list and learner page. The other organisation's name is never shown.
+- A person can hold a Training Matrix position with several clients. Each client sees only its own position for that person.
+- Branded sign-in. Each client has its own sign-in link (Team page) that opens the sign-in page with the client's logo, colours and name, using its Cohort Branding. The link cannot be guessed, and inactive clients have none. With the Premium SaaS theme the theme's sign-in panel takes on the client's colour and logo.
+- Course catalogue for learners. Every course from their organisations, plus the site's courses open to join (self enrolment or a fee), in tiles or a list, sorted by newest, name or price, with search. Another client's courses are never listed. Linked from the main navigation.
+- Build your structure with AI (Onboarding page). A manager describes the organisation and the AI suggests departments, positions and the competencies each position needs. The manager unticks or renames items, then creates them in Training Matrix in one go. Existing departments, positions and competencies are reused, never duplicated.
+- Ask about this report (Reports page). Plain-language questions about the progress report, with suggested questions. Learner names are not sent to the AI (they are sent as codes and put back on screen), and the rows shown with the answer come from the report itself. Uses up to 500 rows with the current filters.
+- Both AI features use the site's Moodle AI providers, ask people to accept the site's AI policy first, and bill the AI credits to the client.
+
+### Changed
+- Moodle 5.3: new staff accounts are created with \core\user::create_user() (user_create_user() is deprecated).
+
 ## [v2.0.5] - 2026-11-15
 
 ### Fixed

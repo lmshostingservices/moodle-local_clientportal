@@ -79,8 +79,9 @@ final class portal_test extends \advanced_testcase {
         $this->assertFalse(user_has_role_assignment($d['mgr']->id, manager::role_id(), \context_system::instance()->id));
     }
 
-    public function test_enrolled_users_cannot_be_staff(): void {
+    public function test_enrolled_users_cannot_be_staff_when_one_account_is_off(): void {
         $d = $this->setup_clients();
+        set_config('oneaccount', 0, 'local_clientportal');
         $course = $this->getDataGenerator()->create_course();
         $this->getDataGenerator()->enrol_user($d['zoe']->id, $course->id);
         $this->expectException(\moodle_exception::class);

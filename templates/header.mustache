@@ -31,7 +31,8 @@
         "rolename": "Client manager",
         "logouturl": "#",
         "support": false,
-        "adminurl": "#"
+        "adminurl": "#",
+        "mylearningurl": "#"
     }
 }}
     {{#support}}
@@ -63,6 +64,7 @@
                 <span class="cport-user-name">{{username}}</span>
                 <span class="cport-user-role">{{rolename}}</span>
             </span>
+            {{#mylearningurl}}<a class="btn btn-sm btn-outline-primary" href="{{mylearningurl}}">{{#str}}mylearning, local_clientportal{{/str}}</a>{{/mylearningurl}}
             <a class="btn btn-sm btn-outline-secondary" href="{{logouturl}}">{{#str}}logout{{/str}}</a>
         </div>
     </header>

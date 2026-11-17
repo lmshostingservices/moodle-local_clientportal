@@ -60,6 +60,66 @@ class guard {
         '/help_ajax.php',
     ];
 
+    /** Pages client staff may also open when they are learners too (one account for both). */
+    private const LEARNER_PAGES = [
+        '/my/',
+        '/course/view.php',
+        '/user/profile.php',
+        '/user/edit.php',
+        '/user/preferences.php',
+        '/grade/report/overview/',
+        '/calendar/',
+        '/message/',
+        '/badges/mybadges.php',
+        '/local/trainingmatrix/my.php',
+        '/local/clientportal/catalogue.php',
+        '/enrol/index.php',
+        '/payment/',
+        // The Premium SaaS theme's own versions of the learner pages above.
+        '/theme/lmslabs/courses.php',
+        '/theme/lmslabs/profile.php',
+        '/theme/lmslabs/mygrades.php',
+        '/theme/lmslabs/mybadges.php',
+        '/theme/lmslabs/calendar.php',
+        '/theme/lmslabs/messages.php',
+        '/theme/lmslabs/notifications.php',
+        '/theme/lmslabs/notifprefs.php',
+        '/theme/lmslabs/prefs.php',
+    ];
+
+    /** @var array userid => bool learner cache */
+    private static array $learnercache = [];
+
+    /**
+     * Is this client staff member also a learner (enrolled in a course that is not owned by a client they are
+     * staff of)? Only when one account for learning and client roles is allowed.
+     *
+     * @param int|null $userid
+     * @return bool
+     */
+    public static function is_also_learner(?int $userid = null): bool {
+        global $DB, $USER;
+        $userid = $userid ?? (int)($USER->id ?? 0);
+        if ($userid <= 0 || !people::one_account()) {
+            return false;
+        }
+        if (!array_key_exists($userid, self::$learnercache)) {
+            $staffof = array_map(
+                'intval',
+                $DB->get_fieldset_select('local_clientportal_member', 'clientid', 'userid = ?', [$userid])
+            );
+            $learner = false;
+            foreach (enrol_get_all_users_courses($userid, true, 'id') as $course) {
+                if (!in_array(courses::owner((int)$course->id), $staffof, true)) {
+                    $learner = true;
+                    break;
+                }
+            }
+            self::$learnercache[$userid] = $learner;
+        }
+        return self::$learnercache[$userid];
+    }
+
     /**
      * Is this user client staff (and so locked to the portal)? Site admins never are.
      *
@@ -87,8 +147,9 @@ class guard {
     public static function reset_cache(?int $userid = null): void {
         if ($userid === null) {
             self::$cache = [];
+            self::$learnercache = [];
         } else {
-            unset(self::$cache[$userid]);
+            unset(self::$cache[$userid], self::$learnercache[$userid]);
         }
     }
 
@@ -140,6 +201,18 @@ class guard {
         }
         if ($courseid > SITEID && self::in_client_course($courseid)) {
             return;
+        }
+        // Staff who are also learners: their own courses and learner pages.
+        if (self::is_also_learner()) {
+            $coursecontext = $courseid > SITEID ? \context_course::instance($courseid, IGNORE_MISSING) : null;
+            if ($coursecontext && is_enrolled($coursecontext, null, '', true)) {
+                return;
+            }
+            foreach (self::LEARNER_PAGES as $prefix) {
+                if (strpos($script, $prefix) === 0) {
+                    return;
+                }
+            }
         }
         redirect(new moodle_url('/local/clientportal/index.php'));
     }

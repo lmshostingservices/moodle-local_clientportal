@@ -136,8 +136,10 @@ if ($hasmatrix) {
 $table->head = array_merge($table->head, [get_string('nav_courses', 'local_clientportal'),
     get_string('status_completed', 'local_clientportal'), get_string('status_inprogress', 'local_clientportal'),
     get_string('status_notstarted', 'local_clientportal'), $sortlink('lastaccess', get_string('lastlogin', 'local_clientportal'))]);
+$others = \local_clientportal\people::other_client_counts(array_keys($learners), $scope->id());
 foreach ($learners as $u) {
     $name = html_writer::link($scope->url('/local/clientportal/learner.php', ['id' => $u->id]), fullname($u));
+    $name .= ui::other_clients_badge($others[$u->id] ?? 0);
     if ($showemail) {
         $name .= html_writer::div(s($u->email), 'cport-muted');
     }

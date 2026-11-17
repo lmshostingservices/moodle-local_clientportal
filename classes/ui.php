@@ -104,6 +104,8 @@ class ui {
             'logouturl' => (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false),
             'support' => $scope->support,
             'adminurl' => (new moodle_url('/local/clientportal/admin/clients.php'))->out(false),
+            'mylearningurl' => !$scope->support && guard::is_also_learner()
+                ? (new moodle_url('/my/courses.php'))->out(false) : '',
         ];
         $bar = $OUTPUT->render_from_template('local_clientportal/header', $context);
         $titlebar = $title === null ? '' : html_writer::div(
@@ -112,6 +114,23 @@ class ui {
         );
         return $OUTPUT->header() . html_writer::start_div('cport-shell') . $bar .
             html_writer::start_div('cport-main') . $titlebar;
+    }
+
+    /**
+     * Badge for a person who also belongs to other clients. Names are never shown.
+     *
+     * @param int $others number of other clients
+     * @return string
+     */
+    public static function other_clients_badge(int $others): string {
+        if ($others <= 0) {
+            return '';
+        }
+        return ' ' . html_writer::span(
+            get_string('alsoother', 'local_clientportal'),
+            'cport-pill cport-pill-other',
+            ['title' => self::count('alsoother_title', $others)]
+        );
     }
 
     /**

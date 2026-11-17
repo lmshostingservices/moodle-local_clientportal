@@ -59,6 +59,18 @@ class observer {
     }
 
     /**
+     * Someone joined a client cohort: make sure they have a main client.
+     *
+     * @param \core\event\cohort_member_added $event
+     */
+    public static function cohort_member_added(\core\event\cohort_member_added $event): void {
+        global $DB;
+        if ($DB->record_exists('local_clientportal_client', ['cohortid' => $event->objectid])) {
+            people::ensure_main((int)$event->relateduserid);
+        }
+    }
+
+    /**
      * Someone left a client cohort: they leave its groups; staff stop being staff.
      *
      * @param \core\event\cohort_member_removed $event
@@ -74,6 +86,7 @@ class observer {
         if ($DB->record_exists('local_clientportal_member', ['clientid' => $client->id, 'userid' => $userid])) {
             manager::remove_member((int)$client->id, $userid);
         }
+        people::ensure_main($userid);
     }
 
     /**
@@ -99,6 +112,7 @@ class observer {
         $DB->delete_records('local_clientportal_member', ['userid' => $userid]);
         $DB->delete_records('local_clientportal_groupmem', ['userid' => $userid]);
         $DB->delete_records('local_clientportal_enrol', ['userid' => $userid]);
+        $DB->delete_records('local_clientportal_main', ['userid' => $userid]);
         guard::reset_cache($userid);
     }
 

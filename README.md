@@ -17,6 +17,9 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 - **Courses (when switched on for the client):** the client's own hidden category; managers create categories and courses, open them in Moodle to add content, add teachers and enrol learners (one by one, a group, or everyone automatically).
 - **Trainers and assessors (when switched on):** managers add their own trainers, who see only the courses they teach; assessors mark in every course of the client.
 - **Marking:** work waiting to be marked in the client's courses.
+- **Build your structure with AI (managers, with Training Matrix):** describe the organisation; review and edit the suggested departments, positions and competencies; create them in one go.
+- **Ask about this report:** plain-language questions about the progress report, answered from the report's own rows. Learner names are never sent to the AI.
+- **Your sign-in link (Team page):** a link to a sign-in page with the client's logo and colours.
 - **Team and activity log (managers only):** who has portal access, plus a log of portal actions such as exports, certificate downloads and group changes.
 
 ## Privacy rules
@@ -25,7 +28,11 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 - A client sees a learner's progress only in courses it **owns**. A learner who also studies through another client, or privately, keeps those courses private.
 - When a learner who belongs to exactly one client is enrolled, that client owns the enrolment automatically. Learners in two or more clients are left for an administrator to assign under *Owned enrolments*.
 - Onboarding, compliance and pathways show only the client's own learners, and only the client's own or shared (client "0") departments, positions, competencies and pathways. Client staff never open the Training Matrix or Training Pathways pages; everything happens inside the portal.
-- Client staff need an account with no course enrolments. Site administrators are never locked into the portal.
+- One person keeps one account across clients: a learner with one client can be staff with another. Staff who are also learners can open their own courses and learner pages; everything else stays inside the portal. Turn off *One account across organisations* to require separate staff accounts with no enrolments.
+- Each person has a main organisation, which is billed when usage can't be tied to a client's course. Other clients see only that a person is "Also with another organisation", never which one.
+- The course catalogue lists a learner's own organisations' courses and the site's open courses, never another client's courses.
+- AI features send learner codes, not names, and bill the AI credits to the client. People accept the site's AI policy first.
+- Site administrators are never locked into the portal.
 
 ## Set up
 
@@ -58,13 +65,14 @@ or any other usage with:
 
 Install AI Training Matrix 1.1.1 or later and/or Training Pathways 1.1.0 or later. Set each department, position, competency and pathway's client there (or leave it shared). The Onboarding, Compliance and Pathways tabs appear in the portal on their own.
 
-Two settings (*Client portal > Settings*):
+Settings (*Client portal > Settings*):
+- *One account across organisations* (on).
 - *Onboarding enrols learners* (on): onboarding enrols learners in the courses they need. Turn off if your team enrols learners itself.
 - *Client managers can sign off pathway steps* (on).
 
 ## Requirements
 
-Moodle 4.4 to 5.3. Optional: local_cohortbranding, mod_customcert, tool_certificate, local_trainingmatrix (1.1.1+), local_trainingpathways (1.1.0+).
+Moodle 4.4 to 5.3. The AI features need a Moodle AI provider (Site administration > AI) with Generate text turned on. Optional: local_cohortbranding, mod_customcert, tool_certificate, local_trainingmatrix (1.1.1+), local_trainingpathways (1.1.0+).
 
 ## Coming next
 

@@ -243,6 +243,13 @@ $import = html_writer::link(
     get_string('importcsv', 'local_clientportal'),
     ['class' => 'btn btn-outline-secondary']
 );
+if ($hasmatrix && !$scope->support) {
+    $import .= ' ' . html_writer::link(
+        $scope->url('/local/clientportal/structure.php'),
+        get_string('structure_button', 'local_clientportal'),
+        ['class' => 'btn btn-primary']
+    );
+}
 echo ui::header($scope, 'onboarding', get_string('nav_onboarding', 'local_clientportal'), $filters . $import);
 
 echo html_writer::start_div('cport-stats');

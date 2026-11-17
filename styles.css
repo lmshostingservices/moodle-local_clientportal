@@ -294,6 +294,10 @@ table.cport-table tbody tr:hover {
     background: #eff4ff;
     color: #1d4ed8;
 }
+.cport-pill-other {
+    background: #f4ebff;
+    color: #6941c6;
+}
 .cport-pill-notstarted {
     background: #f2f4f7;
     color: #475467;
@@ -1292,4 +1296,199 @@ body.local-clientportal .cport-form .mform .ftoggler h3 {
     .cport-ar-charts {
         grid-template-columns: 1fr;
     }
+}
+
+.cport-loginbrand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 16px 14px;
+    background: #fff;
+    text-align: center;
+}
+.cport-loginbrand-logo {
+    max-height: 56px;
+    max-width: 260px;
+}
+.cport-loginbrand-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.cport-copyfield {
+    font-family: monospace;
+    font-size: .85rem;
+}
+
+.cport-cat-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.cport-cat-tools input[type="search"] {
+    flex: 1 1 260px;
+    max-width: 420px;
+}
+.cport-cat-tools .form-select,
+.cport-cat-tools .custom-select {
+    width: auto;
+}
+.cport-cat-toggle {
+    margin-left: auto;
+}
+.cport-cat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.cport-cat-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+.cport-cat-item {
+    display: flex;
+    border: 1px solid #e4e7ec;
+    border-radius: 12px;
+    background: #fff;
+    overflow: hidden;
+}
+.cport-cat-tiles .cport-cat-item {
+    flex-direction: column;
+}
+.cport-cat-list .cport-cat-item {
+    margin-bottom: 12px;
+}
+.cport-cat-img {
+    display: block;
+    object-fit: cover;
+    background: #eef2f6;
+}
+.cport-cat-tiles .cport-cat-img {
+    width: 100%;
+    height: 140px;
+}
+.cport-cat-list .cport-cat-img {
+    width: 160px;
+    min-height: 110px;
+    flex: 0 0 160px;
+}
+.cport-cat-noimg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #98a2b3;
+}
+.cport-cat-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px 16px;
+    flex: 1;
+}
+.cport-cat-body .btn {
+    align-self: flex-start;
+    margin-top: auto;
+}
+.cport-cat-name {
+    font-size: 1.05rem;
+    margin: 0;
+}
+.cport-cat-summary {
+    margin: 0;
+    color: #475467;
+    font-size: .9rem;
+}
+
+.cport-st-dept {
+    border: 1px solid #e4e7ec;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    background: #fff;
+}
+.cport-st-pos {
+    margin: 10px 0 0 26px;
+    padding-left: 12px;
+    border-left: 3px solid #eef2f6;
+}
+.cport-st-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.cport-st-row .form-control {
+    max-width: 420px;
+}
+.cport-st-deptname {
+    font-weight: 700;
+}
+.cport-st-posname {
+    font-weight: 600;
+}
+.cport-st-desc {
+    margin: 2px 0 0 26px;
+}
+.cport-st-comps {
+    list-style: none;
+    margin: 6px 0 0 26px;
+    padding: 0;
+}
+.cport-st-comp {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f2f4f7;
+}
+.cport-st-comp .cport-st-desc {
+    flex-basis: 100%;
+}
+.cport-st-mand {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    font-size: .85rem;
+    margin: 0;
+}
+.cport-st-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+.cport-st-peoplefield {
+    max-width: 220px;
+}
+
+.cport-ask-row {
+    display: flex;
+    gap: 8px;
+}
+.cport-ask-row .form-control {
+    flex: 1;
+}
+.cport-ask-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0 6px;
+}
+.cport-ask-answer {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f4f8ff;
+    border: 1px solid #d6e4ff;
+}
+.cport-ask-rowshead {
+    margin: 14px 0 6px;
+    font-weight: 600;
+}
+.cport-ask-policy {
+    margin-bottom: 12px;
 }

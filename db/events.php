@@ -30,6 +30,10 @@ $observers = [
         'callback' => '\local_clientportal\observer::user_enrolment_created',
     ],
     [
+        'eventname' => '\core\event\cohort_member_added',
+        'callback' => '\local_clientportal\observer::cohort_member_added',
+    ],
+    [
         'eventname' => '\core\event\cohort_member_removed',
         'callback' => '\local_clientportal\observer::cohort_member_removed',
     ],

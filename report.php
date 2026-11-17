@@ -73,6 +73,27 @@ if ($status !== '') {
 }
 $report->add_names($rows);
 
+// Ask about this report (AI).
+$asked = null;
+$askerror = '';
+$askaction = optional_param('ask', '', PARAM_ALPHA);
+if ($askaction && confirm_sesskey() && !$scope->support && \local_clientportal\ai::available()) {
+    if ($askaction === 'accept') {
+        \local_clientportal\ai::accept_policy((int)$USER->id);
+    } else if ($askaction === 'go' && \local_clientportal\ai::policy_accepted((int)$USER->id)) {
+        try {
+            $asked = \local_clientportal\askreport::ask(
+                $scope,
+                optional_param('question', '', PARAM_TEXT),
+                $rows,
+                $report->user_groups(array_unique(array_map(fn($r) => (int)$r->userid, $rows)))
+            );
+        } catch (moodle_exception $e) {
+            $askerror = $e->getMessage();
+        }
+    }
+}
+
 $baseurl = $scope->url('/local/clientportal/report.php', $params);
 $exports = html_writer::link(
     new moodle_url($baseurl, ['download' => 'csv']),
@@ -84,6 +105,9 @@ $exports = html_writer::link(
     ['class' => 'btn btn-outline-secondary']
 );
     echo ui::header($scope, 'reports', get_string('nav_reports', 'local_clientportal'), $exports);
+if ($rows && !$scope->support && \local_clientportal\ai::available()) {
+    echo local_clientportal_ask_card($scope, $baseurl, $asked, $askerror);
+}
 
     $statuses = ['' => get_string('allstatuses', 'local_clientportal'),
     report::COMPLETED => get_string('status_completed', 'local_clientportal'),
@@ -173,3 +197,86 @@ $exports = html_writer::link(
     $body .= html_writer::div(html_writer::table($table), 'cport-table-wrap');
     echo ui::card('', $body);
     echo ui::footer();
+
+    /**
+     * The "Ask about this report" card.
+     *
+     * @param scope $scope
+     * @param moodle_url $baseurl the report with its filters
+     * @param stdClass|null $asked answer from askreport::ask()
+     * @param string $error
+     * @return string
+     */
+    function local_clientportal_ask_card(scope $scope, moodle_url $baseurl, ?stdClass $asked, string $error): string {
+        global $USER;
+        $hidden = fn(string $name, string $value) => html_writer::empty_tag('input', ['type' => 'hidden', 'name' => $name,
+        'value' => $value]);
+        $form = html_writer::start_tag('form', ['method' => 'post', 'action' => $baseurl->out(false), 'class' => 'cport-ask']);
+        $form .= $hidden('sesskey', sesskey());
+        if (!\local_clientportal\ai::policy_accepted((int)$USER->id)) {
+            $form .= $hidden('ask', 'accept');
+            $form .= html_writer::div(format_text(get_string('userpolicy', 'ai'), FORMAT_MARKDOWN), 'cport-ask-policy');
+            $form .= html_writer::tag(
+                'button',
+                get_string('ai_policyaccept', 'local_clientportal'),
+                ['type' => 'submit', 'class' => 'btn btn-primary']
+            );
+            $form .= html_writer::end_tag('form');
+            return ui::card(get_string('ask_title', 'local_clientportal'), html_writer::div($form, 'cport-pad'));
+        }
+        $form .= $hidden('ask', 'go');
+        $form .= html_writer::div(
+            html_writer::label(
+                get_string('ask_label', 'local_clientportal'),
+                'cport-ask-q',
+                true,
+                ['class' => 'visually-hidden sr-only']
+            ) .
+            html_writer::empty_tag('input', ['type' => 'text', 'name' => 'question', 'id' => 'cport-ask-q', 'maxlength' => 500,
+            'class' => 'form-control', 'placeholder' => get_string('ask_placeholder', 'local_clientportal')]) .
+            html_writer::tag('button', get_string('ask_button', 'local_clientportal'), ['type' => 'submit',
+            'class' => 'btn btn-primary']),
+            'cport-ask-row'
+        );
+        $chips = '';
+        foreach (\local_clientportal\askreport::suggestions() as $q) {
+            $chips .= html_writer::tag('button', s($q), ['type' => 'submit', 'name' => 'question', 'value' => $q,
+                'class' => 'btn btn-sm btn-outline-secondary cport-ask-chip']);
+        }
+        $form .= html_writer::div($chips, 'cport-ask-chips');
+        $form .= html_writer::div(
+            get_string('ask_note', 'local_clientportal', \local_clientportal\askreport::MAX_ROWS),
+            'cport-muted'
+        );
+        $form .= html_writer::end_tag('form');
+        $result = '';
+        if ($error !== '') {
+            $result = html_writer::div(s($error), 'alert alert-warning mt-3 mb-0');
+        } else if ($asked) {
+            $result = html_writer::div(nl2br($asked->answer), 'cport-ask-answer');
+            if ($asked->sent < $asked->total) {
+                $result .= html_writer::div(get_string('ask_partial', 'local_clientportal', (object)['sent' => $asked->sent,
+                'total' => $asked->total]), 'cport-muted');
+            }
+            if ($asked->rows) {
+                $table = new html_table();
+                $table->attributes['class'] = 'table cport-table';
+                $table->head = [get_string('learner', 'local_clientportal'), get_string('course'),
+                get_string('status', 'local_clientportal'), get_string('progress', 'local_clientportal'),
+                get_string('lastaccess', 'local_clientportal')];
+                foreach ($asked->rows as $r) {
+                    $table->data[] = [
+                    html_writer::link($scope->url('/local/clientportal/learner.php', ['id' => $r->userid,
+                        'course' => $r->courseid]), s($r->fullname), ['class' => 'cport-name']),
+                        s($r->coursename),
+                        ui::status($r->status),
+                        ui::progress($r->percent),
+                        ui::date($r->lastaccess),
+                    ];
+                }
+                $result .= html_writer::div(get_string('ask_rows', 'local_clientportal'), 'cport-ask-rowshead') .
+                html_writer::div(html_writer::table($table), 'cport-table-wrap');
+            }
+        }
+        return ui::card(get_string('ask_title', 'local_clientportal'), html_writer::div($form . $result, 'cport-pad'));
+    }
