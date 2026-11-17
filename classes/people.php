@@ -83,6 +83,18 @@ class people {
         } else {
             $DB->insert_record('local_clientportal_main', $record);
         }
+        self::refresh_branding($userid);
+    }
+
+    /**
+     * The main organisation sets the person's branding: clear Cohort Branding's cached choice.
+     *
+     * @param int $userid
+     */
+    private static function refresh_branding(int $userid): void {
+        if (class_exists('\\local_cohortbranding\\manager')) {
+            \local_cohortbranding\manager::invalidate_cache($userid);
+        }
     }
 
     /**
@@ -97,7 +109,9 @@ class people {
         $clients = self::client_ids($userid);
         $main = self::main_client($userid);
         if (!$clients) {
-            $DB->delete_records('local_clientportal_main', ['userid' => $userid]);
+            if ($DB->delete_records('local_clientportal_main', ['userid' => $userid]) && $main) {
+                self::refresh_branding($userid);
+            }
             return 0;
         }
         if ($main && in_array($main, $clients, true)) {
