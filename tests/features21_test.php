@@ -57,12 +57,12 @@ final class features21_test extends \advanced_testcase {
         set_config('lmslabssiteid', 'site-1', 'local_clientportal');
         set_config('lmslabsapikey', 'key-1', 'local_clientportal');
         $this->assertTrue(ai::available());
-        \curl::mock_response(json_encode(['ok' => true, 'departments' => [], 'credits_used' => 2, 'credits_remaining' => 98]));
+        \curl::mock_response(json_encode(['ok' => true, 'departments' => [], 'credits_used' => 20, 'credits_remaining' => 80]));
         $reply = ai::run($scope, 'structure', 'Describe', 'Structure');
-        $this->assertSame(98, $reply['credits_remaining']);
+        $this->assertSame(80, $reply['credits_remaining']);
         $usage = $DB->get_records('local_clientportal_usage', ['clientid' => $clientid]);
         $this->assertCount(1, $usage);
-        $this->assertEquals(2, reset($usage)->quantity);
+        $this->assertEquals(20, reset($usage)->quantity);
         // Short of credits: a clear message, nothing billed.
         \curl::mock_response(json_encode(['ok' => false, 'error' => 'INSUFFICIENT_CREDITS', 'required' => 2, 'available' => 0]));
         try {

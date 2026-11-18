@@ -5,7 +5,7 @@ All notable changes to the Client portal (local_clientportal) are listed here.
 ## [v2.2.0] - 2026-11-18
 
 ### Changed
-- Build your structure with AI and Ask about this report now run through LMS Labs AI credits, like every LMS Labs plugin, using the site's LMS Labs connection (AI Grader Central Config). A structure suggestion uses 2 credits and a report question 1 credit, billed to the client. Sending the same request twice is charged once. Moodle's own AI providers are no longer used, and the Moodle AI policy step is gone.
+- Build your structure with AI and Ask about this report now run through LMS Labs AI credits, like every LMS Labs plugin, using the site's LMS Labs connection (AI Grader Central Config). The credits charged (currently 20 for a structure suggestion and 3 for a report question) are set by LMS Labs and billed to the client. Sending the same request twice is charged once. Moodle's own AI providers are no longer used, and the Moodle AI policy step is gone.
 - A clear message when the site is out of AI credits.
 
 ## [v2.1.1] - 2026-11-17

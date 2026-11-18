@@ -29,8 +29,8 @@ use moodle_exception;
 class ai {
     /** Route and fallback credits per task. */
     public const TASKS = [
-        'structure' => ['path' => '/api/client-portal/structure', 'credits' => 2],
-        'report_question' => ['path' => '/api/client-portal/report-question', 'credits' => 1],
+        'structure' => ['path' => '/api/client-portal/structure', 'credits' => 20],
+        'report_question' => ['path' => '/api/client-portal/report-question', 'credits' => 3],
     ];
 
     /**
