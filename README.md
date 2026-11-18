@@ -31,7 +31,7 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 - One person keeps one account across clients: a learner with one client can be staff with another. Staff who are also learners can open their own courses and learner pages; everything else stays inside the portal. Turn off *One account across organisations* to require separate staff accounts with no enrolments.
 - Each person has a main organisation, which is billed when usage can't be tied to a client's course. Other clients see only that a person is "Also with another organisation", never which one.
 - The course catalogue lists a learner's own organisations' courses and the site's open courses, never another client's courses.
-- AI features send learner codes, not names, and bill the AI credits to the client. People accept the site's AI policy first.
+- AI features run through LMS Labs AI credits, send learner codes, not names, and bill the credits to the client.
 - Site administrators are never locked into the portal.
 
 ## Set up
@@ -72,7 +72,7 @@ Settings (*Client portal > Settings*):
 
 ## Requirements
 
-Moodle 4.4 to 5.3. The AI features need a Moodle AI provider (Site administration > AI) with Generate text turned on. Optional: local_cohortbranding, mod_customcert, tool_certificate, local_trainingmatrix (1.1.1+), local_trainingpathways (1.1.0+).
+Moodle 4.4 to 5.3. The AI features use LMS Labs AI credits through the site's LMS Labs connection (AI Grader Central Config). Optional: local_cohortbranding, mod_customcert, tool_certificate, local_trainingmatrix (1.1.1+), local_trainingpathways (1.1.0+).
 
 ## Coming next
 

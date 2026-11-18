@@ -49,11 +49,29 @@ final class features21_test extends \advanced_testcase {
             'ratecredit' => 0, 'ratelearner' => 0, 'rateenrol' => 0]);
     }
 
-    public function test_json_is_read_from_a_fenced_answer(): void {
-        $fence = str_repeat(chr(96), 3);
-        $this->assertSame(['a' => 1], ai::json("Sure:\n{$fence}json\n{\"a\":1}\n{$fence}"));
-        $this->assertSame(['a' => 1], ai::json('{"a":1} thanks'));
-        $this->assertNull(ai::json('no json here'));
+    public function test_ai_runs_through_lms_labs_and_bills_the_client(): void {
+        global $DB;
+        $clientid = $this->client();
+        $scope = new scope(manager::get_client($clientid), manager::ROLE_MANAGER);
+        $this->assertFalse(ai::available());
+        set_config('lmslabssiteid', 'site-1', 'local_clientportal');
+        set_config('lmslabsapikey', 'key-1', 'local_clientportal');
+        $this->assertTrue(ai::available());
+        \curl::mock_response(json_encode(['ok' => true, 'departments' => [], 'credits_used' => 2, 'credits_remaining' => 98]));
+        $reply = ai::run($scope, 'structure', 'Describe', 'Structure');
+        $this->assertSame(98, $reply['credits_remaining']);
+        $usage = $DB->get_records('local_clientportal_usage', ['clientid' => $clientid]);
+        $this->assertCount(1, $usage);
+        $this->assertEquals(2, reset($usage)->quantity);
+        // Short of credits: a clear message, nothing billed.
+        \curl::mock_response(json_encode(['ok' => false, 'error' => 'INSUFFICIENT_CREDITS', 'required' => 2, 'available' => 0]));
+        try {
+            ai::run($scope, 'structure', 'Describe again', 'Structure');
+            $this->fail('Expected an exception.');
+        } catch (\moodle_exception $e) {
+            $this->assertSame('ai_nocredits', $e->errorcode);
+        }
+        $this->assertSame(1, $DB->count_records('local_clientportal_usage', ['clientid' => $clientid]));
     }
 
     public function test_structure_answer_is_cleaned_and_limited(): void {

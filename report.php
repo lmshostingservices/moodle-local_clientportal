@@ -78,9 +78,7 @@ $asked = null;
 $askerror = '';
 $askaction = optional_param('ask', '', PARAM_ALPHA);
 if ($askaction && confirm_sesskey() && !$scope->support && \local_clientportal\ai::available()) {
-    if ($askaction === 'accept') {
-        \local_clientportal\ai::accept_policy((int)$USER->id);
-    } else if ($askaction === 'go' && \local_clientportal\ai::policy_accepted((int)$USER->id)) {
+    if ($askaction === 'go') {
         try {
             $asked = \local_clientportal\askreport::ask(
                 $scope,
@@ -213,17 +211,6 @@ if ($rows && !$scope->support && \local_clientportal\ai::available()) {
         'value' => $value]);
         $form = html_writer::start_tag('form', ['method' => 'post', 'action' => $baseurl->out(false), 'class' => 'cport-ask']);
         $form .= $hidden('sesskey', sesskey());
-        if (!\local_clientportal\ai::policy_accepted((int)$USER->id)) {
-            $form .= $hidden('ask', 'accept');
-            $form .= html_writer::div(format_text(get_string('userpolicy', 'ai'), FORMAT_MARKDOWN), 'cport-ask-policy');
-            $form .= html_writer::tag(
-                'button',
-                get_string('ai_policyaccept', 'local_clientportal'),
-                ['type' => 'submit', 'class' => 'btn btn-primary']
-            );
-            $form .= html_writer::end_tag('form');
-            return ui::card(get_string('ask_title', 'local_clientportal'), html_writer::div($form, 'cport-pad'));
-        }
         $form .= $hidden('ask', 'go');
         $form .= html_writer::div(
             html_writer::label(

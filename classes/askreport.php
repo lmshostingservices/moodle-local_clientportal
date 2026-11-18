@@ -95,9 +95,8 @@ class askreport {
             "and plain. List the report rows that support the answer.\n" .
             "Reply with JSON only: {\"answer\":\"...\",\"rows\":[\"R1\",\"R2\"]}\n\n" .
             "Question: " . $question . "\n\nRows:\n" . implode("\n", $lines);
-        $text = ai::generate($scope, $prompt, get_string('ask_usage', 'local_clientportal'));
-        $data = ai::json($text);
-        if (!$data || !isset($data['answer'])) {
+        $data = ai::run($scope, 'report_question', $prompt, get_string('ask_usage', 'local_clientportal'));
+        if (!isset($data['answer'])) {
             throw new moodle_exception('ask_badanswer', 'local_clientportal');
         }
         // Put names back into the answer, after escaping it.
