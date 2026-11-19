@@ -209,6 +209,38 @@ if ($hasmatrix || $haspathways) {
     echo html_writer::end_div();
 }
 
+// Required training: who is overdue or due soon.
+if (\local_clientportal\compliance\rules::all($scope)) {
+    $due = \local_clientportal\compliance\view::rows($scope, ['groupid' => $groupid]);
+    $late = array_values(array_filter($due, fn($r) => in_array($r->state, ['overdue', 'duesoon'], true)));
+    $t = new html_table();
+    $t->attributes['class'] = 'table cport-table';
+    $t->head = [get_string('learner', 'local_clientportal'), get_string('rule_course', 'local_clientportal'),
+        get_string('due_date', 'local_clientportal'), get_string('status', 'local_clientportal')];
+    foreach (array_slice($late, 0, 8) as $r) {
+        $t->data[] = [
+            html_writer::link(
+                $scope->url('/local/clientportal/learner.php', ['id' => $r->userid]),
+                fullname($r),
+                ['class' => 'cport-name']
+            ),
+            format_string($r->coursename),
+            ui::date((int)$r->timedue),
+            \local_clientportal\compliance\view::chip($r),
+        ];
+    }
+    echo ui::card(
+        get_string('due_attention', 'local_clientportal'),
+        $late ? html_writer::div(html_writer::table($t), 'cport-table-wrap')
+            : ui::empty(get_string('due_allgood', 'local_clientportal')),
+        html_writer::link(
+            $scope->url('/local/clientportal/compliancedue.php'),
+            get_string('due_seeall', 'local_clientportal'),
+            ['class' => 'btn btn-sm btn-outline-secondary']
+        )
+    );
+}
+
 if (!$rows) {
     echo ui::card('', ui::empty(get_string('noenrolments', 'local_clientportal')));
     echo ui::footer();

@@ -205,6 +205,8 @@ class manager {
         $DB->delete_records('local_clientportal_usage', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_invoice', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_main', ['clientid' => $clientid]);
+        $DB->delete_records('local_clientportal_cdue', ['clientid' => $clientid]);
+        $DB->delete_records('local_clientportal_crule', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_client', ['id' => $clientid]);
         foreach ($mainusers as $userid) {
             people::ensure_main((int)$userid);

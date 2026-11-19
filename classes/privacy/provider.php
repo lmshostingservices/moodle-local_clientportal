@@ -80,6 +80,14 @@ class provider implements
             'clientid' => 'privacy:metadata:main:clientid',
             'timemodified' => 'privacy:metadata:timemodified',
         ], 'privacy:metadata:main');
+        $collection->add_database_table('local_clientportal_cdue', [
+            'userid' => 'privacy:metadata:cdue:userid',
+            'courseid' => 'privacy:metadata:cdue:courseid',
+            'timedue' => 'privacy:metadata:cdue:timedue',
+            'timecompleted' => 'privacy:metadata:cdue:timecompleted',
+            'grade' => 'privacy:metadata:cdue:grade',
+            'history' => 'privacy:metadata:cdue:history',
+        ], 'privacy:metadata:cdue');
         $collection->add_external_location_link('xero', [
             'clientname' => 'privacy:metadata:xero:clientname',
             'usage' => 'privacy:metadata:xero:usage',
@@ -100,6 +108,7 @@ class provider implements
             $DB->record_exists('local_clientportal_groupmem', ['userid' => $userid]) ||
             $DB->record_exists('local_clientportal_usage', ['userid' => $userid]) ||
             $DB->record_exists('local_clientportal_main', ['userid' => $userid]) ||
+            $DB->record_exists('local_clientportal_cdue', ['userid' => $userid]) ||
             $DB->record_exists_select('local_clientportal_log', 'userid = ? OR relateduserid = ?', [$userid, $userid]);
     }
 
@@ -132,6 +141,7 @@ class provider implements
         $userlist->add_from_sql('userid', 'SELECT userid FROM {local_clientportal_log}', []);
         $userlist->add_from_sql('userid', 'SELECT userid FROM {local_clientportal_usage} WHERE userid > 0', []);
         $userlist->add_from_sql('userid', 'SELECT userid FROM {local_clientportal_main}', []);
+        $userlist->add_from_sql('userid', 'SELECT userid FROM {local_clientportal_cdue}', []);
         $userlist->add_from_sql('relateduserid', 'SELECT relateduserid FROM {local_clientportal_log}
                                                   WHERE relateduserid IS NOT NULL', []);
     }
@@ -180,9 +190,21 @@ class provider implements
                 'description' => $u->description,
                 'time' => transform::datetime($u->timecreated),
             ], array_values($DB->get_records('local_clientportal_usage', ['userid' => $userid], 'timecreated')));
+            $required = array_map(fn($d) => [
+                'client' => $clients[$d->clientid] ?? '',
+                'courseid' => $d->courseid,
+                'cycle' => $d->cycle,
+                'status' => $d->status,
+                'assigned' => transform::datetime($d->timeassigned),
+                'due' => transform::datetime($d->timedue),
+                'completed' => $d->timecompleted ? transform::datetime($d->timecompleted) : '',
+                'grade' => (string)$d->grade,
+                'cleared' => (string)$d->history,
+            ], array_values($DB->get_records('local_clientportal_cdue', ['userid' => $userid], 'courseid, cycle')));
             $main = $DB->get_field('local_clientportal_main', 'clientid', ['userid' => $userid]);
             writer::with_context($context)->export_data($sub, (object)[
                 'mainclient' => $main ? ($clients[$main] ?? '') : '',
+                'requiredtraining' => $required,
                 'usage' => $usage,
                 'staff' => $staff,
                 'ownedenrolments' => $owned,
@@ -207,6 +229,7 @@ class provider implements
         $DB->delete_records('local_clientportal_groupmem');
         $DB->delete_records('local_clientportal_log');
         $DB->delete_records('local_clientportal_main');
+        $DB->delete_records('local_clientportal_cdue');
         $DB->set_field('local_clientportal_usage', 'userid', 0);
     }
 
@@ -249,6 +272,7 @@ class provider implements
         $DB->delete_records_select('local_clientportal_enrol', "userid $in", $params);
         $DB->delete_records_select('local_clientportal_groupmem', "userid $in", $params);
         $DB->delete_records_select('local_clientportal_main', "userid $in", $params);
+        $DB->delete_records_select('local_clientportal_cdue', "userid $in", $params);
         $DB->delete_records_select('local_clientportal_log', "userid $in", $params);
         // Usage stays for billing, without the person.
         $DB->set_field_select('local_clientportal_usage', 'userid', 0, "userid $in", $params);

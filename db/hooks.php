@@ -45,6 +45,11 @@ $callbacks = [
         'callback' => [\local_clientportal\branding::class, 'head'],
     ],
     [
+        // Required training at the top of the learner's dashboard.
+        'hook' => \core\hook\output\before_http_headers::class,
+        'callback' => [\local_clientportal\compliance\view::class, 'before_http_headers'],
+    ],
+    [
         'hook' => \core\hook\navigation\primary_extend::class,
         'callback' => [\local_clientportal\catalogue::class, 'primary_navigation'],
     ],

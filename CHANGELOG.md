@@ -2,6 +2,29 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.3.0] - 2026-11-20
+
+### Added
+- Required training (Compliance > Rules). A client manager picks a course and who must complete it (all learners, a group, a department or a position) and sets:
+  - when it is due: a number of days after being assigned, or a fixed date;
+  - how often it repeats: every so many months or days after completion, or the same date every year;
+  - reminders before the due date (for example 14, 3 and 0 days), reminders while overdue, and when managers are told;
+  - an extra message added to every reminder.
+- Learners are enrolled automatically and get a message when training is assigned. Rules run every hour, and a rule can be run straight away.
+- Renewals: when a course repeats, the next round opens a set number of days before it is due. That learner's progress in the course is cleared so they can do it again: activity and course completion, quiz, SCORM, H5P and lesson attempts. Assignments get a new attempt, and earlier submissions stay. A summary of what was cleared is kept with the completed round, and the gradebook history keeps the old grades.
+- Managers get one summary of who is overdue. It goes to the learner's manager in Training Matrix when one is set, otherwise to the client's managers.
+- Compliance > Due training: on track, overdue, due soon and completed, with filters, a CSV export and "Remind now".
+- "Required training due" on the portal dashboard, "Required training" on the learner page, and "Training you need to complete" at the top of the learner's own Dashboard and My courses page.
+- Messages come from the client's name through Moodle messaging, so learners can choose email or notifications.
+
+### Changed
+- Compliance is always in the portal menu and opens Due training. The Training Matrix view is now its "By position" tab.
+
+## [v2.2.1] - 2026-11-19
+
+### Fixed
+- After Build your structure with AI creates items, the message now uses singular words for one item ("1 department", not "1 departments").
+
 ## [v2.2.0] - 2026-11-18
 
 ### Changed

@@ -46,7 +46,7 @@ $params = array_filter(['group' => $groupid, 'department' => $deptid, 'position'
     'search' => $search]);
 $scope = scope::require_portal(new moodle_url('/local/clientportal/compliance.php', $params));
 if (!matrix::available()) {
-    redirect($scope->url('/local/clientportal/index.php'));
+    redirect($scope->url('/local/clientportal/compliancedue.php'));
 }
 if ($groupid) {
     manager::get_group($scope->id(), $groupid);
@@ -152,6 +152,7 @@ $export = html_writer::link(
     ['class' => 'btn btn-outline-secondary']
 );
 echo ui::header($scope, 'compliance', get_string('nav_compliance', 'local_clientportal'), $export);
+echo \local_clientportal\compliance\view::tabs($scope, 'matrix');
 
 echo html_writer::start_div('cport-stats');
 echo ui::stat(
