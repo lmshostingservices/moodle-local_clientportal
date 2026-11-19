@@ -63,9 +63,7 @@ class ui {
             if ($scope->is_manager() && (integration\matrix::available() || integration\pathways::available())) {
                 $nav['onboarding'] = ['/local/clientportal/onboarding.php', get_string('nav_onboarding', 'local_clientportal')];
             }
-            if (integration\matrix::available()) {
-                $nav['compliance'] = ['/local/clientportal/compliance.php', get_string('nav_compliance', 'local_clientportal')];
-            }
+            $nav['compliance'] = ['/local/clientportal/compliancedue.php', get_string('nav_compliance', 'local_clientportal')];
             if (integration\pathways::available()) {
                 $nav['pathways'] = ['/local/clientportal/pathways.php', get_string('nav_pathways', 'local_clientportal')];
             }

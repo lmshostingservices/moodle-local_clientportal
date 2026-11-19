@@ -43,4 +43,13 @@ $tasks = [
         'month' => '*',
         'dayofweek' => '1',
     ],
+    [
+        'classname' => '\local_clientportal\task\compliance',
+        'blocking' => 0,
+        'minute' => '20',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ],
 ];

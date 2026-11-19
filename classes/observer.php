@@ -113,6 +113,7 @@ class observer {
         $DB->delete_records('local_clientportal_groupmem', ['userid' => $userid]);
         $DB->delete_records('local_clientportal_enrol', ['userid' => $userid]);
         $DB->delete_records('local_clientportal_main', ['userid' => $userid]);
+        $DB->delete_records('local_clientportal_cdue', ['userid' => $userid]);
         guard::reset_cache($userid);
     }
 
@@ -124,5 +125,7 @@ class observer {
     public static function course_deleted(\core\event\course_deleted $event): void {
         global $DB;
         $DB->delete_records('local_clientportal_enrol', ['courseid' => $event->objectid]);
+        $DB->delete_records('local_clientportal_cdue', ['courseid' => $event->objectid]);
+        $DB->delete_records('local_clientportal_crule', ['courseid' => $event->objectid]);
     }
 }

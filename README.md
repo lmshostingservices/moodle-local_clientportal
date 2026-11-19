@@ -11,7 +11,9 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 - **Reports:** a learners × courses matrix, or a detailed list filtered by group, course and status. Exports to CSV or Excel.
 - **Certificates:** download one certificate, or all of them as a ZIP. Supports Custom certificate (mod_customcert) and Certificate manager (tool_certificate). If a learner can see a Custom certificate but has not opened it yet, downloading it from the portal issues it, just as the learner opening it would.
 - **Onboarding (managers, with Training Matrix or Training Pathways):** give each learner a role in your organisation (position, department, start date, direct manager, employee ID) and put them on pathways with a finish-by date. Saving enrols them in every course their role and pathways need (manual enrolment, owned by the client). Courses that can't take the enrolment are listed, never forced.
-- **Compliance (with Training Matrix):** compliance rate, expired, expiring in the next 30 days, in progress and not started; a people × competencies grid filtered by group, department, position and status; CSV export for audits.
+- **Required training (Compliance > Rules, managers):** make a course required for all learners, a group, a department or a position. Set the due date (days after being assigned, or a fixed date), how often it repeats (every so many months or days after completion, or the same date every year), reminders before the due date and while overdue, and when managers are told. Learners are enrolled automatically. When a course repeats, the renewal opens early and that learner's progress in the course is cleared so they can do it again; a summary of what was cleared is kept. Rules run every hour.
+- **Due training (Compliance):** on track, overdue, due soon and completed, most urgent first; filter by group, course and status; Remind now; CSV export for audits. Learners see "Training you need to complete" at the top of their Dashboard and My courses page.
+- **Compliance by position (with Training Matrix):** compliance rate, expired, expiring soon, in progress and not started; a people × competencies grid filtered by group, department, position and status; CSV export for audits.
 - **Pathways (with Training Pathways):** each onboarding pathway with who is working through it, finished and overdue; each person's current stage and progress; manager sign-offs waiting. Client managers sign off steps and add people from the portal.
 - **Everywhere:** the learners list shows each person's role and compliance; a learner's page shows their role, competencies (with expiry dates) and pathways; the dashboard adds compliance and onboarding cards.
 - **Courses (when switched on for the client):** the client's own hidden category; managers create categories and courses, open them in Moodle to add content, add teachers and enrol learners (one by one, a group, or everyone automatically).
@@ -72,7 +74,7 @@ Settings (*Client portal > Settings*):
 
 ## Requirements
 
-Moodle 4.4 to 5.3. The AI features use LMS Labs AI credits through the site's LMS Labs connection (AI Grader Central Config). Optional: local_cohortbranding, mod_customcert, tool_certificate, local_trainingmatrix (1.1.1+), local_trainingpathways (1.1.0+).
+Moodle 4.4 to 5.3. The AI features use LMS Labs AI credits through the site's LMS Labs connection (AI Grader Central Config). Optional: local_cohortbranding, mod_customcert, tool_certificate, local_trainingmatrix (1.1.1+; 1.1.7+ so it leaves reminders for required courses to the portal), local_trainingpathways (1.1.0+).
 
 ## Coming next
 

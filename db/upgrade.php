@@ -118,5 +118,63 @@ function xmldb_local_clientportal_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026111700, 'local', 'clientportal');
     }
+
+    if ($oldversion < 2026112000) {
+        $table = new xmldb_table('local_clientportal_crule');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('clientid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('audience', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, 'all');
+            $table->add_field('audienceid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('duetype', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, 'days');
+            $table->add_field('duedays', XMLDB_TYPE_INTEGER, '5', null, XMLDB_NOTNULL, null, '30');
+            $table->add_field('duedate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('recurunit', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, 'none');
+            $table->add_field('recurvalue', XMLDB_TYPE_INTEGER, '5', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('leaddays', XMLDB_TYPE_INTEGER, '5', null, XMLDB_NOTNULL, null, '30');
+            $table->add_field('reminders', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, '14,3,0');
+            $table->add_field('overdueevery', XMLDB_TYPE_INTEGER, '5', null, XMLDB_NOTNULL, null, '7');
+            $table->add_field('managerafter', XMLDB_TYPE_INTEGER, '5', null, XMLDB_NOTNULL, null, '7');
+            $table->add_field('message', XMLDB_TYPE_TEXT, null, null, null, null, null);
+            $table->add_field('competencyid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('enabled', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1');
+            $table->add_field('createdby', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('clientid', XMLDB_KEY_FOREIGN, ['clientid'], 'local_clientportal_client', ['id']);
+            $table->add_key('courseid', XMLDB_KEY_FOREIGN, ['courseid'], 'course', ['id']);
+            $dbman->create_table($table);
+        }
+        $table = new xmldb_table('local_clientportal_cdue');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('ruleid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('clientid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('cycle', XMLDB_TYPE_INTEGER, '5', null, XMLDB_NOTNULL, null, '1');
+            $table->add_field('status', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, 'open');
+            $table->add_field('timeassigned', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timedue', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timecompleted', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('nextdue', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('grade', XMLDB_TYPE_CHAR, '50', null, null, null, null);
+            $table->add_field('sent', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, '');
+            $table->add_field('lastoverdue', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('history', XMLDB_TYPE_TEXT, null, null, null, null, null);
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('ruleid', XMLDB_KEY_FOREIGN, ['ruleid'], 'local_clientportal_crule', ['id']);
+            $table->add_key('clientid', XMLDB_KEY_FOREIGN, ['clientid'], 'local_clientportal_client', ['id']);
+            $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+            $table->add_key('courseid', XMLDB_KEY_FOREIGN, ['courseid'], 'course', ['id']);
+            $table->add_index('ruleusercycle', XMLDB_INDEX_UNIQUE, ['ruleid', 'userid', 'cycle']);
+            $table->add_index('status', XMLDB_INDEX_NOTUNIQUE, ['status']);
+            $dbman->create_table($table);
+        }
+        upgrade_plugin_savepoint(true, 2026112000, 'local', 'clientportal');
+    }
     return true;
 }

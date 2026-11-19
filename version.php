@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_clientportal';
-$plugin->version   = 2026111900;
-$plugin->release   = '2.2.1';
+$plugin->version   = 2026112000;
+$plugin->release   = '2.3.0';
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->requires  = 2024042200; // Moodle 4.4.
 $plugin->supported = [404, 503];

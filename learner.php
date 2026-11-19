@@ -131,6 +131,35 @@ foreach ($items as $label => $value) {
 }
 echo ui::card('', html_writer::tag('dl', $dl, ['class' => 'cport-profile mb-0']));
 
+if (!$courseid) {
+    $fmt = get_string('strftimedate', 'langconfig');
+    $required = \local_clientportal\compliance\view::rows($scope, ['userid' => $userid]);
+    if ($required) {
+        $list = '';
+        foreach ($required as $r) {
+            $when = $r->state === 'completed'
+                ? get_string('due_donedate', 'local_clientportal', userdate((int)$r->timecompleted, $fmt)) .
+                    ($r->nextdue ? ' · ' . get_string('due_nextdate', 'local_clientportal', userdate((int)$r->nextdue, $fmt))
+                    : '')
+                : get_string('due_by', 'local_clientportal', userdate((int)$r->timedue, $fmt));
+            $list .= html_writer::tag(
+                'li',
+                html_writer::span(s(format_string($r->coursename)), 'cport-comp-name') .
+                html_writer::span(s($when), 'cport-muted') . \local_clientportal\compliance\view::chip($r)
+            );
+        }
+        echo ui::card(
+            get_string('due_required', 'local_clientportal'),
+            html_writer::div(html_writer::tag('ul', $list, ['class' => 'cport-complist']), 'cport-pad'),
+            html_writer::link(
+                $scope->url('/local/clientportal/compliancedue.php'),
+                get_string('nav_compliance', 'local_clientportal'),
+                ['class' => 'btn btn-sm btn-outline-secondary']
+            )
+        );
+    }
+}
+
 if (!$courseid && ($compliance || $haspathways)) {
     echo html_writer::start_div('cport-grid');
     if ($compliance) {
