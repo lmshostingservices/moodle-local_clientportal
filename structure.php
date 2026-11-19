@@ -96,7 +96,12 @@ if ($action && confirm_sesskey() && !$scope->support) {
         unset($SESSION->{$sessionkey});
         redirect(
             $pageurl,
-            get_string('structure_created', 'local_clientportal', (object)$counts),
+            get_string('structure_created', 'local_clientportal', (object)[
+                'departments' => local_clientportal_structure_count('department', $counts['departments']),
+                'positions' => local_clientportal_structure_count('position', $counts['positions']),
+                'competencies' => local_clientportal_structure_count('competency', $counts['competencies']),
+                'links' => local_clientportal_structure_count('link', $counts['links']),
+            ]),
             null,
             \core\output\notification::NOTIFY_SUCCESS
         );
@@ -215,3 +220,14 @@ echo ui::card(
         html_writer::div($f, 'cport-pad')
 );
 echo ui::footer();
+
+/**
+ * Says a structure count with the right singular or plural word.
+ *
+ * @param string $kind department, position, competency or link
+ * @param int $n how many
+ * @return string
+ */
+function local_clientportal_structure_count(string $kind, int $n): string {
+    return get_string('structurecount_' . $kind . ($n === 1 ? '' : 's'), 'local_clientportal', $n);
+}

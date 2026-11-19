@@ -2,6 +2,11 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.2.1] - 2026-11-19
+
+### Fixed
+- After Build your structure with AI creates items, the message now uses singular words for one item ("1 department", not "1 departments").
+
 ## [v2.2.0] - 2026-11-18
 
 ### Changed
