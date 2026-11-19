@@ -161,7 +161,7 @@ function xmldb_local_clientportal_upgrade($oldversion) {
             $table->add_field('timecompleted', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
             $table->add_field('nextdue', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
             $table->add_field('grade', XMLDB_TYPE_CHAR, '50', null, null, null, null);
-            $table->add_field('sent', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, '');
+            $table->add_field('sent', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $table->add_field('lastoverdue', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
             $table->add_field('history', XMLDB_TYPE_TEXT, null, null, null, null, null);
             $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');

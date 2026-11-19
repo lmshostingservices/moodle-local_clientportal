@@ -219,7 +219,7 @@
         <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="nextdue" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="When the next cycle is due, 0 = does not repeat"/>
         <FIELD NAME="grade" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="Course grade at completion"/>
-        <FIELD NAME="sent" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="" SEQUENCE="false" COMMENT="Reminders already sent this cycle, e.g. b14,b3,m"/>
+        <FIELD NAME="sent" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Reminders already sent this cycle, e.g. b14,b3,m"/>
         <FIELD NAME="lastoverdue" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="history" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON summary of the attempts cleared when the next cycle opened"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

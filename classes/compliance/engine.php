@@ -331,7 +331,7 @@ class engine {
      * @return string[]
      */
     protected static function sent(stdClass $row): array {
-        return $row->sent === '' ? [] : explode(',', $row->sent);
+        return (string)$row->sent === '' ? [] : explode(',', (string)$row->sent);
     }
 
     /**
