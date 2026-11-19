@@ -44,10 +44,6 @@ $sessionkey = 'local_clientportal_structure';
 $stored = $SESSION->{$sessionkey} ?? [];
 
 if ($action && confirm_sesskey() && !$scope->support) {
-    if ($action === 'accept') {
-        ai::accept_policy((int)$USER->id);
-        redirect($pageurl);
-    }
     if ($action === 'suggest') {
         $business = trim(required_param('business', PARAM_TEXT));
         $people = trim(optional_param('people', '', PARAM_TEXT));
@@ -112,40 +108,6 @@ echo ui::header($scope, 'onboarding', get_string('structure', 'local_clientporta
 
 if (!ai::available()) {
     echo ui::card('', html_writer::div(get_string('ai_unavailable', 'local_clientportal'), 'cport-pad'));
-    echo ui::footer();
-    exit;
-}
-
-/**
- * One-button POST form.
- *
- * @param moodle_url $url
- * @param array $fields
- * @param string $label
- * @return string
- */
-function local_clientportal_structure_button(moodle_url $url, array $fields, string $label): string {
-    $html = html_writer::start_tag('form', ['method' => 'post', 'action' => $url->out(false)]);
-    foreach ($fields + ['sesskey' => sesskey()] as $k => $v) {
-        $html .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => $k, 'value' => $v]);
-    }
-    return $html . html_writer::tag('button', $label, ['type' => 'submit', 'class' => 'btn btn-primary']) .
-        html_writer::end_tag('form');
-}
-
-if (!ai::policy_accepted((int)$USER->id)) {
-    echo ui::card(
-        get_string('ai_policytitle', 'local_clientportal'),
-        html_writer::div(
-            format_text(get_string('userpolicy', 'ai'), FORMAT_MARKDOWN) .
-            local_clientportal_structure_button(
-                $pageurl,
-                ['action' => 'accept'],
-                get_string('ai_policyaccept', 'local_clientportal')
-            ),
-            'cport-pad'
-        )
-    );
     echo ui::footer();
     exit;
 }

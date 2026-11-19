@@ -64,9 +64,8 @@ class structure {
             "Reply with JSON only, in this shape:\n" .
             '{"departments":[{"name":"","description":"","positions":[{"name":"","description":"","competencies":' .
             '[{"name":"","code":"","category":"Safety","description":"","mandatory":true}]}]}]}';
-        $answer = ai::generate($scope, $prompt, get_string('structure_usage', 'local_clientportal'));
-        $data = ai::json($answer);
-        $suggestion = $data ? self::normalise($data, $existing) : [];
+        $data = ai::run($scope, 'structure', $prompt, get_string('structure_usage', 'local_clientportal'));
+        $suggestion = self::normalise($data, $existing);
         if (!$suggestion) {
             throw new moodle_exception('structure_badanswer', 'local_clientportal');
         }
