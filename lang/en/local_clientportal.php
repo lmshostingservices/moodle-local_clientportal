@@ -57,6 +57,49 @@ $string['addcategory'] = 'Add category';
 $string['addclient'] = 'Add a client';
 $string['addedtogroup'] = '{$a} learner(s) added to the group.';
 $string['addexistingstaff'] = 'Add an existing user';
+$string['addlearner'] = 'Add a learner';
+$string['addlearner_added'] = '{$a} has been added. No email was sent. Give them the sign-in details below.';
+$string['addlearner_another'] = 'Add another learner';
+$string['addlearner_button'] = '+ Add a learner';
+$string['addlearner_courses'] = 'Courses';
+$string['addlearner_courses_help'] = 'Your organisation\'s own courses. The learner is enrolled straight away. No course ' .
+    'welcome message is sent unless you tick "Send emails".';
+$string['addlearner_emailed'] = '{$a} has been added and has been emailed a password to sign in with.';
+$string['addlearner_enrolled'] = 'Enrolled in {$a} course(s).';
+$string['addlearner_existing'] = '{$a} already has an account. They have been added to your organisation and sign in with ' .
+    'their existing username and password.';
+$string['addlearner_existingnote'] = 'If this email already has an account, that account is added to your organisation and its ' .
+    'password is not changed.';
+$string['addlearner_forcechange'] = 'First sign-in';
+$string['addlearner_forcechange_label'] = 'They must choose a new password the first time they sign in';
+$string['addlearner_intro'] = 'Add someone to your organisation. Nothing is emailed to them unless you tick "Send emails": you ' .
+    'get their sign-in details to pass on yourself.';
+$string['addlearner_one'] = 'Add one learner';
+$string['addlearner_open'] = 'Open their page';
+$string['addlearner_password'] = 'Password';
+$string['addlearner_password_help'] = 'Leave empty and a password is made for you. A password you type must meet the site\'s ' .
+    'password rules.';
+$string['addlearner_sendemail'] = 'Send emails';
+$string['addlearner_sendemail_help'] = 'Off: no emails at all. You get the sign-in details to pass on. On: Moodle emails them ' .
+    'a password, and courses send their usual welcome message.';
+$string['addlearner_sendemail_label'] = 'Email them their sign-in details and course welcome messages';
+$string['addlearner_setuprole'] = 'Set up their job role';
+$string['addlearner_submit'] = 'Add learner';
+$string['addlearner_username'] = 'Username';
+$string['addlearner_username_help'] = 'Leave empty to use their email address. Lower case letters, numbers and . _ - @ only.';
+$string['addlearnersettings'] = 'Adding learners';
+$string['addmany'] = 'Add many learners';
+$string['addmany_added'] = 'Added';
+$string['addmany_download'] = 'Download sign-in details (CSV)';
+$string['addmany_existing'] = 'Already had an account: added to your organisation, password not changed';
+$string['addmany_intro'] = 'Paste one learner per line from a spreadsheet: first name, last name, email, then optionally ' .
+    'username and password. Empty passwords are made for you. Nothing is emailed unless you tick "Send emails".';
+$string['addmany_line'] = 'Line {$a}:';
+$string['addmany_rows'] = 'Learners';
+$string['addmany_rows_help'] = 'One learner per line: firstname, lastname, email, username, password. Separate with commas or ' .
+    'paste straight from a spreadsheet (tabs). Username and password can be empty. A first line of column names is skipped.';
+$string['addmany_submit'] = 'Add learners';
+$string['addmany_summary'] = 'Added {$a->added}. Not added: {$a->failed}.';
 $string['addselected'] = 'Add selected';
 $string['addstaff'] = 'Add to client';
 $string['addteacher'] = 'Add a teacher';
@@ -301,12 +344,18 @@ $string['error_badposition'] = 'Choose one of your organisation\'s positions.';
 $string['error_badrole'] = 'Choose Client manager or Client representative.';
 $string['error_badsignoff'] = 'This step can\'t be signed off. The pathway may already be complete, or the step isn\'t a manager ' .
     'sign-off.';
+$string['error_badusername'] = 'That username can only have lower case letters, numbers and . _ - @';
+$string['error_cannotaddlearners'] = 'You can\'t add learners. Ask your organisation\'s portal manager.';
+$string['error_cannotaddthisaccount'] = 'That account can\'t be added to your organisation. Ask your training provider.';
 $string['error_categorynotempty'] = 'Move or delete the courses and categories in it first.';
 $string['error_certlocked'] = 'This learner has not earned the certificate yet.';
 $string['error_cohorttaken'] = 'That cohort already belongs to another client. Choose another cohort, or create a new one.';
+$string['error_emailinuse'] = 'That email already belongs to another organisation\'s learner. Ask your training provider.';
 $string['error_emailshared'] = 'More than one account uses {$a}. Ask your training provider which account to use.';
 $string['error_featureoff'] = 'Your organisation can\'t do this. Ask your training provider.';
+$string['error_isstaff'] = 'That person is on your portal team, so they can\'t also be added as a learner.';
 $string['error_managersonly'] = 'Only client managers can open this page.';
+$string['error_namerequired'] = 'First name and last name are needed for a new account.';
 $string['error_noaudience'] = 'Choose who this rule applies to.';
 $string['error_nocert'] = 'That certificate could not be found. It may have been deleted.';
 $string['error_noduedate'] = 'Choose a due date.';
@@ -320,10 +369,12 @@ $string['error_notyourcourse'] = 'That course isn\'t one of your organisation\'s
 $string['error_notyourstaff'] = 'Choose someone from your organisation\'s trainers or managers.';
 $string['error_otherclientstaff'] = 'This person already has a role with another organisation. Ask your training provider to ' .
     'move them.';
+$string['error_passwordpolicy'] = 'The password doesn\'t meet the site\'s rules: {$a}';
 $string['error_shortnametaken'] = 'Another course already uses the short name "{$a}".';
 $string['error_staffadmin'] = 'Site administrators cannot be client staff. Use a separate account.';
 $string['error_staffenrolled'] = '{$a} is enrolled in courses. Client staff need an account with no enrolments, so create a ' .
     'separate account for them.';
+$string['error_usernametaken'] = 'The username {$a} is already taken.';
 $string['everyoneenrolled'] = 'Everyone enrolled';
 $string['everyoneisenrolled'] = 'Every learner in your organisation is already enrolled.';
 $string['expires'] = 'Expires';
@@ -358,6 +409,15 @@ $string['help_activities'] = 'Check the activities in a course';
 $string['help_activities_desc'] = 'Open a course on the learner\'s page to see each activity, when it was completed and its grade.';
 $string['help_activities_pin1'] = 'Activity';
 $string['help_activities_pin2'] = 'Completed on';
+$string['help_addlearner'] = 'Add a learner without sending an email';
+$string['help_addlearner_desc'] = 'On the Learners page, click "+ Add a learner". Type their name and email. Leave "Send ' .
+    'emails" off and nothing is emailed to them. Leave the password empty and one is made for you, or type your own. ' .
+    'Choose groups and courses if you like, then click "Add learner". To add a whole team, click "Add many learners" and ' .
+    'paste one person per line from a spreadsheet.';
+$string['help_addlearner_pin1'] = 'Name and email';
+$string['help_addlearner_pin2'] = 'Send emails (off = no emails)';
+$string['help_addlearner_pin3'] = 'Password: empty makes one for you';
+$string['help_addlearner_pin4'] = 'Add learner';
 $string['help_bulk'] = 'Add several learners to a group';
 $string['help_bulk_desc'] = 'Select the learners with the tick boxes, choose a group, then select Add to group.';
 $string['help_bulk_pin1'] = 'Choose a group';
@@ -514,6 +574,12 @@ $string['help_rules_desc'] = 'A rule makes a course required. Learners are enrol
 $string['help_rules_pin1'] = 'Add a rule';
 $string['help_rules_pin2'] = 'Each rule';
 $string['help_rules_pin3'] = 'Run now';
+$string['help_signincard'] = 'Your learners\' sign-in details';
+$string['help_signincard_desc'] = 'After you add a learner, their sign-in card shows your organisation\'s sign-in link, their ' .
+    'username and their password. Click "Copy" and paste it into a message to them, or print it. The password is shown only ' .
+    'this once. If it is lost, ask your training provider to reset it.';
+$string['help_signincard_pin1'] = 'Sign-in link, username and password';
+$string['help_signincard_pin2'] = 'Copy or print';
 $string['help_team'] = 'Your team and activity log';
 $string['help_team_desc'] = 'Managers see everyone with access to the portal, and an activity log of exports, downloads and ' .
     'changes.';
@@ -600,6 +666,7 @@ $string['log_certificates_zipped'] = 'Downloaded certificates as ZIP';
 $string['log_compliance_downloaded'] = 'Downloaded the compliance report';
 $string['log_course_created'] = 'Created a course';
 $string['log_course_updated'] = 'Changed a course\'s settings';
+$string['log_emailsent'] = 'emails sent';
 $string['log_enrolleddetails'] = '{$a->course}: {$a->count} learners';
 $string['log_enrolment_released'] = 'Enrolment released';
 $string['log_enrolments_claimed'] = 'Enrolments assigned';
@@ -609,16 +676,21 @@ $string['log_group_members_added'] = 'Added learners to a group';
 $string['log_group_members_removed'] = 'Removed learners from a group';
 $string['log_group_updated'] = 'Edited a group';
 $string['log_invoice_lines_added'] = 'Usage added to the invoice';
+$string['log_learner_added'] = 'Added a learner';
+$string['log_learner_added_existing'] = 'Added an existing account as a learner';
 $string['log_learner_course_viewed'] = 'Viewed a learner\'s course';
 $string['log_learner_unenrolled'] = 'Unenrolled a learner';
 $string['log_learner_viewed'] = 'Viewed a learner';
 $string['log_learners_enrolled'] = 'Enrolled learners';
+$string['log_noemail'] = 'no email sent';
 $string['log_onboarding_enrolled'] = 'Enrolled a learner during onboarding';
 $string['log_onboarding_imported'] = 'Imported roles and pathways from a CSV';
 $string['log_pathway_assigned'] = 'Put a learner on a pathway';
 $string['log_pathway_signoff'] = 'Signed off a pathway step';
 $string['log_report_asked'] = 'Asked about a report';
 $string['log_report_exported'] = 'Exported the progress report';
+$string['log_shared_setup'] = 'Kept clients apart in a shared course';
+$string['log_shared_undone'] = 'Stopped keeping clients apart in a shared course';
 $string['log_staff_added'] = 'Staff member added';
 $string['log_staff_removed'] = 'Staff member removed';
 $string['log_staff_role_changed'] = 'Staff role changed';
@@ -851,6 +923,9 @@ $string['removefromgroup'] = 'Remove from group';
 $string['removeselected'] = 'Remove selected';
 $string['rename'] = 'Rename';
 $string['renamecategory'] = 'Rename this category';
+$string['repscanaddlearners'] = 'Representatives can add learners';
+$string['repscanaddlearners_desc'] = 'Client managers can always add learners. Tick this to let client representatives add ' .
+    'them too.';
 $string['role'] = 'Portal role';
 $string['role_help'] = 'Client managers see everything in the portal, including the team list and activity log. Client ' .
     'representatives see learners, groups, reports and certificates.';
@@ -966,6 +1041,9 @@ $string['sep_onlineusers_desc'] = 'The block lists everyone signed in across the
 $string['sep_rolecaps'] = 'No site-wide course list or profiles';
 $string['sep_rolecaps_desc'] = 'Signed-in users and guests can\'t browse the course list or open other people\'s profiles. ' .
     'Client course managers still see their own courses.';
+$string['sep_sharedcourses'] = 'Shared courses';
+$string['sep_sharedcourses_desc'] = 'Courses with learners from more than one client, where each client gets its own group so ' .
+    'learners only see their own organisation. Not set up: {$a}.';
 $string['sep_usetags'] = 'Tags off';
 $string['sep_usetags_desc'] = 'Tag pages list people and content from across the site.';
 $string['separation'] = 'Keep clients apart';
@@ -983,7 +1061,62 @@ $string['settings'] = 'Settings';
 $string['setup'] = 'Set up';
 $string['setupnow'] = 'Set them up';
 $string['setuprole'] = 'Set up role';
+$string['shared_activitieslist'] = 'Activities whose group mode changes:';
+$string['shared_done'] = 'Clients are now kept apart in this course.';
+$string['shared_fixnow'] = 'Fix now';
+$string['shared_groupdesc'] = 'Made by Client Portal to keep clients apart. Its members are managed automatically.';
+$string['shared_grouping'] = 'Clients';
+$string['shared_intro'] = 'A shared course is one of your courses with learners from more than one client. Keeping clients ' .
+    'apart gives each client its own group in the course, keeps each learner in their client\'s group, and sets the group ' .
+    'mode, so learners only see their own organisation in forums, participants, gradebook views and other group-aware ' .
+    'activities. Portal reports are not affected: clients always see only the enrolments they own.';
+$string['shared_issue_allgroups'] = 'Client staff who can see every group in this course: {$a}. Give them a role without ' .
+    '"Access all groups".';
+$string['shared_issue_mixed'] = 'Groups with learners from more than one client: {$a}. Those learners see each other.';
+$string['shared_issue_sync'] = '{$a} learner(s) not in their client\'s group yet.';
+$string['shared_keepapart'] = 'Keep clients apart';
+$string['shared_modenow'] = 'Shared courses setting: {$a}.';
+$string['shared_none'] = 'No course has learners from more than one client.';
+$string['shared_owncourse'] = 'This is a client\'s own course, so it isn\'t shared.';
+$string['shared_removegroups'] = 'Also delete the client groups';
+$string['shared_setupintro'] = 'This is what will change:';
+$string['shared_setuptitle'] = 'Keep clients apart: {$a}';
+$string['shared_synced'] = 'Group memberships fixed: {$a}.';
+$string['shared_undo'] = 'Undo';
+$string['shared_undointro'] = 'The course and its activities go back to the group modes they had before. Client groups are ' .
+    'kept unless you tick the box below.';
+$string['shared_undone'] = 'The course is back to its earlier group settings.';
+$string['shared_undonote'] = 'Every change can be undone. The course\'s current group settings are saved first.';
+$string['shared_undotitle'] = 'Undo: {$a}';
+$string['shared_willactivities'] = 'Activities that support groups: {$a->total}. Group mode changes on {$a->change} of them ' .
+    '(only if "Apply to existing activities" is ticked).';
+$string['shared_willcourse'] = 'Course group mode: {$a->now} → {$a->mode}.';
+$string['shared_willgroups'] = 'A group for each client, with its learners kept in it automatically: {$a}.';
+$string['sharedapplyactivities'] = 'Apply to existing activities';
+$string['sharedapplyactivities_desc'] = 'Also set the group mode on activities already in the course. New activities use the ' .
+    'course group mode anyway.';
+$string['sharedcourses'] = 'Shared courses';
+$string['sharedcourses_mode'] = 'Shared courses';
+$string['sharedcourses_mode_desc'] = 'What happens when learners from more than one client are in the same course. Suggest ' .
+    'lists them under Client portal > Shared courses for you to set up with one click. Automatic sets them up with the ' .
+    'defaults below as soon as a second client has learners in the course.';
+$string['sharedforced'] = 'forced';
+$string['sharedgroupmode'] = 'Group mode';
+$string['sharedgroupmode_desc'] = 'Separate groups: learners only see their own client. Visible groups: learners work in their ' .
+    'own client\'s group but can see the others.';
+$string['sharedlock'] = 'Lock it';
+$string['sharedlock_desc'] = 'Force the course group mode on every activity, so nobody can change it per activity. Off by ' .
+    'default, so the course author\'s choices stand.';
+$string['sharedmode_auto'] = 'Automatic';
+$string['sharedmode_off'] = 'Off';
+$string['sharedmode_suggest'] = 'Suggest';
 $string['sharedpathway'] = 'Shared';
+$string['sharedsettings'] = 'Shared courses';
+$string['sharedsettings_desc'] = 'Keep clients apart inside courses that learners from more than one client take.';
+$string['sharedstatus_apart'] = 'Kept apart';
+$string['sharedstatus_attention'] = 'Needs attention';
+$string['sharedstatus_locked'] = 'Kept apart (locked)';
+$string['sharedstatus_notsetup'] = 'Not set up';
 $string['show'] = 'Show';
 $string['show_all'] = 'Everyone';
 $string['show_new'] = 'New starters';
@@ -993,6 +1126,14 @@ $string['show_overdue'] = 'Overdue on a pathway';
 $string['showemail'] = 'Show learner emails';
 $string['showemail_desc'] = 'Show learners\' email addresses in the portal and its exports.';
 $string['signedoff'] = 'Signed off. The pathway is now {$a}% complete.';
+$string['signin_changenote'] = 'You\'ll be asked to choose a new password when you first sign in.';
+$string['signin_copy'] = 'Copy';
+$string['signin_once'] = 'This password is shown only now. It isn\'t stored anywhere you can see it again.';
+$string['signin_once_many'] = 'These passwords are shown only now. They aren\'t stored anywhere you can see them ' .
+    'again.';
+$string['signin_print'] = 'Print';
+$string['signin_title'] = 'Sign-in details for {$a}';
+$string['signin_where'] = 'Sign in at:';
 $string['signinlink'] = 'Your sign-in link';
 $string['signinlink_help'] = 'Share this link with your people. It opens the sign-in page with your logo and colours.';
 $string['signinto'] = 'Sign in to {$a}';
@@ -1089,6 +1230,7 @@ $string['targetdate'] = 'Finish by';
 $string['task_collectusage'] = 'Client portal: record AI usage per client';
 $string['task_compliance'] = 'Run required training rules';
 $string['task_sendinvoices'] = 'Client portal: add weekly usage to Xero invoices';
+$string['task_sharedcourses'] = 'Keep clients apart in shared courses';
 $string['tasktype_course'] = 'Course';
 $string['tasktype_document'] = 'Document';
 $string['tasktype_quiz'] = 'Quiz';

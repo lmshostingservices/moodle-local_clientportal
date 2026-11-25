@@ -52,4 +52,13 @@ $tasks = [
         'month' => '*',
         'dayofweek' => '*',
     ],
+    [
+        'classname' => '\local_clientportal\task\sync_shared_courses',
+        'blocking' => 0,
+        'minute' => '40',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ],
 ];

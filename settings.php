@@ -52,6 +52,12 @@ if ($hassiteconfig || has_capability('local/clientportal:manageclients', context
         'moodle/site:config'
     ));
     $ADMIN->add('local_clientportal_cat', new admin_externalpage(
+        'local_clientportal_shared',
+        get_string('sharedcourses', 'local_clientportal'),
+        new moodle_url('/local/clientportal/admin/shared.php'),
+        'local/clientportal:manageclients'
+    ));
+    $ADMIN->add('local_clientportal_cat', new admin_externalpage(
         'local_clientportal_xero',
         get_string('xero', 'local_clientportal'),
         new moodle_url('/local/clientportal/admin/xero.php'),
@@ -110,6 +116,53 @@ if ($hassiteconfig || has_capability('local/clientportal:manageclients', context
             get_string('categoryparent_desc', 'local_clientportal'),
             0,
             $categories
+        ));
+
+        $settings->add(new admin_setting_heading(
+            'local_clientportal/sharedhdr',
+            get_string('sharedsettings', 'local_clientportal'),
+            get_string('sharedsettings_desc', 'local_clientportal')
+        ));
+        $settings->add(new admin_setting_configselect(
+            'local_clientportal/sharedcourses',
+            get_string('sharedcourses_mode', 'local_clientportal'),
+            get_string('sharedcourses_mode_desc', 'local_clientportal'),
+            'suggest',
+            [
+                'off' => get_string('sharedmode_off', 'local_clientportal'),
+                'suggest' => get_string('sharedmode_suggest', 'local_clientportal'),
+                'auto' => get_string('sharedmode_auto', 'local_clientportal'),
+            ]
+        ));
+        $settings->add(new admin_setting_configselect(
+            'local_clientportal/sharedgroupmode',
+            get_string('sharedgroupmode', 'local_clientportal'),
+            get_string('sharedgroupmode_desc', 'local_clientportal'),
+            1,
+            [1 => get_string('groupsseparate'), 2 => get_string('groupsvisible')]
+        ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_clientportal/sharedapplyactivities',
+            get_string('sharedapplyactivities', 'local_clientportal'),
+            get_string('sharedapplyactivities_desc', 'local_clientportal'),
+            1
+        ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_clientportal/sharedlock',
+            get_string('sharedlock', 'local_clientportal'),
+            get_string('sharedlock_desc', 'local_clientportal'),
+            0
+        ));
+        $settings->add(new admin_setting_heading(
+            'local_clientportal/addlearnershdr',
+            get_string('addlearnersettings', 'local_clientportal'),
+            ''
+        ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_clientportal/repscanaddlearners',
+            get_string('repscanaddlearners', 'local_clientportal'),
+            get_string('repscanaddlearners_desc', 'local_clientportal'),
+            0
         ));
 
         $settings->add(new admin_setting_heading(

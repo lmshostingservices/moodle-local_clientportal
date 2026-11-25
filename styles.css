@@ -1492,3 +1492,41 @@ body.local-clientportal .cport-form .mform .ftoggler h3 {
 .cport-ask-policy {
     margin-bottom: 12px;
 }
+
+/* Add a learner: sign-in card (2.4). */
+.cport-signin {
+    border: 1px dashed #c3cad5;
+    border-radius: 12px;
+    padding: 1.25rem;
+    max-width: 40rem;
+    background: #f8fafc;
+}
+
+.cport-signin-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: .75rem;
+}
+
+.cport-signin-text {
+    font-family: monospace;
+    font-size: .95rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: .75rem 1rem;
+    margin-bottom: .75rem;
+}
+
+.cport-copied::after {
+    content: " \2713";
+}
+
+@media print {
+    .cport-signin button,
+    .cport-signin .cport-muted {
+        display: none;
+    }
+}

@@ -2,6 +2,28 @@
 
 All notable changes to the Client portal (local_clientportal) are listed here.
 
+## [v2.4.0] - 2026-11-25
+
+### Added
+- Shared courses (*Client portal > Shared courses*). A shared course is one of your courses with learners from more than one client. "Keep clients apart":
+  - gives each client its own Moodle group in the course (in a "Clients" grouping), named after the client;
+  - keeps each learner in their client's group automatically: when enrolled, when an enrolment is assigned to a client, and when it is released. Memberships are marked as Client Portal's, so teachers can't remove them by accident;
+  - sets the course to separate (or visible) groups, and optionally the activities already in it. "Lock it" forces the group mode, but is off by default so the course author's choices stand;
+  - shows exactly what will change before you confirm, and Undo puts the course and every activity back the way they were (keeping or deleting the client groups).
+- Setting *Shared courses*: Off, Suggest (default: listed for one-click set-up) or Automatic (set up as soon as a second client has learners in the course), with defaults for group mode, existing activities and locking.
+- Shared courses that need attention are flagged: groups made by the course author that mix clients, client staff in the course who can see every group, and learners not yet in their client's group (with "Fix now"). An hourly task repairs missed memberships (bulk enrolments, restores) and, in Automatic mode, sets up new shared courses.
+- *Keep clients apart* checklist: new "Shared courses" item, with Fix all.
+- Add a learner (Learners > "+ Add a learner"), for client managers, and representatives when *Representatives can add learners* is on:
+  - name, email, optional username and password (generated when empty, checked against the site password policy), must change password at first sign-in, groups, and the client's own courses;
+  - no emails at all unless "Send emails" is ticked: no new-account email and no course welcome message;
+  - a sign-in card with the client's branded sign-in link, username and password, with Copy and Print. The password is shown once and never stored in plain text or logged;
+  - an email that already has an account adds that account to the organisation, with its username and password unchanged and nothing said about where else it is enrolled;
+  - "Add many learners": paste rows from a spreadsheet, see the results, and download the sign-in details as a CSV made in the browser.
+- Help guides: "Add a learner without sending an email" and "Your learners' sign-in details".
+
+### Changed
+- Portal reports, exports and the Marking tab are unchanged: they stay scoped by owned enrolments, never by group membership.
+
 ## [v2.3.0] - 2026-11-20
 
 ### Added

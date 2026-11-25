@@ -86,6 +86,13 @@ $export = html_writer::link(
     get_string('exportcsv', 'local_clientportal'),
     ['class' => 'btn btn-outline-secondary']
 );
+if (\local_clientportal\newlearner::can_add($scope)) {
+    $export = html_writer::link(
+        $scope->url('/local/clientportal/addlearner.php'),
+        get_string('addlearner_button', 'local_clientportal'),
+        ['class' => 'btn btn-primary']
+    ) . ' ' . $export;
+}
 echo ui::header($scope, 'learners', get_string('nav_learners', 'local_clientportal'), $export);
 
 // Filters: group + search.

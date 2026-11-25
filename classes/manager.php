@@ -155,8 +155,12 @@ class manager {
         }
         if (!empty($data->id)) {
             $record->id = (int)$data->id;
+            $oldname = $DB->get_field('local_clientportal_client', 'name', ['id' => $record->id]);
             $DB->update_record('local_clientportal_client', $record);
             courses::sync_roles($record->id);
+            if ($oldname !== $record->name) {
+                shared::client_renamed($record->id);
+            }
             return $record->id;
         }
         $cohortid = (int)($data->cohortid ?? 0);
@@ -200,6 +204,7 @@ class manager {
             $DB->delete_records_select('local_clientportal_groupmem', "groupid $in", $params);
         }
         $DB->delete_records('local_clientportal_group', ['clientid' => $clientid]);
+        shared::client_deleted($clientid);
         $DB->delete_records('local_clientportal_enrol', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_log', ['clientid' => $clientid]);
         $DB->delete_records('local_clientportal_usage', ['clientid' => $clientid]);
@@ -566,6 +571,7 @@ class manager {
             // Claimed at the same moment by another request.
             return false;
         }
+        shared::user_changed($userid, $courseid);
         return true;
     }
 
@@ -611,6 +617,7 @@ class manager {
             return null;
         }
         $DB->delete_records('local_clientportal_enrol', ['id' => $claimid]);
+        shared::user_changed((int)$claim->userid, (int)$claim->courseid);
         self::log((int)$claim->clientid, 'enrolment_released', (int)$claim->userid, (string)$claim->courseid);
         return $claim;
     }

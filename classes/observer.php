@@ -45,6 +45,8 @@ class observer {
             }
             return;
         }
+        // Already owned (claimed before the enrolment, e.g. onboarding): keep clients apart in a shared course.
+        shared::user_changed($userid, $courseid);
         if (!get_config('local_clientportal', 'autoclaim')) {
             return;
         }
@@ -127,5 +129,9 @@ class observer {
         $DB->delete_records('local_clientportal_enrol', ['courseid' => $event->objectid]);
         $DB->delete_records('local_clientportal_cdue', ['courseid' => $event->objectid]);
         $DB->delete_records('local_clientportal_crule', ['courseid' => $event->objectid]);
+        if ($shared = $DB->get_record('local_clientportal_shared', ['courseid' => $event->objectid])) {
+            $DB->delete_records('local_clientportal_sharedcm', ['sharedid' => $shared->id]);
+            $DB->delete_records('local_clientportal_shared', ['id' => $shared->id]);
+        }
     }
 }

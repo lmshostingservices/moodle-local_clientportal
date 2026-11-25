@@ -686,13 +686,19 @@ class courses {
      * @param scope $scope
      * @param int $courseid
      * @param int[] $userids
+     * @param bool $sendwelcome false: no course welcome message, whatever the course's enrolment setting says
      * @return int number newly enrolled
      */
-    public static function enrol_learners(scope $scope, int $courseid, array $userids): int {
+    public static function enrol_learners(scope $scope, int $courseid, array $userids, bool $sendwelcome = true): int {
         global $DB;
         self::require_feature($scope, self::FEATURE_COURSES, true);
         $course = self::require_course($scope, $courseid);
         $manual = self::manual_instance($course);
+        if (!$sendwelcome) {
+            // The welcome message hook reads the instance it is given, so a copy with sending off is enough.
+            $manual = clone($manual);
+            $manual->customint1 = ENROL_DO_NOT_SEND_EMAIL;
+        }
         $plugin = enrol_get_plugin('manual');
         $context = context_course::instance($courseid);
         $count = 0;

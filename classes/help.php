@@ -47,6 +47,10 @@ class help {
             'pins' => [[24.7, 24.5, 9.2, 3.7], [81.1, 25.6, 7.9, 1.6]]],
         'bulk' => ['chapter' => 'learners', 'shot' => 'm_bulk', 'managers' => false, 'needs' => '',
             'pins' => [[59.0, 86.2, 8.8, 3.4]]],
+        'addlearner' => ['chapter' => 'learners', 'shot' => 'm_addlearner', 'managers' => true, 'needs' => 'addlearners',
+            'pins' => [[2.8, 23.1, 94.3, 13.5], [2.8, 46.8, 94.3, 2.6], [2.8, 50.9, 94.3, 3.5], [27.3, 78.8, 8.8, 3.5]]],
+        'signincard' => ['chapter' => 'learners', 'shot' => 'm_signincard', 'managers' => true, 'needs' => 'addlearners',
+            'pins' => [[5.4, 30.8, 46.0, 15.1], [5.4, 47.0, 10.0, 3.5]]],
         'learner' => ['chapter' => 'learners', 'shot' => 'm_learner', 'managers' => false, 'needs' => '',
             'pins' => [[19.0, 32.1, 8.8, 3.7], [27.8, 32.1, 12.2, 3.7], [63.2, 32.1, 5.6, 3.7]]],
         'activities' => ['chapter' => 'learners', 'shot' => 'm_activities', 'managers' => false, 'needs' => '',
@@ -109,7 +113,9 @@ class help {
     public static function guides(scope $scope): array {
         $out = [];
         foreach (self::GUIDES as $id => $guide) {
-            if ($guide['managers'] && !$scope->is_manager()) {
+            // Adding learners is for managers, and representatives when the site allows it.
+            $repadds = $guide['needs'] === 'addlearners' && newlearner::can_add($scope);
+            if ($guide['managers'] && !$scope->is_manager() && !$repadds) {
                 continue;
             }
             // Trainers only use their courses and marking.
@@ -131,7 +137,7 @@ class help {
     /**
      * Is what a guide needs installed?
      *
-     * @param string $needs ''|matrix|pathways|any|clientcourses|marking
+     * @param string $needs ''|matrix|pathways|any|clientcourses|marking|addlearners
      * @param scope $scope
      * @return bool
      */
@@ -143,6 +149,7 @@ class help {
             'matrix' => integration\matrix::available(),
             'pathways' => integration\pathways::available(),
             'any' => integration\matrix::available() || integration\pathways::available(),
+            'addlearners' => $scope->support || newlearner::can_add($scope),
             default => true,
         };
     }

@@ -85,6 +85,15 @@ class separation {
             'desc' => get_string('sep_onlineusers_desc', 'local_clientportal'),
             'ok' => $online === false || (int)$online === 0,
         ];
+        if (shared::mode() !== shared::MODE_OFF) {
+            $notsetup = count(shared::not_set_up());
+            $out['sharedcourses'] = (object)[
+                'key' => 'sharedcourses',
+                'name' => get_string('sep_sharedcourses', 'local_clientportal'),
+                'desc' => get_string('sep_sharedcourses_desc', 'local_clientportal', $notsetup),
+                'ok' => $notsetup === 0,
+            ];
+        }
         return $out;
     }
 
@@ -136,6 +145,11 @@ class separation {
                 courses::ensure_roles();
             } else if ($check->key === 'onlineusers') {
                 $DB->set_field('block', 'visible', 0, ['name' => 'online_users']);
+            } else if ($check->key === 'sharedcourses') {
+                $d = shared::defaults();
+                foreach (shared::not_set_up() as $courseid) {
+                    shared::setup($courseid, $d['groupmode'], $d['applyactivities'], $d['locked']);
+                }
             }
             $changed++;
         }

@@ -176,5 +176,38 @@ function xmldb_local_clientportal_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026112000, 'local', 'clientportal');
     }
+
+    if ($oldversion < 2026112500) {
+        // 2.4.0: shared courses (keep clients apart with Moodle groups).
+        $table = new xmldb_table('local_clientportal_shared');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('groupmode', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '1');
+            $table->add_field('locked', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('applyactivities', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1');
+            $table->add_field('prevgroupmode', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('prevgroupmodeforce', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('courseid', XMLDB_KEY_FOREIGN_UNIQUE, ['courseid'], 'course', ['id']);
+            $dbman->create_table($table);
+        }
+        $table = new xmldb_table('local_clientportal_sharedcm');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('sharedid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('cmid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('prevgroupmode', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0');
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('sharedid', XMLDB_KEY_FOREIGN, ['sharedid'], 'local_clientportal_shared', ['id']);
+            $table->add_key('cmid', XMLDB_KEY_FOREIGN, ['cmid'], 'course_modules', ['id']);
+            $table->add_index('sharedcm', XMLDB_INDEX_UNIQUE, ['sharedid', 'cmid']);
+            $dbman->create_table($table);
+        }
+        upgrade_plugin_savepoint(true, 2026112500, 'local', 'clientportal');
+    }
+
     return true;
 }

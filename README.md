@@ -6,6 +6,7 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 
 - **Dashboard:** learners, course enrolments, completions, in progress, not started and completions in the last 30 days. Includes a summary per course and per group.
 - **Learners:** search, filter by group, and bulk add learners to groups or take them out.
+- **Add a learner (managers; representatives when allowed):** add one person, or paste many from a spreadsheet. No emails are sent unless "Send emails" is ticked: the manager gets a sign-in card (the client's sign-in link, username and a set or generated password) to copy or print, shown once and never stored. An email that already has an account adds that account, with its password unchanged. Optionally put them in groups and the client's own courses straight away.
 - **Learner detail:** every course with status, progress, enrolment and completion dates, grade, last access and certificates. Drill into a course for each activity's completion state, the date and time it was completed, and its grade.
 - **Groups:** the client's own groups (for example Sales and Warehouse), with an optional cost centre. These are portal-only: they do not change Moodle groups or cohorts.
 - **Reports:** a learners × courses matrix, or a detailed list filtered by group, course and status. Exports to CSV or Excel.
@@ -34,6 +35,7 @@ A portal for your corporate clients. Each client (for example BHP) is a cohort. 
 - Each person has a main organisation, which is billed when usage can't be tied to a client's course. Other clients see only that a person is "Also with another organisation", never which one.
 - The course catalogue lists a learner's own organisations' courses and the site's open courses, never another client's courses.
 - AI features run through LMS Labs AI credits, send learner codes, not names, and bill the credits to the client.
+- In a **shared course** (one of your courses with learners from more than one client), *Shared courses* gives each client a Moodle group, keeps each learner in their client's group, and sets the group mode, so learners only see their own organisation inside the course. Portal reports never use groups: they stay scoped by owned enrolments.
 - Site administrators are never locked into the portal.
 
 ## Set up
@@ -51,7 +53,8 @@ Site staff can open any client's portal from the Clients page (support view).
 
 1. Edit a client and tick *Build courses*, *Trainers* and/or *Assessors*. The client's category is created under the category set in *Client portal > Settings* (top level by default), hidden from everyone else.
 2. Open *Client portal > Keep clients apart* and select *Fix all*. This turns off the shared site pages where one client could see another's people or courses.
-3. For billing, set the client's prices and tick *Bill this client*. Connect Xero on *Client portal > Xero* (create a Web app at developer.xero.com with the redirect URI shown there). Usage is added to each client's draft invoice every Monday; check *Usage and billing* at any time.
+3. Open *Client portal > Shared courses* to keep clients apart inside courses that several clients' learners take (Settings: *Shared courses* = Off, Suggest or Automatic; group mode; apply to existing activities; lock). Every set-up can be undone, back to the course's own group settings.
+4. For billing, set the client's prices and tick *Bill this client*. Connect Xero on *Client portal > Xero* (create a Web app at developer.xero.com with the redirect URI shown there). Usage is added to each client's draft invoice every Monday; check *Usage and billing* at any time.
 
 The site owner's **Clients report** (*Client portal > Clients report*, or *Reports > Clients report* in the Premium SaaS theme) shows every client's courses, trainers, learners and LMS Labs credits, with the amount to invoice.
 
@@ -71,6 +74,7 @@ Settings (*Client portal > Settings*):
 - *One account across organisations* (on).
 - *Onboarding enrols learners* (on): onboarding enrols learners in the courses they need. Turn off if your team enrols learners itself.
 - *Client managers can sign off pathway steps* (on).
+- *Representatives can add learners* (off). Client managers can always add learners.
 
 ## Requirements
 
