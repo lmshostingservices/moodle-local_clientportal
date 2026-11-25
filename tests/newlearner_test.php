@@ -229,7 +229,8 @@ final class newlearner_test extends \advanced_testcase {
     }
 
     public function test_parse_rows(): void {
-        $rows = newlearner::parse_rows("firstname,lastname,email\nJo,Smith,jo@example.com\n\nAmy\tWong\tamy@example.com\tamyw\tPass-1!");
+        $text = "firstname,lastname,email\nJo,Smith,jo@example.com\n\nAmy\tWong\tamy@example.com\tamyw\tPass-1!";
+        $rows = newlearner::parse_rows($text);
         $this->assertCount(2, $rows);
         $this->assertEquals([2, 'Jo', 'Smith', 'jo@example.com', '', ''], $rows[0]);
         $this->assertEquals([4, 'Amy', 'Wong', 'amy@example.com', 'amyw', 'Pass-1!'], $rows[1]);

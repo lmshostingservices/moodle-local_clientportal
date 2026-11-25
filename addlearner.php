@@ -41,8 +41,12 @@ $bulk = optional_param('bulk', 0, PARAM_BOOL);
 $scope = scope::require_portal(new moodle_url('/local/clientportal/addlearner.php', $bulk ? ['bulk' => 1] : []));
 $listurl = $scope->url('/local/clientportal/learners.php');
 if (!newlearner::can_add($scope)) {
-    redirect($listurl, get_string('error_cannotaddlearners', 'local_clientportal'), null,
-        \core\output\notification::NOTIFY_WARNING);
+    redirect(
+        $listurl,
+        get_string('error_cannotaddlearners', 'local_clientportal'),
+        null,
+        \core\output\notification::NOTIFY_WARNING
+    );
 }
 $str = fn(string $id, $a = null) => get_string($id, 'local_clientportal', $a);
 $pageurl = $scope->url('/local/clientportal/addlearner.php', $bulk ? ['bulk' => 1] : []);
@@ -122,11 +126,17 @@ if ($data && !$bulk) {
     }
     $actions = html_writer::link($pageurl, $str('addlearner_another'), ['class' => 'btn btn-primary']) . ' ';
     if (matrix::available() && $scope->is_manager()) {
-        $actions .= html_writer::link($scope->url('/local/clientportal/onboarding.php', ['id' => $result->user->id]),
-            $str('addlearner_setuprole'), ['class' => 'btn btn-outline-primary']) . ' ';
+        $actions .= html_writer::link(
+            $scope->url('/local/clientportal/onboarding.php', ['id' => $result->user->id]),
+            $str('addlearner_setuprole'),
+            ['class' => 'btn btn-outline-primary']
+        ) . ' ';
     }
-    $actions .= html_writer::link($scope->url('/local/clientportal/learner.php', ['id' => $result->user->id]),
-        $str('addlearner_open'), ['class' => 'btn btn-outline-secondary']);
+    $actions .= html_writer::link(
+        $scope->url('/local/clientportal/learner.php', ['id' => $result->user->id]),
+        $str('addlearner_open'),
+        ['class' => 'btn btn-outline-secondary']
+    );
     echo ui::card('', html_writer::div($body . html_writer::div($actions, 'mt-3'), 'cport-pad'));
     echo ui::footer();
     exit;
@@ -161,8 +171,10 @@ if ($data && $bulk) {
         }
     }
     echo ui::header($scope, 'learners', $str('addmany'));
-    $body = html_writer::div($str('addmany_summary', ['added' => $added, 'failed' => $failed]),
-        'alert ' . ($failed ? 'alert-warning' : 'alert-success'));
+    $body = html_writer::div(
+        $str('addmany_summary', ['added' => $added, 'failed' => $failed]),
+        'alert ' . ($failed ? 'alert-warning' : 'alert-success')
+    );
     $body .= html_writer::div($str('signin_where') . ' ' . html_writer::tag('code', s($signinurl)), 'mb-2');
     $body .= html_writer::div(html_writer::table($table), 'cport-table-wrap');
     $body .= html_writer::tag('button', $str('addmany_download'), ['type' => 'button', 'class' => 'btn btn-primary',
@@ -176,11 +188,11 @@ if ($data && $bulk) {
     exit;
 }
 
-$switch = $bulk
-    ? html_writer::link($scope->url('/local/clientportal/addlearner.php'), $str('addlearner_one'),
-        ['class' => 'btn btn-outline-secondary'])
-    : html_writer::link($scope->url('/local/clientportal/addlearner.php', ['bulk' => 1]), $str('addmany'),
-        ['class' => 'btn btn-outline-secondary']);
+$switch = html_writer::link(
+    $scope->url('/local/clientportal/addlearner.php', $bulk ? [] : ['bulk' => 1]),
+    $str($bulk ? 'addlearner_one' : 'addmany'),
+    ['class' => 'btn btn-outline-secondary']
+);
 echo ui::header($scope, 'learners', $str($bulk ? 'addmany' : 'addlearner'), $switch);
 echo ui::card('', html_writer::div(
     html_writer::div($str($bulk ? 'addmany_intro' : 'addlearner_intro'), 'cport-muted mb-3') . $form->render(),

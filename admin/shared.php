@@ -101,8 +101,13 @@ if ($action === 'setup' && $courseid) {
     }
     echo html_writer::div(
         html_writer::label($str('sharedgroupmode'), 'cport-groupmode') .
-        html_writer::select([SEPARATEGROUPS => get_string('groupsseparate'), VISIBLEGROUPS => get_string('groupsvisible')],
-            'groupmode', $groupmode, false, ['id' => 'cport-groupmode', 'class' => 'custom-select form-select ms-2']),
+        html_writer::select(
+            [SEPARATEGROUPS => get_string('groupsseparate'), VISIBLEGROUPS => get_string('groupsvisible')],
+            'groupmode',
+            $groupmode,
+            false,
+            ['id' => 'cport-groupmode', 'class' => 'custom-select form-select ms-2']
+        ),
         'mb-2'
     );
     $apply = $existing ? (bool)$existing->applyactivities : $defaults['applyactivities'];
@@ -169,18 +174,27 @@ foreach ($courses as $c) {
     }
     $buttons = [];
     if (!$c->setup) {
-        $buttons[] = html_writer::link(new moodle_url($pageurl, ['action' => 'setup', 'course' => $c->id]),
-            $str('shared_keepapart'), ['class' => 'btn btn-primary btn-sm']);
+        $buttons[] = html_writer::link(
+            new moodle_url($pageurl, ['action' => 'setup', 'course' => $c->id]),
+            $str('shared_keepapart'),
+            ['class' => 'btn btn-primary btn-sm']
+        );
     } else {
-        $buttons[] = html_writer::link(new moodle_url($pageurl, ['action' => 'setup', 'course' => $c->id]),
-            get_string('edit'), ['class' => 'btn btn-outline-secondary btn-sm']);
+        $buttons[] = html_writer::link(
+            new moodle_url($pageurl, ['action' => 'setup', 'course' => $c->id]),
+            get_string('edit'),
+            ['class' => 'btn btn-outline-secondary btn-sm']
+        );
         if (isset($c->issues['sync'])) {
             $buttons[] = html_writer::link(new moodle_url($pageurl, ['action' => 'sync', 'course' => $c->id, 'confirm' => 1,
                 'sesskey' => sesskey()]), $str('shared_fixnow'), ['class' => 'btn btn-primary btn-sm']);
         }
         $buttons[] = html_writer::link($groupsurl, get_string('groups'), ['class' => 'btn btn-outline-secondary btn-sm']);
-        $buttons[] = html_writer::link(new moodle_url($pageurl, ['action' => 'undo', 'course' => $c->id]),
-            $str('shared_undo'), ['class' => 'btn btn-outline-danger btn-sm']);
+        $buttons[] = html_writer::link(
+            new moodle_url($pageurl, ['action' => 'undo', 'course' => $c->id]),
+            $str('shared_undo'),
+            ['class' => 'btn btn-outline-danger btn-sm']
+        );
     }
     $table->data[] = [
         $link,

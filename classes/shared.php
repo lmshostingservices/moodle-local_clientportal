@@ -124,7 +124,8 @@ class shared {
             return [];
         }
         [$in, $params] = $DB->get_in_or_equal($ids);
-        $courses = $DB->get_records_select('course', "id $in", $params, 'fullname', 'id, fullname, shortname, groupmode, groupmodeforce');
+        $fields = 'id, fullname, shortname, groupmode, groupmodeforce';
+        $courses = $DB->get_records_select('course', "id $in", $params, 'fullname', $fields);
         $out = [];
         foreach ($courses as $course) {
             $setup = self::get((int)$course->id);
@@ -530,8 +531,8 @@ class shared {
         $groupsbyclient = self::client_groups($courseid);
         foreach ($owners as $userid => $clientid) {
             $group = $groupsbyclient[(int)$clientid] ?? null;
-            if (is_enrolled($context, (int)$userid) &&
-                    (!$group || !$DB->record_exists('groups_members', ['groupid' => $group->id, 'userid' => $userid]))) {
+            $ingroup = $group && $DB->record_exists('groups_members', ['groupid' => $group->id, 'userid' => $userid]);
+            if (!$ingroup && is_enrolled($context, (int)$userid)) {
                 $missing++;
             }
         }

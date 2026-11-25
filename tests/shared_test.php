@@ -84,8 +84,9 @@ final class shared_test extends \advanced_testcase {
         // Not owned by a client: in no client group.
         $this->assertEmpty(groups_get_user_groups($courseid, $d['private']->id)[0]);
         // Memberships are marked as ours, so teachers can't remove them by accident.
-        $this->assertEquals('local_clientportal', $DB->get_field('groups_members', 'component',
-            ['groupid' => $groups[$d['bhp']]->id, 'userid' => $d['zoe']->id]));
+        $component = $DB->get_field('groups_members', 'component', ['groupid' => $groups[$d['bhp']]->id,
+            'userid' => $d['zoe']->id]);
+        $this->assertEquals('local_clientportal', $component);
         $grouping = groups_get_grouping_by_idnumber($courseid, shared::GROUPING);
         $this->assertNotEmpty($grouping);
         $this->assertCount(2, groups_get_all_groups($courseid, 0, $grouping->id));
