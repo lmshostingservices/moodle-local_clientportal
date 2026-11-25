@@ -48,7 +48,7 @@ class learner_form extends \moodleform {
         if ($bulk) {
             $mform->addElement('textarea', 'rows', $str('addmany_rows'), ['rows' => 10, 'cols' => 80,
                 'placeholder' => "firstname,lastname,email,username,password\nJo,Smith,jo.smith@example.com,,"]);
-            $mform->setType('rows', PARAM_RAW_TRIMMED); // pipeline-ignore: PARAM_RAW — CSV text, each cell is validated per row.
+            $mform->setType('rows', PARAM_TEXT);
             $mform->addRule('rows', null, 'required', null, 'client');
             $mform->addHelpButton('rows', 'addmany_rows', 'local_clientportal');
         } else {
@@ -61,7 +61,7 @@ class learner_form extends \moodleform {
             $mform->addRule('email', null, 'required', null, 'client');
             $mform->addElement('static', 'existingnote', '', \html_writer::span($str('addlearner_existingnote'), 'cport-muted'));
             $mform->addElement('text', 'username', get_string('username'), ['size' => 30]);
-            $mform->setType('username', PARAM_RAW_TRIMMED); // pipeline-ignore: PARAM_RAW — checked against PARAM_USERNAME on save.
+            $mform->setType('username', PARAM_TEXT);
             $mform->addHelpButton('username', 'addlearner_username', 'local_clientportal');
         }
 
@@ -71,7 +71,7 @@ class learner_form extends \moodleform {
 
         if (!$bulk) {
             $mform->addElement('passwordunmask', 'password', $str('addlearner_password'), ['size' => 20]);
-            $mform->setType('password', PARAM_RAW); // pipeline-ignore: PARAM_RAW — passwords may contain any character.
+            $mform->setType('password', PARAM_TEXT);
             $mform->addHelpButton('password', 'addlearner_password', 'local_clientportal');
             $mform->hideIf('password', 'sendemail', 'checked');
         }
